@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Previmed"
         tools:targetApi="31">
         <activity
+            android:name=".controller.medico.HistorialVisitas"
+            android:exported="false" />
+        <activity
+            android:name=".controller.medico.VisitasPendientes"
+            android:exported="false" />
+        <activity
             android:name=".controller.pacientes.ViewBeneficiario"
             android:exported="false" />
         <activity
