@@ -42,10 +42,9 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-
-    //dependecia para animaciones
-    implementation("com.github.LottieFiles:dotlottie-android:6.6.6")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    //dependecia para animaciones
+    implementation ("com.airbnb.android:lottie:6.6.6")
 }
