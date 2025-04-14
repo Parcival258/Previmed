@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="250dp"
         android:contentDescription="TODO"
-        android:src="@drawable/logo"
+        android:src="@drawable/logoandtext"
         tools:layout_editor_absoluteX="87dp"
         tools:layout_editor_absoluteY="145dp" />
 

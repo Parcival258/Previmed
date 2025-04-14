@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="starusBar">#D01CBFD4</color>
+    <color name="gray">#2F808080</color>"
+    <color name="check">#D338CD4E</color>
 </resources>

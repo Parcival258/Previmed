@@ -15,6 +15,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        //soporte para vectores
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -53,4 +58,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     //dependecia para animaciones
     implementation ("com.airbnb.android:lottie:6.6.6")
+    //material design
+    implementation ("com.google.android.material:material:1.11.0")
+    //androidx
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
 }
