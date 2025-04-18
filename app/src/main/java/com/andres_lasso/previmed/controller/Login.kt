@@ -1,5 +1,6 @@
 package com.andres_lasso.previmed.controller
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -8,6 +9,8 @@ import com.andres_lasso.previmed.databinding.ActivityLoginBinding
 import android.util.Patterns
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Button
+import com.andres_lasso.previmed.Menu
 
 class Login : AppCompatActivity() {
 
@@ -22,6 +25,16 @@ class Login : AppCompatActivity() {
         setContentView(binding.root)
 
         setupValidationListeners()
+
+        //Intent para ir al menú por el momento es temporal *****
+        val butonLogin: Button = findViewById(R.id.loginButton);
+
+        //ir al menu:
+        butonLogin.setOnClickListener {
+        val irMenu = Intent(this, Menu::class.java);
+        startActivity(irMenu);
+        }
+
     }
 
     // Función para activar los check dinámicos
