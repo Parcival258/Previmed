@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/history_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.medico.navbar.history.HistoryFragment" >
-
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/text_notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="aqui se pone el contenido del historial"
-        />
+        android:text="Aquí puedes ver el historial"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="16dp" />
 
+    <!-- Aquí podrías poner un RecyclerView o cualquier otro contenido -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contenido adicional del historial..."
+        android:textColor="@android:color/darker_gray" />
 </LinearLayout>
