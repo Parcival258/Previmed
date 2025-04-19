@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.andres_lasso.previmed.controller.medico.navbar.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_visits"
+        android:name="com.andres_lasso.previmed.controller.medico.navbar.visits.VisitsFragment"
+        android:label="@string/title_visits"
+        tools:layout="@layout/fragment_visits" />
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.andres_lasso.previmed.controller.medico.navbar.history.HistoryFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/fragment_history" />
+
+</navigation>

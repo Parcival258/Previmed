@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.andres_lasso.previmed.controller.medico.NavMedico
 import com.andres_lasso.previmed.controller.pacientes.ViewBeneficiario
 
 class Menu : AppCompatActivity() {
@@ -20,6 +21,10 @@ class Menu : AppCompatActivity() {
         irBene.setOnClickListener{
             val irBen = Intent(this, ViewBeneficiario::class.java)
             startActivity(irBen);
+        }
+        //ir a la vista medico
+        findViewById<Button>(R.id.irMedico).setOnClickListener {
+            startActivity(Intent(this, NavMedico::class.java))
         }
     }
 }
