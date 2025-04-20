@@ -6,5 +6,8 @@
     <color name="gray">#2F808080</color>"
     <color name="check">#D338CD4E</color>
     <color name="ligthgreen">#20C997</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
+
 
 </resources>
