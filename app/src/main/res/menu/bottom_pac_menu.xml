@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+    android:id="@+id/btn_home"
+    android:title="Home"
+    android:icon="@drawable/ic_home"
+    />
+    <item
+        android:id="@+id/btn_visita"
+        android:title="Visita"
+        android:icon="@drawable/visita"
+        />
+    <item
+        android:id="@+id/btn_contrato"
+        android:title="Contrato"
+        android:icon="@drawable/contrato"
+        />
+    <item
+        android:id="@+id/btn_pago"
+        android:title="Pagos"
+        android:icon="@drawable/pagos"
+        />
+</menu>
