@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.andres_lasso.previmed.controller.asesor.ViewAsesor
 import com.andres_lasso.previmed.controller.medico.NavMedico
 import com.andres_lasso.previmed.controller.pacientes.ViewBeneficiario
 
@@ -18,6 +19,8 @@ class Menu : AppCompatActivity() {
 
         //Intento para ir a la vista beneficiario
         val irBene: Button = findViewById(R.id.irBeneficiario);
+        val irAsesor: Button = findViewById(R.id.irAsesor);
+
         irBene.setOnClickListener{
             val irBen = Intent(this, ViewBeneficiario::class.java)
             startActivity(irBen);
@@ -25,6 +28,12 @@ class Menu : AppCompatActivity() {
         //ir a la vista medico
         findViewById<Button>(R.id.irMedico).setOnClickListener {
             startActivity(Intent(this, NavMedico::class.java))
+        }
+
+        // ir a la vista de asesor
+        irAsesor.setOnClickListener{
+            val ir = Intent(this, ViewAsesor::class.java)
+            startActivity(ir);
         }
     }
 }
