@@ -12,6 +12,6 @@
         android:icon="@drawable/ic_visits" />
     <item
         android:id="@+id/botton_history"
-        android:title="Inicio"
+        android:title="Historial"
         android:icon="@drawable/ic_history" />
 </menu>

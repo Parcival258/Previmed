@@ -1,14 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".controller.medico.fragmentMedico.HomeMedico"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.medico.fragmentMedico.HomeMedico">
+    android:background="@color/white"
+    android:fillViewport="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <!-- Imagen del doctor -->
+        <ImageView
+            android:id="@+id/img_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/doctor" />
+
+        <!-- Tarjeta de perfil -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-32dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Nombre y especialidad -->
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Mr. J. Adamson"
+                    android:textColor="@android:color/black"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_specialty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sr. Cardiologist"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp" />
+
+                <!-- Estadísticas -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:weightSum="2">
+
+                    <!-- Pacientes -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:src="@drawable/ic_paciente"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp" />
+
+                        <TextView
+                            android:id="@+id/txt_patient_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2k"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:text="Patient"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/darker_gray"/>
+                    </LinearLayout>
+
+                    <!-- Experiencia -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:src="@drawable/ic_experience"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp" />
+
+                        <TextView
+                            android:id="@+id/txt_experience"
+                            android:layout_width="85dp"
+                            android:layout_height="wrap_content"
+                            android:text="7 años"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:text="Experience"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/darker_gray"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Sección About -->
+                <TextView
+                    android:text="About"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="24dp"/>
+
+                <TextView
+                    android:id="@+id/txt_about"
+                    android:text="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"/>
+
+                <!-- Botones -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_read_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Read More"
+                        android:textColor="@android:color/white"
+                        android:backgroundTint="@color/" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>
