@@ -6,7 +6,11 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewMedico">
+    tools:context=".ViewMedico"
+    android:orientation="horizontal"
+    android:layout_gravity="center"
+    android:gravity="center"
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -20,7 +24,7 @@
         android:id="@+id/bottom_navigation_medico"
         app:menu="@menu/botton_medico_menu"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/starusBar"
         app:itemIconTint="@color/white"
