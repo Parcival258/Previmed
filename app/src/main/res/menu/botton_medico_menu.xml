@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- aqui esa donde se van a poner los botones, es como la barra de navegacion en react -->
+
+    <item
+        android:id="@+id/botton_home"
+        android:title="Inicio"
+        android:icon="@drawable/ic_home" />
+    <item
+        android:id="@+id/botton_visits"
+        android:title="Visitas"
+        android:icon="@drawable/ic_visits" />
+    <item
+        android:id="@+id/botton_history"
+        android:title="Inicio"
+        android:icon="@drawable/ic_history" />
+</menu>

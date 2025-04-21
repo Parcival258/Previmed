@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.andres_lasso.previmed.controller.asesor.ViewAsesor
-import com.andres_lasso.previmed.controller.medico.NavMedico
 import com.andres_lasso.previmed.controller.pacientes.ViewBeneficiario
 
 class Menu : AppCompatActivity() {
@@ -27,7 +26,7 @@ class Menu : AppCompatActivity() {
         }
         //ir a la vista medico
         findViewById<Button>(R.id.irMedico).setOnClickListener {
-            startActivity(Intent(this, NavMedico::class.java))
+            startActivity(Intent(this, ViewMedico::class.java))
         }
 
         // ir a la vista de asesor

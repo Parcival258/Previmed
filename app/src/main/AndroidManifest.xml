@@ -13,12 +13,12 @@
         android:theme="@style/Theme.Previmed"
         tools:targetApi="31">
         <activity
-            android:name=".controller.asesor.ViewAsesor"
+            android:name=".ViewMedico"
             android:exported="false" />
         <activity
-            android:name=".controller.medico.NavMedico"
-            android:exported="false"
-            android:label="@string/title_activity_nav_medico" />
+            android:name=".controller.asesor.ViewAsesor"
+            android:exported="false" />
+
         <activity
             android:name=".Menu"
             android:exported="false" />
