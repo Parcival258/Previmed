@@ -6,15 +6,133 @@
     tools:context=".controller.pacientes.fragmentBeneficiario.VisitaBeneficiarioFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hola, esta es la pantalla de visitas 😄"
-        android:textSize="24sp"
-        android:textColor="@color/ligthgreen"
-        android:layout_gravity="center"
-        android:fontFamily="sans-serif-medium"
+        android:layout_height="match_parent"
+        android:background="#EFF1FF"
         android:padding="16dp"
-        android:elevation="4dp"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="35dp"
+            android:src="@drawable/logo" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solicita tu visita"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dirección: *"
+            android:textColor="#000000"
+            android:layout_marginBottom="4dp"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/edtxDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="@android:color/white"
+            android:textColor="#000000"
+            android:layout_marginBottom="16dp"
+            android:elevation="2dp"
+            android:hint="Dirección:"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción: *"
+            android:textColor="#000000"
+            android:layout_marginBottom="4dp"
+            android:textStyle="bold"/>
+
+
+        <EditText
+            android:id="@+id/edtDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="@android:color/white"
+            android:textColor="#000000"
+            android:layout_marginBottom="16dp"
+            android:elevation="2dp"
+            android:hint="Opcional*"
+            />
+
+        <CheckBox
+            android:id="@+id/checkMedico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Deseas un médico en específico?"
+            android:textColor="#000000"
+            android:layout_marginBottom="16dp"
+            android:textStyle="bold"
+
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seleccione médico"
+            android:textColor="#000000"
+            android:layout_marginBottom="4dp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spinnerMedicos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="10dp" />
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_solicitar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/btn_degradado"
+            android:text="Solicitar"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            />
+
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancelar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/btn_cancelar"
+            android:text="Cancelar"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+
+            />
+
+    </LinearLayout>
+
 
 </FrameLayout>
