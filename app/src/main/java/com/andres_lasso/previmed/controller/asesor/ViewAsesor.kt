@@ -8,9 +8,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.andres_lasso.previmed.R
+import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.ContratoAsesorFragment
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.HomeAsesorFragment
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PacientesAsesorFragment
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PagosAsesorFragment
+import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PlanesAsesorFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.ContratoBeneficiarioFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.HomeBeneficiarioFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.PagosBeneficiarioFragment
@@ -41,6 +43,16 @@ class ViewAsesor : AppCompatActivity() {
 
                 R.id.btn_pagos_asesor -> {
                     replaceFragment(PagosAsesorFragment())
+                    true
+                }
+
+                R.id.btn_planes_asesor -> {
+                    replaceFragment(PlanesAsesorFragment())
+                    true
+                }
+
+                R.id.btn_contrato_asesor -> {
+                    replaceFragment(ContratoAsesorFragment())
                     true
                 }
 
