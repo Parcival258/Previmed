@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.asesor.fragmentAsesor.BarriosAsesorFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Historial Barrios Popayan"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ciudad Gótica"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Alfonso lopez"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="La paz"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Arkan"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bello Horizonte"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="La esmeralda"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="El pajonal"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pandiguando"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chipichape"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Empedrado"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ciudad hongo"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Perioditas"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cripton"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="bella vista"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="El bronx"
+                android:textSize="20sp"
+                android:textColor="#2C3E50"
+                android:background="#ECF0F1"
+                android:padding="16dp"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</FrameLayout>
