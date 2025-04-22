@@ -138,14 +138,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:gravity="center">
-
+                    <!--Cambie el color-->
                     <Button
                         android:id="@+id/btn_read_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Read More"
                         android:textColor="@android:color/white"
-                        android:backgroundTint="@color/" />
+                        android:backgroundTint="@color/starusBar" />
 
                 </LinearLayout>
 

@@ -8,15 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.andres_lasso.previmed.R
+import com.andres_lasso.previmed.databinding.FragmentHomeBeneficiarioBinding
 
 
 class HomeBeneficiarioFragment : Fragment() {
+    private var  _binding: FragmentHomeBeneficiarioBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_beneficiario, container, false)
+        _binding = FragmentHomeBeneficiarioBinding.inflate(inflater, container, false)
+        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,12 +32,12 @@ class HomeBeneficiarioFragment : Fragment() {
             in 12..17 -> "¡Buenas tardes"
             else -> "¡Buenas noches"
         }
-        val saludoTextView:TextView = view.findViewById(R.id.saludo_beneficiario)
+        val saludoTextView:TextView = binding.saludoBeneficiario
         saludoTextView.text = "$saludo, $nombreBeneficiario!"
         //Estado del servivio
         val estado: Boolean = true
-        val estaServicio: TextView = view.findViewById(R.id.estado_servicio)
-        val indicadorEstado: View = view.findViewById(R.id.indicador_estado)
+        val estaServicio: TextView = binding.estadoServicio
+        val indicadorEstado: View = binding.indicadorEstado
         if (estado) {
             estaServicio.text = "Te encuentras activo"
             indicadorEstado.setBackgroundResource(R.drawable.circle_green)
