@@ -12,6 +12,7 @@ import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.Contr
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.HomeBeneficiarioFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.PagosBeneficiarioFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.VisitaBeneficiarioFragment
+import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.VispendientesBeneficiarioFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ViewBeneficiario : AppCompatActivity() {
@@ -39,6 +40,10 @@ class ViewBeneficiario : AppCompatActivity() {
                 }
                 R.id.btn_pago ->{
                     replaceFragment(PagosBeneficiarioFragment())
+                    true
+                }
+                R.id.btn_mis_visitas ->{
+                    replaceFragment(VispendientesBeneficiarioFragment())
                     true
                 }
                 else -> false

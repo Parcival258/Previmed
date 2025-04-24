@@ -20,4 +20,9 @@
         android:title="Pagos"
         android:icon="@drawable/pagos"
         />
+    <item
+        android:id="@+id/btn_mis_visitas"
+        android:title="Mis visitas"
+        android:icon="@drawable/ic_history"
+        />
 </menu>
