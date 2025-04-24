@@ -17,9 +17,10 @@
         <ImageView
             android:id="@+id/img_doctor"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@drawable/doctor" />
+            android:src="@drawable/doctor"
+            android:paddingTop="15dp"/>
 
         <!-- Tarjeta de perfil -->
         <androidx.cardview.widget.CardView
@@ -31,10 +32,10 @@
             app:cardElevation="4dp">
 
             <LinearLayout
-                android:orientation="vertical"
-                android:padding="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="24dp">
 
                 <!-- Nombre y especialidad -->
                 <TextView
@@ -42,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Mr. J. Adamson"
+                    android:text="Med. Alverto Lasso"
                     android:textColor="@android:color/black"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -51,101 +52,111 @@
                     android:id="@+id/txt_specialty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sr. Cardiologist"
+                    android:text="Cardiologo"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
 
                 <!-- Estadísticas -->
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
                     android:weightSum="2">
 
                     <!-- Pacientes -->
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:src="@drawable/ic_paciente"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_paciente" />
 
                         <TextView
                             android:id="@+id/txt_patient_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2k"
+                            android:text="1.1k"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
                         <TextView
-                            android:text="Patient"
-                            android:textSize="12sp"
-                            android:textColor="@android:color/darker_gray"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Patientes"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <!-- Experiencia -->
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:src="@drawable/ic_experience"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_experience" />
 
                         <TextView
                             android:id="@+id/txt_experience"
-                            android:layout_width="85dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:text="7 años"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
                         <TextView
-                            android:text="Experience"
-                            android:textSize="12sp"
-                            android:textColor="@android:color/darker_gray"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Experiencia"
+                            android:textColor="@android:color/darker_gray"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Sección About -->
+                <!-- Sección de información -->
                 <TextView
-                    android:text="About"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="24dp"
+                    android:text="Hacerca de:"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="24dp"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_about"
-                    android:text="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:text="Medico especialido en la atencion domiciliaria a pacientes de 3ra edad"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp"
-                    android:layout_marginTop="4dp"/>
+                    android:textSize="14sp" />
 
-                <!-- Botones -->
+                <!-- Boton -->
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:gravity="center">
-                    <!--Cambie el color-->
-                    <Button
-                        android:id="@+id/btn_read_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Read More"
-                        android:textColor="@android:color/white"
-                        android:backgroundTint="@color/starusBar" />
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <!--boton estado-->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_estado"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/btn_degradado"
+                        android:text="cambiar estado"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
