@@ -1,6 +1,10 @@
 package com.andres_lasso.previmed.controller.asesor
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
