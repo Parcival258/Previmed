@@ -47,16 +47,22 @@
     <string name="contrato_clausula_15">DÉCIMA QUINTA: TERMINACION DEL CONTRATO: este contrato termina por las siguientes causales: 1. Por incumplimiento de EL USUARIO que suscribe este contrato en el pago de la cuota, previo el agotamiento del procedimiento indicado relativo al requerimlento previo a la suspensión del servicio y terminación del contrato por mora en el pago de la tarifa. 2. Por permitir EL USUARIO la utilización del servicio por un tercero sin derecho al mismo, en casos tales como, suplantación, entre otros. 3. Por dar EL O LOS USUARIOS de este contrato información falsa o engañosa a "PREVIMED" o a su personal, bien del área Administrativa o bien del área Médica. 4. Por decisión voluntaria de EL USUARIO firmante de este contrato, manifestada por escrito conforme lo establece la cláusula tercera de este contrato. En este caso EL USUARIO deberá manifestar el motivo de inconformidad, los datos que permitan su Identificación, y la comunicación deberá ser presentada personalmente por aquel o con diligencia de presentación personal ante notario. 5. Por terminación de la persona jurídica de PREVIMED o su licencia de funcionamiento. PARAGRAFO PRIMERO: En caso de terminación del contrato por parte de PREVIMED, se devolverá la tarifa no devengada cuando ésta haya sido pagada anticipadamente. Los valores a devolver se contarán por meses y en ningún caso se hará devolución por días. En todo caso, cuando la revocación o terminación del contrato tenga como causa una razón imputable al CONTRATANTE USUARIO y no hubiere cumplido un año de afiliación, "PREVIMED TU MEDICO EN CASA" S.A.S. le cobrara a título de sanción el cincuenta por ciento (50%) de las cuotas que correspondan a los periodos que falten para ajustar el primer año (1) de afiliación.</string>
     <string name="contrato_clausula_16">DÉCIMA SEXTA: AUTORIZACION PARA EL TRATAMIENTO DE DATOS PERSONALES POR PARTE DE "PREVIMED TU MEDICO EN CASA" S.A.S. El Afiliado y/o Beneficiario del presente contrato autoriza a "PREVIMED TU MEDICO EN CASA" S.A.S. para que los datos personales contenidos en el presente contrato, sean recolectados en su base de datos y utilizados por la compañía, sus empleados, representantes, agentes y contratistas, en desarrollo del objeto social con la finalidad principal de (a) Realizar campañas de publicidad y mercadeo para ofrecer descuentos propios o de terceros promociones de productos o servicios; (b) informar sobre cambios de los productos o servicios: (c) Implementar programas de fidelización; (d) Evaluar la calidad de nuestros productos y servicios; (e) Realizar estudios de crédito, cobranza o riesgo crediticio; (f) Ejecutar las obligaciones derivadas de los contratos de afiliación, contratos comerciales y laborales en los cuales "PREVIMED" es parte; (g) Llevar a cabo los trámites de atención de PQR s presentadas ante la Compañía: (h) Celebrar convenios con terceros: (1) Cualquier otra finalidad que llegare a resultar en desarrollo del contrato o la relación comercial entre "PREVIMED" y el Titular y en general para que haga uso de los mismos de acuerdo con los establecidos en la Politica de Tratamiento de Datos de dicha compañía, la cual declara conocer, se encuentra publicada en la página web www.previmed.com.co y hace parte integrante del presente contrato.</string>
     <string name="contrato_clausula_17">DÉCIMA SEPTIMA: MODIFICACIÓN AL CONTRATO. Cualquier modificación del contrato mientras esté vigente, solo podrá hacerse de común acuerdo, por escrito entre las partes. Lo anterior sin perjuicio de lo establecido para el cambio de tarifa o precio.</string>
-    <string name="contrato_clausula_18">DÉCIMA OCTAVA: NEGACION DEL SERVICIO. En caso de negación de servicios a un USUARIO de "PREVIMED", procederá de la siguiente manera: se explicará al USUARIO en forma completa y respetuosa las razones por las cuales no tiene derecho a acceder al servicio en salud sollicitado y se le indicaran las alternativas de que dispone a través del sistema general de seguridad social en salud para acceder al servicio o medicamento.
-        Las partes suscriben el siguiente documento en Popayán en dos ejemplares del mismo contenido y valor del día_______________del mes de__________ de dos mil__________(20_).</string>
-    <string name="contrato_firma">
-        Nombre:Maria Cecilia Alvarez
-        C.C. N°4-73378
-        Dirección:K-233270-150 Apto 105 la Floresfeverte</string>
+    <string name="contrato_clausula_18">DÉCIMA OCTAVA: NEGACION DEL SERVICIO. En caso de negación de servicios a un USUARIO de "PREVIMED", procederá de la siguiente manera: se explicará al USUARIO en forma completa y respetuosa las razones por las cuales no tiene derecho a acceder al servicio en salud sollicitado y se le indicaran las alternativas de que dispone a través del sistema general de seguridad social en salud para acceder al servicio o medicamento.</string>
+
+    <string name="firmacontrato_texto">Las partes suscriben el siguiente documento en Popayán en dos ejemplares del mismo contenido y valor del día:</string>
+    <string name="contrato_firma_nombre">
+        Nombre: Maria Cecilia Alvarez</string>
+    <string name="contrato_firma_cedula">
+        C.C. N°4-73378</string>
+    <string name="contrato_firma_direccion">Dirección: K-233270-150 </string>
+     <string name="contrato_firma_barrio"> Apto 105 la Floresta Norte </string>
+
 
     <string name="contrato_representante">
-        Leandro Realpe Cisneros
-        Representante Legal
+        Leandro Realpe Cisneros</string>
+    <string name="contrato_representantelegal">
+        Representante Legal</string>
+    <string name="contrato_representanteprevi">
         PREVIMED TU MEDICO EN CASA S.A.S</string>
 
 

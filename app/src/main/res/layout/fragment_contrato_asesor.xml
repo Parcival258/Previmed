@@ -159,19 +159,126 @@
             android:textColor="@android:color/black"
             android:textSize="16sp" />
         <TextView
-            android:id="@+id/contrato_firma"
+            android:id="@+id/firmacontrato_texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/contrato_firma"
+            android:text="@string/firmacontrato_texto"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp">
+        <EditText
+            android:id="@+id/et_dia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Día"
+            android:inputType="number"
+            android:maxLength="2"
+            android:gravity="center"
+            android:textAlignment="center"/>
+        <EditText
+            android:id="@+id/et_mes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Mes"
+            android:inputType="number"
+            android:maxLength="2"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:id="@+id/et_anio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Año"
+            android:inputType="number"
+            android:maxLength="4"
+            android:gravity="center"
+            android:textAlignment="center"/>
+
+    </LinearLayout>
+        <EditText
+            android:id="@+id/contrato_firma_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre"
+            android:inputType="textPersonName"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
+        <EditText
+            android:id="@+id/contrato_firma_cedula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Cédula"
+            android:inputType="number"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/contrato_firma_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Dirección"
+            android:inputType="text"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+        <EditText
+            android:id="@+id/contrato_firma_barrio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Barrio"
+            android:inputType="text"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+
         <TextView
             android:id="@+id/contrato_representante"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_representante"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+           />
+        <TextView
+            android:id="@+id/contrato_representantelegal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/contrato_representantelegal"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/contrato_representanteprevi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/contrato_representanteprevi"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            />
+        <Button
+            android:id="@+id/btn_guardar"
+            style="@style/CustomButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="80dp" />
+
+
 
 
     </LinearLayout>

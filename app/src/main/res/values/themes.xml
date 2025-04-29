@@ -1,14 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme -->
     <style name="Base.Theme.Previmed" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:statusBarColor">@color/starusBar</item>"
+        <!-- Customize your light theme here -->
+        <item name="android:statusBarColor">@color/starusBar</item>
     </style>
 
     <style name="Theme.Previmed" parent="Base.Theme.Previmed" />
 
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/ligthgreen</item>
+    </style>
+
+    <!-- Nuevo estilo para botón -->
+    <style name="CustomButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@null</item> <!-- Anula el color Material -->
+        <item name="android:backgroundTint">@null</item> <!-- Para compatibilidad -->
+        <item name="background">@drawable/btn_selector</item> <!-- Usa tu degradado -->
+        <item name="android:textColor">@android:color/white</item> <!-- Texto blanco -->
     </style>
 </resources>
