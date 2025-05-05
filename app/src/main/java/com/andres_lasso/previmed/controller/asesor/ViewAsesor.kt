@@ -13,7 +13,6 @@ import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.ContratoAsesor
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.HomeAsesorFragment
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PacientesAsesorFragment
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PagosAsesorFragment
-import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PlanesAsesorFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.ContratoBeneficiarioFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.HomeBeneficiarioFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
