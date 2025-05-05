@@ -47,15 +47,9 @@ class ViewAsesor : AppCompatActivity() {
                     true
                 }
 
-                R.id.btn_planes_asesor -> {
-                    replaceFragment(PlanesAsesorFragment())
-                    true
-                }
 
-                R.id.btn_contrato_asesor -> {
-                    replaceFragment(ContratoAsesorFragment())
-                    true
-                }
+
+
 
 
                 else -> false
