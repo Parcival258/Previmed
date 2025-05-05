@@ -13,15 +13,22 @@
         android:textSize="30dp"
         android:gravity="center"
         android:paddingTop="30dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:width="20dp"
-        android:height="20dp">
-
-    </Button>
-
-
+        android:layout_gravity="center"
+        android:text="Planes"/>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Barrios"/>
+    </LinearLayout>
 
 </FrameLayout>
