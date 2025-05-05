@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Previmed"
         tools:targetApi="31">
         <activity
+            android:name=".controller.asesor.Agregar_Paciente"
+            android:exported="false" />
+        <activity
+            android:name=".controller.asesor.Paciente_Ver"
+            android:exported="false" />
+        <activity
             android:name=".controller.pacientes.Beneficiarios"
             android:exported="false" />
         <activity

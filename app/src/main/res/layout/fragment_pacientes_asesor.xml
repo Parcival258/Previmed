@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="10dp"
     android:background="#F5F8FE">
     <ScrollView
         android:layout_width="match_parent"
@@ -489,8 +489,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:backgroundTint="#2196F3"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="7dp"
             android:text="+" />
     </RelativeLayout>
 
