@@ -38,15 +38,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.085">
 
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:background="@drawable/ic_img"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="N° recibo: 9088878" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="N° Contrato: 9088878" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Titular: Juan Perez" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="N° recibo: 9088878" />
 
         <TextView
             android:layout_width="match_parent"
@@ -56,7 +70,22 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fecha: 18/03/2025" />
+            android:text="Fecha Cobro: 18/03/2025" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha Inicio: 18/03/2025" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha Fin: 18/03/2025" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Forma de Pago: Nequi" />
 
         <TextView
             android:layout_width="match_parent"
@@ -65,7 +94,6 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_ir_pagos_add"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:text="+"

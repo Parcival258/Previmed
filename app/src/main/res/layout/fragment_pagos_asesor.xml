@@ -14,15 +14,14 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="Pagos"
             android:textSize="30dp"
-            android:paddingTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -34,10 +33,11 @@
             android:id="@+id/layoutRecibo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/card_info"
             android:elevation="4dp"
             android:orientation="vertical"
             android:padding="10dp"
-            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -45,33 +45,85 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.085">
 
-            <TextView
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_img" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Titular: Juan Perez" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="N° recibo: 9088878"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="N° Contrato: 9088878"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:text="Titular: Juan Perez" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cobrador: Alberto Lasso"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="N° recibo: 9088878" />
+                android:text="Fecha de Cobro: 18/03/2025" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cobrador: Tereza solano" />
+                android:text="Fecha Inicio: 18/03/2025" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fecha: 18/03/2025" />
+                android:text="Fecha Fin: 18/03/2025" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Forma de Pago: Nequi" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="Monto: 85000" />
         </LinearLayout>
 
         <Button
+            android:id="@+id/btn_ir_pagos_add"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:text="+"

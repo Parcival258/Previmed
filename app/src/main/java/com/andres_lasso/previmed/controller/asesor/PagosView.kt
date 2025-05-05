@@ -25,10 +25,10 @@ class PagosView : AppCompatActivity() {
         binding = ActivityPagosViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnIrPagosAdd.setOnClickListener{
+        /*binding.btnIrPagosAdd.setOnClickListener{
             val ir_pagos_add = Intent(this, PagosAdd::class.java)
             startActivity(ir_pagos_add)
-        }
+        }*/
 
     }
 }
