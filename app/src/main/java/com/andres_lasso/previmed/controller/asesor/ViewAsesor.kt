@@ -16,9 +16,6 @@ import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PagosAsesorFra
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PlanesAsesorFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.ContratoBeneficiarioFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.HomeBeneficiarioFragment
-import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.PagosBeneficiarioFragment
-import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.VisitaBeneficiarioFragment
-import com.andres_lasso.previmed.databinding.FragmentPagosAsesorBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ViewAsesor : AppCompatActivity() {
@@ -46,17 +43,6 @@ class ViewAsesor : AppCompatActivity() {
                     replaceFragment(PagosAsesorFragment())
                     true
                 }
-
-                R.id.btn_planes_asesor -> {
-                    replaceFragment(PlanesAsesorFragment())
-                    true
-                }
-
-                R.id.btn_contrato_asesor -> {
-                    replaceFragment(ContratoAsesorFragment())
-                    true
-                }
-
 
                 else -> false
             }
