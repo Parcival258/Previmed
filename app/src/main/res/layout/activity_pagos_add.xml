@@ -7,6 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".controller.asesor.PagosAdd">
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="add pago"/>
 
 </ScrollView>
