@@ -34,14 +34,8 @@ class ViewBeneficiario : AppCompatActivity() {
                     replaceFragment(VisitaBeneficiarioFragment())
                     true
                 }
-                R.id.btn_contrato ->{
-                    replaceFragment(ContratoBeneficiarioFragment())
-                    true
-                }
-                R.id.btn_pago ->{
-                    replaceFragment(PagosBeneficiarioFragment())
-                    true
-                }
+
+
                 R.id.btn_mis_visitas ->{
                     replaceFragment(VispendientesBeneficiarioFragment())
                     true
