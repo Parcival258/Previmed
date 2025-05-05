@@ -15,15 +15,4 @@
         android:title="Pagos"
         android:icon="@drawable/baseline_attach_money_24"
         />
-    <item
-        android:id="@+id/btn_contrato_asesor"
-        android:title="Contrato"
-        android:icon="@drawable/contrato"/>
-
-    <item
-        android:id="@+id/btn_planes_asesor"
-        android:title="Planes"
-        android:icon="@drawable/ic_ver_planes"/>
-
-
 </menu>
