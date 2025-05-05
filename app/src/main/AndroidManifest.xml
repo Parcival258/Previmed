@@ -13,10 +13,10 @@
         android:theme="@style/Theme.Previmed"
         tools:targetApi="31">
         <activity
-            android:name=".controller.asesor.Agregar_Paciente"
+            android:name=".controller.asesor.AgregarPaciente"
             android:exported="false" />
         <activity
-            android:name=".controller.asesor.Paciente_Ver"
+            android:name=".controller.asesor.PacienteVer"
             android:exported="false" />
         <activity
             android:name=".controller.pacientes.Beneficiarios"

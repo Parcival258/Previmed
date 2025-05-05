@@ -114,9 +114,18 @@
 
                 </TextView>
 
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/see"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_gravity="right"
+                    />
 
+            </LinearLayout>
 
-            </LinearLayout> <LinearLayout
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -158,8 +167,18 @@
                 android:text="Plan: Individual"
                 android:textSize="14sp" />
 
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/see"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_gravity="right"
+                    />
 
-        </LinearLayout> <LinearLayout
+        </LinearLayout>
+
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -200,6 +219,15 @@
                 android:layout_height="wrap_content"
                 android:text="Plan: Individual"
                 android:textSize="14sp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/see"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_gravity="right"
+                    />
         </LinearLayout>
 
             <LinearLayout
@@ -243,6 +271,15 @@
                     android:layout_height="wrap_content"
                     android:text="Plan: Individual"
                     android:textSize="14sp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/see"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_gravity="right"
+                    />
 
             </LinearLayout>
 
@@ -288,6 +325,15 @@
                     android:layout_height="wrap_content"
                     android:text="Plan: Individual"
                     android:textSize="14sp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/see"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_gravity="right"
+                    />
 
             </LinearLayout>
 
@@ -335,6 +381,14 @@
                     android:text="Plan: Individual"
                     android:textSize="14sp" />
 
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/see"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_gravity="right"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -380,6 +434,14 @@
                     android:text="Plan: Individual"
                     android:textSize="14sp" />
 
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/see"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_gravity="right"
+                    />
 
             </LinearLayout>
 
@@ -427,6 +489,14 @@
                     android:text="Plan: Individual"
                     android:textSize="14sp" />
 
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/see"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_gravity="right"
+                    />
 
             </LinearLayout>
 
@@ -472,6 +542,15 @@
                     android:layout_height="wrap_content"
                     android:text="Plan: Individual"
                     android:textSize="14sp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/see"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_gravity="right"
+                    />
 
             </LinearLayout>
 
