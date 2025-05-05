@@ -10,16 +10,7 @@
         android:title="Visita"
         android:icon="@drawable/visita"
         />
-    <item
-        android:id="@+id/btn_contrato"
-        android:title="Contrato"
-        android:icon="@drawable/contrato"
-        />
-    <item
-        android:id="@+id/btn_pago"
-        android:title="Pagos"
-        android:icon="@drawable/pagos"
-        />
+
     <item
         android:id="@+id/btn_mis_visitas"
         android:title="Mis visitas"
