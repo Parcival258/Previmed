@@ -1,10 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
     tools:context=".controller.pacientes.Beneficiarios">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="411dp"
+        android:layout_height="114dp"
+        android:orientation="horizontal"
+        android:gravity="bottom|center_horizontal"
+        android:padding="16dp"
+        android:background="@drawable/esquinas_redondeadas"
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/soy_beneficiario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Soy beneficiario"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed-light"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:id="@+id/indicador_beneficiario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:textSize="18sp"
+            android:textColor="@color/green"
+            android:textStyle="bold"
+            android:layout_marginLeft="95dp"
+            />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerBeneficiarios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"/>
+
+</FrameLayout>
