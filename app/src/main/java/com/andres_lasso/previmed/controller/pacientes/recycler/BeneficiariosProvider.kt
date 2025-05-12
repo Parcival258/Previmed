@@ -24,9 +24,59 @@ class BeneficiariosProvider {
                 "Patiño"
             ),
             BeneficiariosClass(
-                "4",
+                "5",
                 "Daniela",
-                "Peralta"
+                "Usuga"
+            ),
+            BeneficiariosClass(
+                "6",
+                "Amaranta",
+                "Hank"
+            ),
+            BeneficiariosClass(
+                "7",
+                "Esperanza",
+                "Gomez"
+            ),
+            BeneficiariosClass(
+                "8",
+                "Cristian",
+                "Sandoval"
+            ),
+            BeneficiariosClass(
+                "9",
+                "Lenny",
+                "Perez"
+            ),
+            BeneficiariosClass(
+                "10",
+                "Lida",
+                "Vidal"
+            ),
+            BeneficiariosClass(
+                "11",
+                "Mauricio",
+                "Vega"
+            ),
+            BeneficiariosClass(
+                "12",
+                "Oscar",
+                "Vega"
+            ),
+            BeneficiariosClass(
+                "13",
+                "Camilo",
+                "Gomez"
+            ),
+            BeneficiariosClass(
+                "14",
+                "Luisa",
+                "Fernandez"
+            ),
+            BeneficiariosClass(
+                "15",
+                "Mil",
+                "House"
             ),
         )
     }
