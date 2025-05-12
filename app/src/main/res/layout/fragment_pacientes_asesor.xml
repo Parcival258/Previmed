@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="#F5F8FE">
+    android:background="#F1FAEE">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -60,6 +61,7 @@
                     android:textSize="14sp" />
 
                 <ImageButton
+                    android:id="@+id/BotonMirarPac"
                     android:layout_width="wrap_content"
                     android:layout_height="26dp"
                     android:background="@drawable/see"
@@ -562,12 +564,12 @@
         android:layout_height="673dp">
 
         <Button
-            android:id="@+id/myButton"
+            android:id="@+id/BotonAgUsuario"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:backgroundTint="#2196F3"
+            android:backgroundTint="#457B9D"
             android:text="+" />
     </RelativeLayout>
 
@@ -578,7 +580,7 @@
         <SearchView
             android:layout_width="381dp"
             android:layout_height="wrap_content"
-            android:background="#4DA9F3"
+            android:background="#457B9D"
             android:text="Buscar Usuario"
             android:layout_margin="12dp"
             android:elevation="6dp"
