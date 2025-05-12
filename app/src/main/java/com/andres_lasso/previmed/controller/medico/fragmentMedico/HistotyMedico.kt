@@ -6,14 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.andres_lasso.previmed.R
+import com.andres_lasso.previmed.databinding.FragmentHistotyMedicoBinding
 
 
 class HistotyMedico : Fragment() {
+
+    //binding para el fragment
+    private var _binding: FragmentHistotyMedicoBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_histoty_medico, container, false)
+        _binding = FragmentHistotyMedicoBinding.inflate(inflater,  container, false)
+        return binding.root
     }
 }
