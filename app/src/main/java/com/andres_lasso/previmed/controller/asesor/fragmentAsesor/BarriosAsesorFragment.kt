@@ -10,12 +10,17 @@ import com.andres_lasso.previmed.R
 class BarriosAsesorFragment : Fragment() {
 
 
+    var mylits = listOf("ejemplo1","ejemplo2","ejemplo3")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_barrios_asesor, container, false)
+
+
+
     }
 
 }
