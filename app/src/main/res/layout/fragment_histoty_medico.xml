@@ -19,7 +19,7 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hola, Alexander"
+            android:text="Hola, "
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
