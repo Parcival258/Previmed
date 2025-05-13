@@ -6,35 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
-import com.andres_lasso.previmed.R
+import com.andres_lasso.previmed.databinding.FragmentVisitaBeneficiarioBinding
+
 class VisitaBeneficiarioFragment : Fragment() {
 
-    // Declaramos variables para los elementos del layout
-    private lateinit var spinnerMedicos: Spinner
-    private lateinit var checkMedico: CheckBox
-    private lateinit var edDireccion: EditText
-    private lateinit var btnSolicitar: Button
+    private var _binding: FragmentVisitaBeneficiarioBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentVisitaBeneficiarioBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Inflamos el layout para este fragmento
-        val view = inflater.inflate(R.layout.fragment_visita_beneficiario, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        // Referenciamos los elementos de la interfaz con sus IDs
-        spinnerMedicos = view.findViewById(R.id.spinnerMedicos)
-        checkMedico = view.findViewById(R.id.checkMedico)
-        edDireccion = view.findViewById(R.id.edDireccion)
-        btnSolicitar = view.findViewById(R.id.btn_solicitar)
-
-        // Lista de médicos para el Spinner
+        // Lista de médicos
         val listaMedicos = listOf(
             "Seleccione un médico",
             "Dr. Alberto Lasso",
@@ -42,43 +33,43 @@ class VisitaBeneficiarioFragment : Fragment() {
             "Dra. Pepa Perez"
         )
 
-        // Creamos un adaptador para mostrar la lista en el Spinner
+        // Adaptador para el Spinner
         val adaptador = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
             listaMedicos
         )
         adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerMedicos.adapter = adaptador
+        binding.spinnerMedicos.adapter = adaptador
 
-        // Por defecto el Spinner está apagado
-        spinnerMedicos.isEnabled = false
+        // Por defecto, el spinner está deshabilitado
+        binding.spinnerMedicos.isEnabled = false
 
-        // Activamos o desactivamos el Spinner dependiendo del estado del CheckBox
-        checkMedico.setOnCheckedChangeListener { _, isChecked ->
-            spinnerMedicos.isEnabled = isChecked
+        // Activar/desactivar spinner según el checkbox
+        binding.checkMedico.setOnCheckedChangeListener { _, isChecked ->
+            binding.spinnerMedicos.isEnabled = isChecked
         }
 
+        // Botón solicitar
+        binding.btnSolicitar.setOnClickListener {
+            val direccion = binding.edDireccion.text.toString().trim()
 
-        btnSolicitar.setOnClickListener {
-            val direccion = edDireccion.text.toString().trim()
-
-            // Si la dirección está vacía mostramos un mensaje
             if (direccion.isEmpty()) {
                 Toast.makeText(requireContext(), "La dirección es obligatoria", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Si se seleccionó el checkbox, también validamos que haya elegido un médico válido
-            if (checkMedico.isChecked && spinnerMedicos.selectedItemPosition == 0) {
+            if (binding.checkMedico.isChecked && binding.spinnerMedicos.selectedItemPosition == 0) {
                 Toast.makeText(requireContext(), "Selecciona un médico", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-
             Toast.makeText(requireContext(), "Solicitud enviada correctamente", Toast.LENGTH_SHORT).show()
         }
+    }
 
-        return view
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
