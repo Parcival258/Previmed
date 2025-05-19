@@ -25,10 +25,10 @@ class Beneficiarios : AppCompatActivity() {
         val itsBeneficiario: Boolean = true;
         val txtbeneficiario: TextView = binding.indicadorBeneficiario
 
-        if (itsBeneficiario){
+        if (itsBeneficiario) {
             txtbeneficiario.text = "Si";
             txtbeneficiario.setTextColor(ContextCompat.getColor(this, R.color.green))
-        }else{
+        } else {
             txtbeneficiario.text = "No";
             txtbeneficiario.setTextColor(ContextCompat.getColor(this, R.color.red))
         }
@@ -36,7 +36,8 @@ class Beneficiarios : AppCompatActivity() {
         initRecyclerView()
 
     }
-    private fun initRecyclerView(){
+
+    private fun initRecyclerView() {
         val recycleView: RecyclerView = binding.recyclerBeneficiarios
         recycleView.layoutManager = LinearLayoutManager(this);
         recycleView.adapter = BeneficiariosAdapter(BeneficiariosProvider.beneficiariosList)

@@ -13,17 +13,19 @@ import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.HomeB
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.PagosBeneficiarioFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.VisitaBeneficiarioFragment
 import com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario.VispendientesBeneficiarioFragment
+import com.andres_lasso.previmed.databinding.ActivityViewBeneficiarioBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ViewBeneficiario : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var binding: ActivityViewBeneficiarioBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_view_beneficiario)
+        binding = ActivityViewBeneficiarioBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation_pac)
+        bottomNavigationView = binding.bottomNavigationPac
         bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when(menuItem.itemId){
                 R.id.btn_home ->{
