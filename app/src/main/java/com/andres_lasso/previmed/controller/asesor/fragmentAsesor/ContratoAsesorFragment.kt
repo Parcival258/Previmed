@@ -1,7 +1,13 @@
 package com.andres_lasso.previmed.controller.asesor.fragmentAsesor
 
 import android.graphics.Typeface
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.pdf.PdfDocument
 import android.os.Bundle
+import android.os.CancellationSignal
+import android.os.ParcelFileDescriptor
+import android.print.*
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.StyleSpan
@@ -9,10 +15,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.databinding.FragmentContratoAsesorBinding
+import java.io.FileOutputStream
 
 class ContratoAsesorFragment : Fragment() {
 
@@ -45,8 +51,13 @@ class ContratoAsesorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tituloContrato.text = getString(R.string.title_contrato)
+        val nombreRecibido = arguments?.getString("nombre") ?: ""
+        val cedulaRecibida = arguments?.getString("cedula") ?: ""
 
+        binding.contratoFirmaNombre.setText(nombreRecibido)
+        binding.contratoFirmaCedula.setText(cedulaRecibida)
+
+        binding.tituloContrato.text = getString(R.string.title_contrato)
         binding.clausulaIntroduccion.text = getString(R.string.contrato_introduccion)
 
         val cláusulas = listOf(
@@ -63,7 +74,6 @@ class ContratoAsesorFragment : Fragment() {
         }
 
         binding.firmacontratoTexto.text = getString(R.string.firmacontrato_texto)
-
         binding.contratoRepresentante.text = aplicarNegritas(getString(R.string.contrato_representante))
 
         binding.etDia.setOnFocusChangeListener { _, hasFocus ->
@@ -86,9 +96,9 @@ class ContratoAsesorFragment : Fragment() {
                 binding.etAnio.setText(anio.takeLast(4))
             }
         }
+
         binding.contratoFirmaNombre.setHint("Nombre")
         binding.contratoFirmaDireccion.setHint("Dirección")
-
         binding.contratoFirmaBarrio.setHint("Barrio")
 
         binding.btnGuardar.setOnClickListener {
@@ -107,8 +117,6 @@ class ContratoAsesorFragment : Fragment() {
                 Toast.makeText(requireContext(), "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 
     private fun aplicarNegritas(texto: String): SpannableString {
@@ -129,6 +137,79 @@ class ContratoAsesorFragment : Fragment() {
         }
 
         return spannable
+    }
+
+    fun imprimirContrato() {
+        val printManager = requireContext().getSystemService(PrintManager::class.java)
+        val jobName = "${requireContext().getString(R.string.app_name)} - Contrato"
+
+        val viewToPrint = binding.scrollViewContrato
+
+        printManager.print(
+            jobName,
+            object : PrintDocumentAdapter() {
+                override fun onLayout(
+                    oldAttributes: PrintAttributes?,
+                    newAttributes: PrintAttributes,
+                    cancellationSignal: CancellationSignal,
+                    callback: LayoutResultCallback,
+                    extras: Bundle?
+                ) {
+                    if (cancellationSignal.isCanceled) {
+                        callback.onLayoutCancelled()
+                        return
+                    }
+
+                    val info = PrintDocumentInfo.Builder("contrato.pdf")
+                        .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
+                        .setPageCount(PrintDocumentInfo.PAGE_COUNT_UNKNOWN)
+                        .build()
+                    callback.onLayoutFinished(info, true)
+                }
+
+                override fun onWrite(
+                    pages: Array<PageRange>,
+                    destination: ParcelFileDescriptor,
+                    cancellationSignal: CancellationSignal,
+                    callback: WriteResultCallback
+                ) {
+                    val bitmap = getBitmapFromView(viewToPrint)
+
+                    val pdfDocument = PdfDocument()
+                    val pageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, 1).create()
+                    val page = pdfDocument.startPage(pageInfo)
+                    page.canvas.drawBitmap(bitmap, 0f, 0f, null)
+                    pdfDocument.finishPage(page)
+
+                    try {
+                        FileOutputStream(destination.fileDescriptor).use { output ->
+                            pdfDocument.writeTo(output)
+                        }
+                        callback.onWriteFinished(arrayOf(PageRange.ALL_PAGES))
+                    } catch (e: Exception) {
+                        callback.onWriteFailed(e.toString())
+                    } finally {
+                        pdfDocument.close()
+                    }
+                }
+            },
+            null
+        )
+    }
+
+    private fun getBitmapFromView(view: View): Bitmap {
+        // Asegurarse que el view esté medido y layout
+        if (view.width == 0 || view.height == 0) {
+            view.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            )
+            view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        }
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
     }
 
     override fun onDestroyView() {
