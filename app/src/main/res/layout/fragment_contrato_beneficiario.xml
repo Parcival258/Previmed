@@ -94,6 +94,24 @@
                                 android:text="Familiar"
                                 android:textColor="@android:color/black"/>
                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="8dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Descripcion:"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/black"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Soporte para 6 integrantes"
+                                android:textColor="@android:color/black"/>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -144,6 +162,24 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Pepe Perez, Pepa Perez"
+                                android:textColor="@android:color/black"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="8dp">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Documentos:"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/black"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1010101010 - 1212121212"
                                 android:textColor="@android:color/black"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -200,9 +236,9 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/DescargarContrato"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="120dp"
         android:background="@drawable/btn_degradado_selector"
         android:text="Descargar Contrato 📄"
         android:textColor="#FFFFFF"
