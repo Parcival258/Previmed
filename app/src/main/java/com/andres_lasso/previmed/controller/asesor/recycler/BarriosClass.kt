@@ -1,4 +1,7 @@
 package com.andres_lasso.previmed.controller.asesor.recycler
 
-class BarriosClass {
-}
+data class BarriosClass(
+    val idBarrio: String, val nombreBarrio: String,
+    val idCiudad: String, val nombreCiudad: String
+)
+
