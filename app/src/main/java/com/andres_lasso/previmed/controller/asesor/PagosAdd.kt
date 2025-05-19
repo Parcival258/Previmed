@@ -14,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PagosAsesorFragment
 import com.andres_lasso.previmed.databinding.ActivityPagosAddBinding
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.util.Locale
 
 class PagosAdd : AppCompatActivity() {
     private lateinit var binding: ActivityPagosAddBinding
@@ -37,10 +39,11 @@ class PagosAdd : AppCompatActivity() {
 
         binding.btnSavePago.setOnClickListener{
             val ir_pagos = Intent(this, PagosAsesorFragment::class.java)
+            Toast.makeText(this, "Pago Agregado exitosamene ✔️", Toast.LENGTH_SHORT).show()
             startActivity(ir_pagos)
             finish()
-            Toast.makeText(this, "Pago Agregado exitosamene ✔️", Toast.LENGTH_SHORT).show()
         }
-
     }
+
+
 }

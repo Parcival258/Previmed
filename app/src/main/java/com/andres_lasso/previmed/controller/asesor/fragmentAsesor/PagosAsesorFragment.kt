@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.PagosAdd
+import com.andres_lasso.previmed.controller.asesor.recycler.PagosProvider
+import com.andres_lasso.previmed.controller.asesor.recycler.adapter.PagosAdapter
 import com.andres_lasso.previmed.databinding.FragmentPagosAsesorBinding
 
 class PagosAsesorFragment : Fragment() {
@@ -23,7 +27,15 @@ class PagosAsesorFragment : Fragment() {
         _binding = FragmentPagosAsesorBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    private fun initRecyclerView(){
+        val recyclerView: RecyclerView = binding.recyclerPagosAsesor
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = PagosAdapter(PagosProvider.pagosList)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initRecyclerView()
         super.onViewCreated(view, savedInstanceState)
         binding.btnIrPagosAdd.setOnClickListener {
             val ir_pagos_add = Intent(requireContext(), PagosAdd::class.java)

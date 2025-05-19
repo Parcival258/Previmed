@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".controller.asesor.PagosAdd"
+    tools:context=".controller.asesor.PagosView"
     android:padding="10dp">
 
 
@@ -15,83 +15,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pagos"
-        android:textSize="20dp"
+        android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.008" />
 
-    <LinearLayout
-        android:id="@+id/layoutRecibo"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_pagos_asesor"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/card_info"
-        android:elevation="4dp"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="60dp"
-            android:background="@drawable/ic_img"
-            android:layout_gravity="center"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="N° recibo: 9088878" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="N° Contrato: 9088878" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Titular: Juan Perez" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cobrador: Tereza solano" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fecha Cobro: 18/03/2025" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fecha Inicio: 18/03/2025" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fecha Fin: 18/03/2025" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Forma de Pago: Nequi" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Monto: 85000" />
-    </LinearLayout>
+        />
 
     <Button
         android:layout_width="70dp"

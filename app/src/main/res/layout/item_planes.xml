@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp"
@@ -17,16 +15,14 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="Nombre"
-        android:textSize="20dp"
-        tools:ignore="MissingConstraints"/>
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/tvDescripcionPlan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Descripción"
-        android:layout_marginTop="10dp"
-        tools:ignore="MissingConstraints"/>
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/tvPrecioPlan"
@@ -34,8 +30,5 @@
         android:layout_height="wrap_content"
         android:text="Precio"
         android:textSize="16dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="15dp" />
+        android:layout_marginTop="20dp" />
 </LinearLayout>

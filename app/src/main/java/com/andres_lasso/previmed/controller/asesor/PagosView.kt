@@ -1,13 +1,17 @@
 package com.andres_lasso.previmed.controller.asesor
 
-import android.content.Intent
+
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.andres_lasso.previmed.R
+
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
+import com.andres_lasso.previmed.controller.asesor.recycler.PagosProvider
+import com.andres_lasso.previmed.controller.asesor.recycler.adapter.PagosAdapter
 import com.andres_lasso.previmed.databinding.ActivityPagosViewBinding
+
 
 
 class PagosView : AppCompatActivity() {
@@ -15,20 +19,14 @@ class PagosView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pagos_view)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
         binding = ActivityPagosViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initRecyclerview()
+    }
 
-        /*binding.btnIrPagosAdd.setOnClickListener{
-            val ir_pagos_add = Intent(this, PagosAdd::class.java)
-            startActivity(ir_pagos_add)
-        }*/
-
+    private fun initRecyclerview(){
+        val recyclerView: RecyclerView = binding.recyclerPagosAsesor
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = PagosAdapter(PagosProvider.pagosList)
     }
 }

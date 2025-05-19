@@ -25,39 +25,50 @@
         android:layout_gravity="center"
         android:background="@drawable/ic_img"/>
 
-    <!-- Fila de fechas: Inicio y Fin -->
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:hint="Fecha de pago"
+        app:startIconDrawable="@drawable/ic_calendario"
+        app:startIconTint="@color/black"
+        android:layout_marginTop="16dp">
 
-        <EditText
-            android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_fecha_inicio"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Fecha Inicio"
-            android:inputType="date"/>
+            android:focusable="false"
+            android:clickable="true"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="date"
-            android:hint="Fecha Fin"/>
-    </LinearLayout>
 
-    <!-- Fila de Spinners: Titular y Forma de Pago -->
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:hint="Fecha de pago"
+        app:startIconDrawable="@drawable/ic_calendario"
+        app:startIconTint="@color/black"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_fecha_fin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:clickable="true"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
 
 <LinearLayout
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_weight="1">
+    android:layout_marginTop="30dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,16 +78,16 @@
 
     <Spinner
         android:id="@+id/spinner_titular"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_weight="1" />
+        android:padding="10dp"/>
     </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_marginTop="30dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -85,18 +96,17 @@
             android:text="Selecciona forma de pago"/>
         <Spinner
             android:id="@+id/spinner_forma_pago"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_weight="1"/>
+            android:padding="10dp"/>
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- Campo de monto -->
     <EditText
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
-        android:hint="Monto"/>
+        android:hint="Monto"
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/btn_save_pago"

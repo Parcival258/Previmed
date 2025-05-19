@@ -5,16 +5,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.recycler.PlanesClass
+import com.andres_lasso.previmed.databinding.ItemPlanesBinding
 
 class PlanesViewHolder (view: View): RecyclerView.ViewHolder(view) {
-
-    val tipoPlan = view.findViewById<TextView>(R.id.tvTipoPlan)
-    var descripcionPlan = view.findViewById<TextView>(R.id.tvDescripcionPlan)
-    val precioPlan = view.findViewById<TextView>(R.id.tvPrecioPlan)
+    val binding = ItemPlanesBinding.bind(view)
 
     fun render(planes: PlanesClass){
-        tipoPlan.text = planes.tipoPlan
-        descripcionPlan.text = planes.desripcionPlan
-        precioPlan.text = planes.precioPlan
+        binding.tvTipoPlan.text = planes.tipoPlan
+        binding.tvDescripcionPlan.text = planes.desripcionPlan
+        binding.tvPrecioPlan.text = planes.precioPlan
     }
 }
