@@ -4,11 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
     android:padding="16dp"
     tools:context=".controller.pacientes.fragmentBeneficiario.ContratoBeneficiarioFragment">
 
-    <!-- Título -->
+    <!-- Título superior -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,18 +21,18 @@
             android:id="@+id/contratoBeneficiario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="2dp"
             android:fontFamily="sans-serif-medium"
             android:text="¡Tu Contrato!"
             android:textColor="@android:color/white"
             android:textSize="24sp" />
     </LinearLayout>
 
-    <!-- Contenido con scroll -->
-    <ScrollView
+    <!-- Scroll principal -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:fillViewport="true"
         android:layout_marginBottom="16dp">
 
         <LinearLayout
@@ -41,199 +40,128 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- CARD 1 -->
+            <!-- CARD 1: datos titular/beneficiario con scroll interno -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginBottom="16dp"
-                android:maxHeight="300dp">
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
 
-                <LinearLayout
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="true"
                     android:padding="16dp">
 
-                    <!-- Aquí van tus datos del titular y beneficiario -->
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Datos Titular:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
+                        android:orientation="vertical">
+
+                        <!-- Ejemplo de contenido largo -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Nombre: Pepe Perez"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Tipo de Plan:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
+                            android:text="Datos Titular: Nombre: Pepe Perez"
+                            android:textColor="@android:color/black"
+                            android:paddingVertical="8dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Familiar"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Descripcion:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
+                            android:text="Tipo de Plan: Familiar"
+                            android:textColor="@android:color/black"
+                            android:paddingVertical="8dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Soporte para 6 integrantes"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Próximo pago:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
+                            android:text="Descripción: Soporte para 6 integrantes"
+                            android:textColor="@android:color/black"
+                            android:paddingVertical="8dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="01-06-2025"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Datos Beneficiario:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Nombres:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
+                            android:text="Próximo pago: 01-06-2025"
+                            android:textColor="@android:color/black"
+                            android:paddingVertical="8dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pepe Perez, Pepa Perez"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Documentos:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
+                            android:text="Datos Beneficiario: Nombres: Pepe Perez, Pepa Perez"
+                            android:textColor="@android:color/black"
+                            android:paddingVertical="8dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1010101010 - 1212121212"
-                            android:textColor="@android:color/black"/>
+                            android:text="Documentos: 1010101010 - 1212121212"
+                            android:textColor="@android:color/black"
+                            android:paddingVertical="8dp"/>
+
                     </LinearLayout>
-
-                    <!-- Agrega los demás campos tal como ya los tienes -->
-
-                </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
             </androidx.cardview.widget.CardView>
 
-            <!-- CARD 2 -->
+            <!-- CARD 2: contrato con scroll interno -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_marginBottom="16dp"
-                android:maxHeight="400dp">
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
 
-                <LinearLayout
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="true"
                     android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_contrato"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/contrato_introduccion"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_contrato"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:paddingBottom="8dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/contrato_clausula_1"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/contrato_introduccion"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:paddingBottom="8dp"/>
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/contrato_clausula_1"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"/>
+
+                        <!-- Si hay más cláusulas, se hará scroll aquí -->
+
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
             </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </ScrollView>
 
-    <!-- Botón fuera del ScrollView -->
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Botón fuera del scroll -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/DescargarContrato"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginBottom="120dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/btn_degradado_selector"
         android:text="Descargar Contrato 📄"
         android:textColor="#FFFFFF"
         android:textStyle="bold" />
+
 </LinearLayout>
