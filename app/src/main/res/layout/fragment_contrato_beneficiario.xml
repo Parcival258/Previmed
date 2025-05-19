@@ -41,7 +41,7 @@
             android:layout_height="48dp"
             android:layout_marginBottom="66dp"
             android:background="@drawable/btn_degradado_selector"
-            android:text="Ver Contrato"
+            android:text="Ver Contrato 👁"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
@@ -50,9 +50,18 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/btn_degradado_selector"
-            android:text="Descargar Contrato"
+            android:text="Descargar Contrato 📄"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/mensaje_ayuda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡Gracias por confiar en Previmed! 😄"
+        android:textSize="18sp"
+        android:layout_marginBottom="100dp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
 
 </LinearLayout>
