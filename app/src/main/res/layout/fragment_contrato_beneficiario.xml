@@ -8,7 +8,7 @@
     android:padding="16dp"
     tools:context=".controller.pacientes.fragmentBeneficiario.ContratoBeneficiarioFragment">
 
-
+    <!-- Título -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:textSize="24sp" />
     </LinearLayout>
 
-
+    <!-- Contenido con scroll -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -41,199 +41,192 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
+            <!-- CARD 1 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:maxHeight="300dp">
 
-                <ScrollView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:padding="16dp">
+
+                    <!-- Aquí van tus datos del titular y beneficiario -->
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="8dp">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Datos Titular:"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Nombre: Pepe Perez"
-                                android:textColor="@android:color/black"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="Datos Titular:"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="8dp">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Tipo de Plan:"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Familiar"
-                                android:textColor="@android:color/black"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="8dp">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Descripcion:"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Soporte para 6 integrantes"
-                                android:textColor="@android:color/black"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="8dp">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Próximo pago:"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="01-06-2025"
-                                android:textColor="@android:color/black"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="8dp">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Datos Beneficiario:"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="8dp">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Nombres:"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Pepe Perez, Pepa Perez"
-                                android:textColor="@android:color/black"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="8dp">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Documentos:"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1010101010 - 1212121212"
-                                android:textColor="@android:color/black"/>
-                        </LinearLayout>
+                            android:text="Nombre: Pepe Perez"
+                            android:textColor="@android:color/black"/>
                     </LinearLayout>
-                </ScrollView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Tipo de Plan:"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Familiar"
+                            android:textColor="@android:color/black"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Descripcion:"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Soporte para 6 integrantes"
+                            android:textColor="@android:color/black"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Próximo pago:"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="01-06-2025"
+                            android:textColor="@android:color/black"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Datos Beneficiario:"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Nombres:"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pepe Perez, Pepa Perez"
+                            android:textColor="@android:color/black"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Documentos:"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1010101010 - 1212121212"
+                            android:textColor="@android:color/black"/>
+                    </LinearLayout>
+
+                    <!-- Agrega los demás campos tal como ya los tienes -->
+
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-
+            <!-- CARD 2 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:layout_marginBottom="16dp">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:maxHeight="400dp">
 
-                <ScrollView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:text="@string/title_contrato"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/title_contrato"
-                            android:textSize="16sp"
-                            android:textColor="@android:color/black"
-                            android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/contrato_introduccion"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/contrato_introduccion"
-                            android:textSize="16sp"
-                            android:textColor="@android:color/black"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/contrato_clausula_1"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/contrato_clausula_1"
-                            android:textSize="16sp"
-                            android:textColor="@android:color/black"/>
-
-
-
-                    </LinearLayout>
-                </ScrollView>
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
-
         </LinearLayout>
     </ScrollView>
 
-
+    <!-- Botón fuera del ScrollView -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/DescargarContrato"
         android:layout_width="200dp"
@@ -243,5 +236,4 @@
         android:text="Descargar Contrato 📄"
         android:textColor="#FFFFFF"
         android:textStyle="bold" />
-
 </LinearLayout>
