@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Hueso_Prevemed"
     tools:context=".controller.asesor.fragmentAsesor.HomeAsesorFragment">
 
     <TextView
@@ -12,30 +13,44 @@
         android:text="Home asesor"
         android:textSize="30dp"
         android:gravity="center"
-        android:paddingTop="30dp"/>
+        android:textColor="@color/AzulOscuro_Prevemed"
+        android:paddingTop="20dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
+        android:padding="5dp">
 
     <Button
         android:id="@+id/btn_planes"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_weight="1"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/Azul_Prevemed"
+        android:layout_margin="5dp"
         android:text="Planes"/>
     <Button
         android:id="@+id/btn_barrios"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_weight="1"
+        android:textColor="@color/white"
+        android:layout_margin="5dp"
+        android:backgroundTint="@color/Azul_Prevemed"
         android:text="Barrios"/>
         <Button
             android:id="@+id/btn_contratos"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/Azul_Prevemed"
+            android:layout_margin="5dp"
             android:text="Contratos"/>
 
     </LinearLayout>
