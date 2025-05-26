@@ -10,7 +10,6 @@
     android:layout_marginBottom="5dp"
     android:layout_marginTop="10dp">
 
-    <!-- Imagen y título siempre visibles -->
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="120dp"
@@ -29,12 +28,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:text="N° Recibo" />
 
         <TextView
             android:id="@+id/tvNumRecibo"
             android:layout_weight="2"
             android:gravity="end"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="22" />
@@ -49,12 +50,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:text="N° Contrato" />
 
         <TextView
             android:id="@+id/tvNumContrato"
             android:layout_weight="2"
             android:gravity="end"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="45" />
@@ -68,12 +71,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:text="Titular" />
 
         <TextView
             android:id="@+id/tvTitular"
             android:layout_weight="2"
             android:gravity="end"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="jsjd" />
