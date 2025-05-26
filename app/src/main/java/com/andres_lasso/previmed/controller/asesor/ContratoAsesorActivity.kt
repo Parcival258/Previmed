@@ -42,6 +42,7 @@ class ContratoAsesorActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val imprimir = intent.getBooleanExtra("imprimir", false)
+        val descargar = intent.getBooleanExtra("descargar", false) // NUEVA línea
 
         // Establecer título e introducción con negritas en pantalla
         binding.tituloContrato.text = getString(R.string.title_contrato)
@@ -75,7 +76,14 @@ class ContratoAsesorActivity : AppCompatActivity() {
         binding.contratoRepresentanteLegal.text = getString(R.string.contrato_representantelegal)
         binding.contratoRepresentantePrevi.text = getString(R.string.contrato_representanteprevi)
 
-        if (imprimir) {
+        // AGREGADO: Si se pidió descargar (y opcionalmente imprimir)
+        if (descargar) {
+            descargarContratoPDF {
+                if (imprimir) {
+                    imprimirContrato()
+                }
+            }
+        } else if (imprimir) {
             imprimirContrato()
         }
     }
@@ -139,5 +147,38 @@ class ContratoAsesorActivity : AppCompatActivity() {
             )
         }
         return resultado
+    }
+
+    // 🔽 NUEVA FUNCIÓN AGREGADA: Descargar como PDF (simulada con WebView e impresión silenciosa)
+    private fun descargarContratoPDF(onDescargaCompleta: () -> Unit) {
+        webView = WebView(this)
+
+        val clausulasHtml = StringBuilder()
+        clausulasHtml.append("<h2>Contrato - Previmed</h2>")
+        clausulasHtml.append("<p>${negritasHtml(getString(R.string.contrato_introduccion))}</p>")
+
+        for (i in 1..18) {
+            val resId = resources.getIdentifier("contrato_clausula_$i", "string", packageName)
+            if (resId != 0) {
+                val clausula = getString(resId)
+                clausulasHtml.append("<p>${negritasHtml(clausula)}</p>")
+            }
+        }
+
+        clausulasHtml.append("<p>${getString(R.string.firmacontrato_texto)}</p>")
+        clausulasHtml.append("<p>${getString(R.string.contrato_representante)}</p>")
+        clausulasHtml.append("<p>${getString(R.string.contrato_representantelegal)}</p>")
+        clausulasHtml.append("<p>${getString(R.string.contrato_representanteprevi)}</p>")
+
+        webView.loadDataWithBaseURL(null, clausulasHtml.toString(), "text/HTML", "UTF-8", null)
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                val printManager = getSystemService(Context.PRINT_SERVICE) as PrintManager
+                val jobName = "Contrato_Previmed_PDF"
+                val printAdapter = webView.createPrintDocumentAdapter(jobName)
+                printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
+                onDescargaCompleta()
+            }
+        }
     }
 }

@@ -51,11 +51,11 @@
 
     <string name="firmacontrato_texto">Las partes suscriben el siguiente documento en Popayán en dos ejemplares del mismo contenido y valor del día:</string>
     <string name="contrato_firma_nombre">
-        Nombre: Maria Cecilia Alvarez</string>
+        Nombre: </string>
     <string name="contrato_firma_cedula">
-        C.C. N°4-73378</string>
-    <string name="contrato_firma_direccion">Dirección: K-233270-150 </string>
-    <string name="contrato_firma_barrio"> Apto 105 la Floresta Norte </string>
+        </string>
+    <string name="contrato_firma_direccion">  </string>
+    <string name="contrato_firma_barrio">  </string>
 
 
     <string name="contrato_representante">
@@ -64,6 +64,7 @@
         Representante Legal</string>
     <string name="contrato_representanteprevi">
         PREVIMED TU MEDICO EN CASA S.A.S</string>
+    <string name="download_icon">Icono de descarga</string>
 
 
 </resources>

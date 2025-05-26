@@ -1,6 +1,6 @@
 package com.andres_lasso.previmed.model
 
 data class Persona(
-    val cedula: String,
-    val nombre: String
+    val nombre: String,
+    val cedula: String
 )

@@ -9,7 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#ffffff"
+        android:elevation="4dp"
+        android:padding="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
         <TextView
             android:id="@+id/titulo_contrato"
@@ -17,17 +24,20 @@
             android:layout_height="wrap_content"
             android:text="@string/title_contrato"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:gravity="center"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="24dp"
+            />
 
         <TextView
             android:id="@+id/clausula_introduccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_introduccion"
-            android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:textSize="16sp"
+            android:layout_marginBottom="20dp"
+            android:lineSpacingExtra="4dp"
+            />
 
         <!-- 18 cláusulas -->
         <TextView
@@ -36,126 +46,127 @@
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_1"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp"
+            />
         <TextView
             android:id="@+id/clausula2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_2"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_3"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_4"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_5"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_6"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_7"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_8"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_9"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_10"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_11"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_12"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_13"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_14"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_15"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_16"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula17"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_17"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
         <TextView
             android:id="@+id/clausula18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/contrato_clausula_18"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="16dp" />
 
         <TextView
             android:id="@+id/firmacontratoTexto"
@@ -163,7 +174,9 @@
             android:layout_height="wrap_content"
             android:text="@string/firmacontrato_texto"
             android:textSize="14sp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="32dp"
+            android:lineSpacingExtra="4dp"/>
 
         <TextView
             android:id="@+id/contratoRepresentante"
@@ -171,7 +184,9 @@
             android:layout_height="wrap_content"
             android:text="@string/contrato_representante"
             android:textSize="14sp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:lineSpacingExtra="4dp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/contratoRepresentanteLegal"
@@ -179,7 +194,8 @@
             android:layout_height="wrap_content"
             android:text="@string/contrato_representantelegal"
             android:textSize="14sp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:lineSpacingExtra="4dp"/>
 
         <TextView
             android:id="@+id/contratoRepresentantePrevi"
@@ -187,7 +203,9 @@
             android:layout_height="wrap_content"
             android:text="@string/contrato_representanteprevi"
             android:textSize="14sp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:lineSpacingExtra="4dp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 </ScrollView>
