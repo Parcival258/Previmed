@@ -10,12 +10,4 @@
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/ligthgreen</item>
     </style>
-
-    <!-- Nuevo estilo para botón -->
-    <style name="CustomButton" parent="Widget.Material3.Button">
-        <item name="backgroundTint">@null</item> <!-- Anula el color Material -->
-        <item name="android:backgroundTint">@null</item> <!-- Para compatibilidad -->
-        <item name="background">@drawable/btn_selector</item> <!-- Usa tu degradado -->
-        <item name="android:textColor">@android:color/white</item> <!-- Texto blanco -->
-    </style>
 </resources>
