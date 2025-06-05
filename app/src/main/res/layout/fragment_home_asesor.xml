@@ -18,40 +18,83 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginTop="60dp"
-        android:padding="5dp">
+        android:paddingLeft="40dp"
+        android:paddingTop="10dp">
 
-    <Button
+        <LinearLayout
         android:id="@+id/btn_planes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/Azul_Prevemed"
-        android:layout_margin="5dp"
-        android:text="Planes"/>
-    <Button
-        android:id="@+id/btn_barrios"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:textColor="@color/white"
-        android:layout_margin="5dp"
-        android:backgroundTint="@color/Azul_Prevemed"
-        android:text="Barrios"/>
-        <Button
-            android:id="@+id/btn_contratos"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/Azul_Prevemed"
-            android:layout_margin="5dp"
-            android:text="Contratos"/>
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_ver_planes"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:elevation="10dp"
+                android:outlineAmbientShadowColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Planes"
+                android:textColor="@color/AzulOscuro_Prevemed"
+                android:textSize="20dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+        android:id="@+id/btn_barrios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_barrios_asesor"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:elevation="10dp"
+                android:outlineAmbientShadowColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Barrios"
+                android:textColor="@color/AzulOscuro_Prevemed"
+                android:textSize="20dp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_contratos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_contrato"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                android:elevation="10dp"
+                android:outlineAmbientShadowColor="@color/gray"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contrato"
+                android:textColor="@color/AzulOscuro_Prevemed"
+                android:textSize="20dp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
