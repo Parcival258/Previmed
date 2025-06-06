@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:id="@+id/asesor_nav"
         />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,11 +21,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/botton_asesor_menu"
-        android:background="@color/starusBar"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        android:background="#D9E4E4"
+        app:itemIconTint="@color/AzulOscuro_Prevemed"
+        app:itemTextColor="@color/AzulOscuro_Prevemed"
         app:itemIconSize="30dp"
-        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
-        />
+        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

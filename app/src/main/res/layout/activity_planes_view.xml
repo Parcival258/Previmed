@@ -3,19 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.asesor.PlanesView">
+    tools:context=".controller.asesor.PlanesView"
+    android:background="@color/Hueso_Prevemed">
 
     <TextView
-        android:id="@+id/titulo_planes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Planes Previmed"
         android:textSize="30dp"
         android:textStyle="bold"
-        android:textColor="#2E7D32"
+        android:textColor="@color/AzulOscuro_Prevemed"
         android:gravity="center"/>
 
-    <!-- res/layout/activity_main.xml -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_planes_asesor"
         android:layout_width="match_parent"

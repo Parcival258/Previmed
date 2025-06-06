@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:paddingHorizontal="30dp"
     android:background="@color/Hueso_Prevemed"
     tools:context=".controller.asesor.PagosAdd">
 
-    <!-- Título de la vista -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,10 +16,7 @@
         android:gravity="center"
         android:textColor="@color/AzulOscuro_Prevemed"
         android:text="Agregar Pago"
-        android:textSize="30sp"
-        android:layout_marginTop="20dp"/>
-
-    <!-- Imagen del botón -->
+        android:textSize="30sp"/>
     <ImageButton
         android:layout_width="140dp"
         android:layout_height="120dp"
@@ -28,43 +24,36 @@
         android:background="@drawable/ic_img"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Fecha de pago"
+        android:hint="Fecha de inicio"
         app:startIconDrawable="@drawable/ic_calendario"
-        app:startIconTint="@color/black"
+        app:startIconTint="@color/AzulOscuro_Prevemed"
         android:layout_marginTop="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_fecha_inicio"
+            android:id="@+id/fecha_inicio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:clickable="true"
-            android:inputType="none" />
+            android:textColor="@color/AzulOscuro_Prevemed"
+            android:inputType="date" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Fecha de pago"
+        android:hint="Fecha de fin"
         app:startIconDrawable="@drawable/ic_calendario"
-        app:startIconTint="@color/black"
+        app:startIconTint="@color/AzulOscuro_Prevemed"
         android:layout_marginTop="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_fecha_fin"
+            android:id="@+id/fecha_fin"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:clickable="true"
-            android:inputType="none" />
+            android:inputType="date" />
     </com.google.android.material.textfield.TextInputLayout>
-
-
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -76,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Selecciona el titular"
+        android:textColor="@color/AzulOscuro_Prevemed"
         android:textStyle="bold"/>
 
     <Spinner
@@ -95,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:text="Selecciona forma de pago"/>
         <Spinner
             android:id="@+id/spinner_forma_pago"
@@ -108,6 +99,7 @@
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:hint="Monto"
+        android:textColor="@color/AzulOscuro_Prevemed"
         android:layout_marginTop="20dp"/>
 
     <Button
