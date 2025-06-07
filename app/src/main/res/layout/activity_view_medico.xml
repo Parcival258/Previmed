@@ -52,7 +52,8 @@
             android:gravity="center"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground">
+            android:background="@android:color/transparent"
+            >
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -95,7 +96,8 @@
             android:gravity="center"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground">
+            android:background="@android:color/transparent"
+            >
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -137,7 +139,8 @@
             android:gravity="center"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:attr/selectableItemBackground">
+            android:background="@android:color/transparent"
+            >
 
             <FrameLayout
                 android:layout_width="wrap_content"
