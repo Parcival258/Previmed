@@ -118,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/btn_degradado"
+                android:background="@drawable/btn_fondo_previmed"
                 android:text="Mis beneficiarios"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
