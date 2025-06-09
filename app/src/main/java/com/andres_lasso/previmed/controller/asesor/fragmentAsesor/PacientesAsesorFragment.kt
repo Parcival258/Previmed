@@ -1,17 +1,21 @@
 package com.andres_lasso.previmed.controller.asesor.fragmentAsesor
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
+import com.andres_lasso.previmed.controller.asesor.AgregarPaciente
 import com.andres_lasso.previmed.controller.asesor.recycler.PacienteClass
 import com.andres_lasso.previmed.controller.asesor.recycler.adapter.PacienteAseAdapter
+
 
 class PacientesAsesorFragment : Fragment() {
 
@@ -25,7 +29,6 @@ class PacientesAsesorFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_pacientes_asesor, container, false)
 
-        // Lista de prueba
         listaCompleta.addAll(listOf(
             PacienteClass("Alejandro Campo Mendoza", "25736897", "Popayán-Cauca", "Individual"),
             PacienteClass("María Pérez", "12345678", "Cali-Valle", "Familiar"),
@@ -44,12 +47,18 @@ class PacientesAsesorFragment : Fragment() {
         val searchView = view.findViewById<SearchView>(R.id.btn_Buscar_Usu)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 filtrarLista(newText)
                 return true
             }
         })
+
+        // 🔽 Aquí conectamos el botón al activity
+        val botonAgregar = view.findViewById<Button>(R.id.BotonAgUsuario)
+        botonAgregar.setOnClickListener {
+            val intent = Intent(requireContext(), AgregarPaciente::class.java)
+            startActivity(intent)
+        }
 
         return view
     }
