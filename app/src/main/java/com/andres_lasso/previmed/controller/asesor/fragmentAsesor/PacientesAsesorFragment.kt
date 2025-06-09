@@ -53,7 +53,7 @@ class PacientesAsesorFragment : Fragment() {
             }
         })
 
-        // 🔽 Aquí conectamos el botón al activity
+
         val botonAgregar = view.findViewById<Button>(R.id.BotonAgUsuario)
         botonAgregar.setOnClickListener {
             val intent = Intent(requireContext(), AgregarPaciente::class.java)
