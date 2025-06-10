@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cardRoot"
+    android:id="@+id/item_card_pagos"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="20dp"
@@ -22,8 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:paddingHorizontal="20dp">
+        android:layout_marginTop="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -45,8 +44,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="20dp">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,8 +65,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:layout_width="wrap_content"
@@ -84,53 +81,162 @@
             android:textColor="@color/AzulOscuro_Prevemed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="jsjd" />
+            android:text="si" />
 
     </LinearLayout>
 
     <!-- Layout que se expandirá/colapsará -->
     <LinearLayout
-        android:id="@+id/expandableLayout"
+        android:id="@+id/expand_card_pagos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
         android:paddingTop="8dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="start"
+                android:textColor="@color/AzulOscuro_Prevemed"
+                android:text="Cobrador" />
+
         <TextView
             android:id="@+id/tvCobrador"
+            android:layout_weight="2"
+            android:gravity="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:text="Cobrador" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="start"
+                android:textColor="@color/AzulOscuro_Prevemed"
+                android:text="Fecha de Cobro" />
 
         <TextView
             android:id="@+id/tvFechaCobro"
+            android:layout_weight="2"
+            android:gravity="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:text="Fecha de Cobro" />
+        </LinearLayout>
 
-        <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="start"
+                android:textColor="@color/AzulOscuro_Prevemed"
+                android:text="Fecha de Inicio" />
+
+
+            <TextView
             android:id="@+id/tvFechaInicio"
+                android:layout_weight="2"
+                android:gravity="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+                android:textColor="@color/AzulOscuro_Prevemed"
             android:text="Fecha Inicio" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="start"
+                android:textColor="@color/AzulOscuro_Prevemed"
+                android:text="Fecha de Fin" />
 
         <TextView
             android:id="@+id/tvFechaFin"
+            android:layout_weight="2"
+            android:gravity="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:text="Fecha Fin" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="start"
+                android:textColor="@color/AzulOscuro_Prevemed"
+                android:text="Forma de pago" />
 
         <TextView
             android:id="@+id/tvFormaPago"
+            android:layout_weight="2"
+            android:gravity="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:text="Forma de Pago" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="start"
+            android:textColor="@color/AzulOscuro_Prevemed"
+            android:text="Monto" />
 
         <TextView
             android:id="@+id/tvMonto"
+            android:layout_weight="2"
+            android:gravity="end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/AzulOscuro_Prevemed"
             android:text="Monto" />
     </LinearLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_ver_detalles_pagos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/Azul_Prevemed"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:text="Ver Detalles"/>
+
 </LinearLayout>
