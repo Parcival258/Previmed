@@ -20,17 +20,22 @@ class PagosAdapter(private  val pagos:List<PagosClass>): RecyclerView.Adapter<Pa
         holder.render(item)
         var expand_card_pagos = holder.binding.expandCardPagos;
         var item_card_pagos = holder.binding.itemCardPagos;
-        var btnVerDetallerPagos = holder.binding.btnVerDetallesPagos;
+        var textVerDetallerPagos = holder.binding.textVerDetalles;
+        var iconArrow = holder.binding.iconArrow;
 
-        holder.binding.btnVerDetallesPagos.setOnClickListener(){
-            if(expand_card_pagos.visibility == View.GONE){
-                TransitionManager.beginDelayedTransition(item_card_pagos, AutoTransition())
-                expand_card_pagos.visibility = View.VISIBLE;
-                btnVerDetallerPagos.text = "Menos detalles"
-            }else{
-                TransitionManager.beginDelayedTransition(item_card_pagos, AutoTransition())
-                expand_card_pagos.visibility = View.GONE;
-                btnVerDetallerPagos.text = "Ver detalles"
+        holder.binding.btnVerDetallesPagos.setOnClickListener {
+            val isVisible = expand_card_pagos.visibility == View.VISIBLE
+
+            TransitionManager.beginDelayedTransition(item_card_pagos, AutoTransition())
+
+            if (isVisible) {
+                expand_card_pagos.visibility = View.GONE
+                textVerDetallerPagos.text = "Ver más"
+                iconArrow.animate().rotation(0f).start()
+            } else {
+                expand_card_pagos.visibility = View.VISIBLE
+                textVerDetallerPagos.text = "Ver menos"
+                iconArrow.animate().rotation(180f).start()
             }
         }
     }
