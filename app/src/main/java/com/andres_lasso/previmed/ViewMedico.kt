@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.andres_lasso.previmed.controller.medico.fragmentMedico.HistotyMedico
-import com.andres_lasso.previmed.controller.medico.fragmentMedico.HomeMedico
 import com.andres_lasso.previmed.controller.medico.fragmentMedico.VisitsMedico
 import com.andres_lasso.previmed.databinding.ActivityViewMedicoBinding
+import com.andres_lasso.previmed.controller.medico.fragmentMedico.HomeMedico
 
 class ViewMedico : AppCompatActivity() {
 

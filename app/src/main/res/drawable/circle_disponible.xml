@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Círculo exterior con transparencia -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#404CAF50" />
+            <size android:width="16dp" android:height="16dp" />
+        </shape>
+    </item>
+    <!-- Círculo interior sólido -->
+    <item android:top="2dp" android:bottom="2dp"
+        android:left="2dp" android:right="2dp">
+        <shape android:shape="oval">
+            <solid android:color="#4CAF50" />
+        </shape>
+    </item>
+</layer-list>

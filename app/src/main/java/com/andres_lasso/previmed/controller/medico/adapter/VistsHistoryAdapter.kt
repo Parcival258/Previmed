@@ -2,7 +2,6 @@ package com.andres_lasso.previmed.controller.medico.adapter
 
 import HistoryViewHolder
 import com.andres_lasso.previmed.controller.medico.adapter.VisitsHistoryAdapter
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
