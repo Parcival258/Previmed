@@ -3,13 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp"
+    android:background="@color/Hueso_Prevemed"
     tools:context=".controller.asesor.fragmentAsesor.BarriosAsesorFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Barrios"
-        />
+        android:paddingTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:text="Barrios"
+            android:textColor="@color/AzulOscuro_Prevemed"
+            android:textSize="30dp" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/buscar_barrio"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_weight="3"
+            android:background="@drawable/card_info"
+            android:queryHint="Buscar por nombre"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerbarrios_asesor"
