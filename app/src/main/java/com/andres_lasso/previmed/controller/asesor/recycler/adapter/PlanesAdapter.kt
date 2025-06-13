@@ -2,6 +2,7 @@ package com.andres_lasso.previmed.controller.asesor.recycler.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.recycler.PlanesClass
@@ -16,6 +17,9 @@ class PlanesAdapter(private  val planesList:List<PlanesClass>): RecyclerView.Ada
     override fun onBindViewHolder(holder: PlanesViewHolder, position: Int) {
         val item = planesList[position]
         holder.render(item)
+        var precio = holder.binding.tvPrecioPlan;
+
+        precio.text = "$ ${item.precioPlan}"
     }
 
     override fun getItemCount(): Int {

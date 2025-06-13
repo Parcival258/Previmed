@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
     android:background="@color/Hueso_Prevemed"
@@ -27,8 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_weight="3"
+            app:iconifiedByDefault="false"
             android:background="@drawable/card_info"
-            android:queryHint="Buscar por nombre"/>
+            android:queryHint="Buscar barrio"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
