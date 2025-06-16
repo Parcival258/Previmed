@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="15dp"
+    android:id="@+id/item_card_planes"
     android:layout_marginHorizontal="20dp"
     android:background="@drawable/card_info"
-   android:layout_marginVertical="5dp"
+    android:layout_marginVertical="5dp"
     android:orientation="vertical">
 
     <TextView
@@ -25,6 +27,54 @@
         android:textColor="@color/AzulOscuro_Prevemed"
         android:layout_marginTop="10dp" />
 
+
+
+    <LinearLayout
+        android:id="@+id/btn_ver_beneficios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="30dp"
+        android:paddingVertical="5dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/verBeneficios"
+            android:textColor="@color/Azul_Prevemed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="Ver más"/>
+
+        <ImageView
+            android:id="@+id/iconArrow"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/ic_arrow_down"
+            android:tint="@color/Azul_Prevemed"
+            tools:ignore="UseAppTint" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/Expand_Card_Planes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+    <TextView
+        android:id="@+id/beneficios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Beneficios"
+        android:textColor="@color/AzulOscuro_Prevemed"
+        />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tvPrecioPlan"
         android:layout_width="match_parent"
@@ -34,4 +84,6 @@
         android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="@color/AzulOscuro_Prevemed" />
+
 </LinearLayout>
+
