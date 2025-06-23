@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.andres_lasso.previmed"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -64,4 +64,6 @@ dependencies {
     implementation ("com.google.android.material:material:1.11.0")
     //androidx
     implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    //local date
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/historyMedicoFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".controller.medico.fragmentMedico.HistotyMedico">
+    tools:context=".controller.medico.VisitasMedicoFragment">
 
     <!-- Parte superior -->
     <RelativeLayout
@@ -24,22 +23,22 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/totalPacientes"
+            android:id="@+id/pacientesRestantes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/username"
             android:layout_marginTop="24dp"
-            android:text="Pacientes Totales"
+            android:text="Pacientes Restantes"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/totalPacientesCount"
+            android:id="@+id/pacientesRestantesCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/totalPacientes"
+            android:layout_below="@id/pacientesRestantes"
             android:layout_marginTop="8dp"
-            android:text="1200"
+            android:text="0"
             android:textColor="#FFFFFF"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -48,25 +47,30 @@
     <!-- Contenedor blanco -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="582dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="-20dp"
         android:layout_weight="1"
         android:background="@drawable/rounded_top_white"
         android:orientation="vertical"
         android:padding="16dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Visitas Pendientes"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_visitas"
             android:layout_width="match_parent"
-            android:layout_height="660dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_history"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </ScrollView>
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            tools:listitem="@layout/item_visita_medico" />
     </LinearLayout>
+
 </LinearLayout>

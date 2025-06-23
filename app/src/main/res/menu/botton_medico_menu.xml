@@ -7,7 +7,7 @@
         android:title="Inicio"
         android:icon="@drawable/ic_home" />
     <item
-        android:id="@+id/botton_visits"
+        android:id="@+id/botton_visitas"
         android:title="Visitas"
         android:icon="@drawable/ic_visits" />
     <item
