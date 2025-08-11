@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="30dp"
-    android:background="@color/Hueso_Prevemed"
+    android:background="@color/white"
     tools:context=".controller.asesor.PagosAdd">
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:textColor="@color/AzulOscuro_Prevemed"
+        android:textColor="@color/black"
         android:text="Agregar Pago"
         android:textSize="30sp"/>
     <ImageButton
@@ -28,15 +28,16 @@
         android:layout_height="wrap_content"
         android:hint="Fecha de inicio"
         app:startIconDrawable="@drawable/ic_calendario"
-        app:startIconTint="@color/AzulOscuro_Prevemed"
+        app:startIconTint="@color/black"
         android:layout_marginTop="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fecha_inicio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/AzulOscuro_Prevemed"
+            android:textColor="@color/black"
             android:inputType="date" />
+        
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -44,12 +45,12 @@
         android:layout_height="wrap_content"
         android:hint="Fecha de fin"
         app:startIconDrawable="@drawable/ic_calendario"
-        app:startIconTint="@color/AzulOscuro_Prevemed"
+        app:startIconTint="@color/black"
         android:layout_marginTop="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fecha_fin"
-            android:textColor="@color/AzulOscuro_Prevemed"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date" />
@@ -65,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Selecciona el titular"
-        android:textColor="@color/AzulOscuro_Prevemed"
+        android:textColor="@color/black"
         android:textStyle="bold"/>
 
     <Spinner
@@ -85,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="@color/AzulOscuro_Prevemed"
+            android:textColor="@color/black"
             android:text="Selecciona forma de pago"/>
         <Spinner
             android:id="@+id/spinner_forma_pago"
@@ -99,7 +100,7 @@
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:hint="Monto"
-        android:textColor="@color/AzulOscuro_Prevemed"
+        android:textColor="@color/black"
         android:layout_marginTop="20dp"/>
 
     <Button
@@ -109,7 +110,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="60dp"
         android:textColor="@color/white"
-        android:backgroundTint="@color/Azul_Prevemed"
+        android:backgroundTint="@color/AZUL_GENERAL"
         android:textSize="20dp"
         android:text="Agregar"/>
 

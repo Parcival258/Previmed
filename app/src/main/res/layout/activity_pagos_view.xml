@@ -34,12 +34,15 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:text="+"
-        android:textSize="30dp"
+        android:textSize="30sp"
+        android:backgroundTint="@color/AZUL_GENERAL"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.981"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.872" />
+        app:layout_constraintVertical_bias="0.872"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

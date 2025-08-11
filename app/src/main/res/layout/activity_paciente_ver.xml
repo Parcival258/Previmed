@@ -325,7 +325,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CONTRATO"
-            android:backgroundTint="#457B9D"
+            android:backgroundTint="@color/AZUL_GENERAL"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_gravity="center"
