@@ -43,7 +43,7 @@
         android:id="@+id/tvPrecioPlan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Precio"
+        android:text="$Precio"
         android:textSize="16dp"
         android:layout_marginStart="10dp"
         android:textColor="@color/black" />
