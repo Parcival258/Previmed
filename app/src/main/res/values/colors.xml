@@ -2,16 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="starusBar">#7E4C7DC6</color>
-    <color name="gray">#2F808080</color>
-    <color name="check">#D338CD4E</color>
-    <color name="ligthgreen">#20C997</color>
-    <color name="red">#FF0000</color>
-    <color name="green">#4CAF50</color>
-    <color name="Hueso_Prevemed">#F1FAEE</color>
+    <color name="FONDO_PREVIMED">#FDF8F8</color>
     <color name="AzulCielo_Prevemed">#A8DADC</color>
-    <color name="Azul_Prevemed">#457B9D</color>
-    <color name="AzulOscuro_Prevemed">#1D3557</color>
-    <color name="NaraRojo_Prevemed">#E63946</color>
+    <color name="AZUL_GENERAL">#42A5F5</color>
+    <color name="AZUL_BORDES">#003EA8</color>
+    <color name="ROJO_ADVERTENCIA">#FF4D4F</color>
 
 </resources>
