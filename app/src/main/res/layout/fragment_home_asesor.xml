@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/Hueso_Prevemed"
+    android:background="@color/white"
     tools:context=".controller.asesor.fragmentAsesor.HomeAsesorFragment">
 
     <LinearLayout
@@ -47,14 +47,14 @@
                     android:layout_height="wrap_content"
                     android:text="Asesor, Alejandro Porras"
                     android:textStyle="bold"
-                    android:textColor="@color/AzulOscuro_Prevemed"
+                    android:textColor="@color/black"
                     android:textSize="20dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:textColor="@color/AzulOscuro_Prevemed"
+                    android:textColor="@color/black"
                     android:text="🤝 Tu contacto de confianza para resolver dudas, trámites y afiliaciones en nuestra red de salud."/>
 
                 <LinearLayout
@@ -74,7 +74,7 @@
                         android:layout_height="match_parent"
                         android:text="2 años con nosotros"
                         android:textSize="18dp"
-                        android:textColor="@color/AzulOscuro_Prevemed"
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -87,7 +87,7 @@
                 android:gravity="center"
                 android:textSize="25dp"
                 android:textStyle="bold"
-                android:textColor="@color/AzulOscuro_Prevemed"
+                android:textColor="@color/black"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"/>
 
@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Planes"
-                    android:textColor="@color/AzulOscuro_Prevemed"
+                    android:textColor="@color/black"
                     android:textSize="18dp"
                     android:layout_marginStart="16dp" />
             </LinearLayout>
@@ -130,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Barrios"
-                    android:textColor="@color/AzulOscuro_Prevemed"
+                    android:textColor="@color/black"
                     android:textSize="18dp"
                     android:layout_marginStart="16dp" />
             </LinearLayout>
@@ -152,7 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Contratos"
-                    android:textColor="@color/AzulOscuro_Prevemed"
+                    android:textColor="@color/black"
                     android:textSize="18dp"
                     android:layout_marginStart="16dp" />
             </LinearLayout>

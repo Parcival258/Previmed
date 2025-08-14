@@ -2,12 +2,12 @@
     <!-- Base application theme -->
     <style name="Base.Theme.Previmed" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here -->
-        <item name="android:statusBarColor">@color/starusBar</item>
+        <item name="android:statusBarColor">@color/AZUL_GENERAL</item>
     </style>
 
     <style name="Theme.Previmed" parent="Base.Theme.Previmed" />
 
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/ligthgreen</item>
+        <item name="android:color">@color/AzulCielo_Prevemed</item>
     </style>
 </resources>

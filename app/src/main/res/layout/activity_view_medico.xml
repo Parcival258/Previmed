@@ -24,7 +24,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray"
+        android:background="@color/AZUL_GENERAL"
         app:layout_constraintBottom_toTopOf="@+id/custom_bottom_nav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -35,7 +35,7 @@
         android:layout_height="80dp"
         android:elevation="15dp"
         android:orientation="horizontal"
-        android:background="@color/white"
+        android:background="@color/AZUL_GENERAL"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -116,7 +116,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_visits"
-                    app:tint="@color/AzulOscuro_Prevemed" />
+                    app:tint="@color/white" />
             </FrameLayout>
 
             <TextView
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:text="Visitas"
                 android:textSize="12sp"
-                android:textColor="@color/AzulOscuro_Prevemed"
+                android:textColor="@color/white"
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
@@ -159,7 +159,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_history"
-                    app:tint="@color/AzulOscuro_Prevemed" />
+                    app:tint="@color/white" />
             </FrameLayout>
 
             <TextView
@@ -168,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:text="Historial"
                 android:textSize="12sp"
-                android:textColor="@color/AzulOscuro_Prevemed"
+                android:textColor="@color/white"
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Hueso_Prevemed"
+    android:background="@color/white"
     tools:context=".controller.asesor.fragmentAsesor.PagosAsesorFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,7 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="Pagos"
-            android:textColor="@color/AzulOscuro_Prevemed"
+            android:textColor="@color/black"
             android:textSize="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
             android:id="@+id/btn_ir_pagos_add"
             android:layout_width="60dp"
             android:layout_height="65dp"
-            android:backgroundTint="@color/Azul_Prevemed"
+            android:backgroundTint="@color/black"
             android:text="+"
             android:textColor="@color/white"
             android:textSize="30dp"

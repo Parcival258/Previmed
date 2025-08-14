@@ -22,8 +22,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/botton_asesor_menu"
         android:background="#D9E4E4"
-        app:itemIconTint="@color/AzulOscuro_Prevemed"
-        app:itemTextColor="@color/AzulOscuro_Prevemed"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:itemIconSize="30dp"
         app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"/>
 
