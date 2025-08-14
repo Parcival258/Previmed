@@ -27,10 +27,10 @@ class Beneficiarios : AppCompatActivity() {
 
         if (itsBeneficiario) {
             txtbeneficiario.text = "Si";
-            txtbeneficiario.setTextColor(ContextCompat.getColor(this, R.color.green))
+            txtbeneficiario.setTextColor(ContextCompat.getColor(this, R.color.AZUL_GENERAL))
         } else {
             txtbeneficiario.text = "No";
-            txtbeneficiario.setTextColor(ContextCompat.getColor(this, R.color.red))
+            txtbeneficiario.setTextColor(ContextCompat.getColor(this, R.color.ROJO_ADVERTENCIA))
         }
 
         initRecyclerView()

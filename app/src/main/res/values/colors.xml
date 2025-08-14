@@ -8,4 +8,16 @@
     <color name="AZUL_BORDES">#003EA8</color>
     <color name="ROJO_ADVERTENCIA">#FF4D4F</color>
 
+
+        <!-- Colores faltantes -->
+        <color name="Azul_Prevemed">#2196F3</color> <!-- Azul claro -->
+        <color name="starusBar">#1976D2</color> <!-- Azul para barra de estado -->
+        <color name="green">#4CAF50</color> <!-- Verde -->
+        <color name="red">#F44336</color> <!-- Rojo -->
+        <color name="check">#00C853</color> <!-- Verde intenso -->
+        <color name="AzulOscuro_Prevemed">#0D47A1</color> <!-- Azul oscuro -->
+
+
+
+
 </resources>

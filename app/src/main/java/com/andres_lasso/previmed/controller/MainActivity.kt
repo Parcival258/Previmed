@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.andres_lasso.previmed.R
+import com.andres_lasso.previmed.controller.asesor.RegistroPaciente
 
 class   MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +24,7 @@ class   MainActivity : AppCompatActivity() {
 
         // intent para que despues de unos seg me mande a la vista de login
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, Login::class.java))
+            startActivity(Intent(this, RegistroPaciente::class.java))
             finish()
         },2000)
 
