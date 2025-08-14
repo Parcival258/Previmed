@@ -7,11 +7,14 @@
     android:background="@drawable/card_info"
     android:orientation="vertical"
     android:layout_margin="12dp"
-    android:elevation="6dp">
+    android:elevation="8dp"
+    android:clipToOutline="true">
 
+    <!-- Nombre -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp">
 
         <TextView
             android:id="@+id/Nombre1"
@@ -19,38 +22,49 @@
             android:layout_height="wrap_content"
             android:text="Alejandro Campo Mendoza"
             android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="#000000" />
+            android:textSize="18sp"
+            android:textColor="#222222" />
+
     </RelativeLayout>
 
+    <!-- Documento -->
     <TextView
         android:id="@+id/textDoc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="Doc: 25736897"
-        android:textSize="14sp" />
+        android:textSize="15sp"
+        android:textColor="#555555" />
 
+    <!-- Dirección -->
     <TextView
         android:id="@+id/textDireccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:text="Dirección: Popayán-Cauca"
-        android:textSize="14sp" />
+        android:textSize="15sp"
+        android:textColor="#555555" />
 
+    <!-- Plan -->
     <TextView
         android:id="@+id/textPlan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:text="Plan: Individual"
-        android:textSize="14sp" />
+        android:textSize="15sp"
+        android:textColor="#555555" />
 
+    <!-- Botón Ver -->
     <ImageButton
         android:id="@+id/BotonMirarPac"
-        android:layout_width="wrap_content"
-        android:layout_height="26dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:background="@drawable/see"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="7dp"
-        android:layout_gravity="right"/>
+        android:layout_marginTop="10dp"
+        android:layout_gravity="end"
+        android:contentDescription="Ver paciente" />
+
 </LinearLayout>
