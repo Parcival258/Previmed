@@ -56,7 +56,7 @@ class ViewMedico : AppCompatActivity() {
     }
 
     private fun resetAllNavItems() {
-        val originalColor = ContextCompat.getColor(this, R.color.AzulOscuro_Prevemed)
+        val originalColor = ContextCompat.getColor(this, R.color.AZUL_GENERAL)
 
         navItems.forEach { navItem ->
             navItem.apply {
