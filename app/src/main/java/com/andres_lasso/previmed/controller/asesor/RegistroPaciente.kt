@@ -27,11 +27,11 @@ class RegistroPaciente : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_paciente)
 
-        etDocumento = findViewById(R.id.etdocumento)
+        etDocumento = findViewById(R.id.spTipoDocumento)
         etNombre = findViewById(R.id.etNombre)
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
-        btnRegistrar = findViewById(R.id.btnRegistrar)
+        btnRegistrar = findViewById(R.id.btnGuardar)
 
         btnRegistrar.setOnClickListener {
             val request = RegisterRequest(
