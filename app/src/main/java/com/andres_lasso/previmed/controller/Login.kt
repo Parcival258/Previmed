@@ -2,6 +2,7 @@ package com.andres_lasso.previmed.controller
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -44,23 +45,34 @@ class Login : AppCompatActivity() {
                         call: Call<LoginResponse>,
                         response: Response<LoginResponse>
                     ) {
-                        if (response.isSuccessful) {
+                        if (response.isSuccessful && response.body() != null) {
+                            val body = response.body()!!
+
+                            // Mostrar info del backend en un Toast
                             Toast.makeText(
                                 this@Login,
-                                "Usuario ingresó correctamente",
-                                Toast.LENGTH_SHORT
+                                "Login OK: token=${body.token}, rol=${body.rol}, msg=${body.message}",
+                                Toast.LENGTH_LONG
                             ).show()
+
+                            // Logcat para depuración
+                            Log.d("API_LOGIN", "Respuesta completa: $body")
 
                             // TODO: Cambiar destino según el rol o pantalla principal
                             val intent = Intent(this@Login, Login::class.java)
                             startActivity(intent)
                             finish()
+
                         } else {
+                            // Error con código y cuerpo
+                            val errorBody = response.errorBody()?.string()
                             Toast.makeText(
                                 this@Login,
-                                "Error: ${response.code()}",
-                                Toast.LENGTH_SHORT
+                                "Error: ${response.code()} - $errorBody",
+                                Toast.LENGTH_LONG
                             ).show()
+
+                            Log.e("API_LOGIN", "Error: ${response.code()} - $errorBody")
                         }
                     }
 
@@ -70,9 +82,10 @@ class Login : AppCompatActivity() {
                             "Fallo en la conexión: ${t.message}",
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        Log.e("API_LOGIN", "Fallo en conexión", t)
                     }
                 })
         }
     }
 }
-

@@ -1,6 +1,7 @@
 package com.andres_lasso.previmed.model
 
-class LoginResponse (
-    val msg: String,
-    val data: Any
+data class LoginResponse(
+    val token: String?,   // si tu backend devuelve token
+    val message: String?, // si tu backend devuelve mensaje
+    val rol: String?      // si tu backend devuelve rol
 )
