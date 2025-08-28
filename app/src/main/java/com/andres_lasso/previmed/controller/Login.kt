@@ -38,7 +38,7 @@ class Login : AppCompatActivity() {
             )
 
             // Llamada a la API para login
-            RetrofitClient.instance.loginUser(request)
+            RetrofitClient.loginApi.loginUser(request)
                 .enqueue(object : Callback<LoginResponse> {
 
                     override fun onResponse(

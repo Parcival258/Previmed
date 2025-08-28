@@ -25,7 +25,7 @@ class PagosBeneficiarioFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //val contrato: TextView = view.findViewById(R.id.numero_contrato);
-        val contrato: TextView = binding.numeroContrato
+        val contrato: TextView = binding.contrato
 
         val numeroContrato: String = "25-94985-554"
         contrato.text = "Membresía $numeroContrato"

@@ -1,79 +1,226 @@
 package com.andres_lasso.previmed.controller.asesor
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.util.Log
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.Login
 import com.andres_lasso.previmed.interfaces.RetrofitClient
-import com.andres_lasso.previmed.model.RegisterRequest
-import com.andres_lasso.previmed.model.RegisterResponse
+import com.andres_lasso.previmed.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class RegistroPaciente : AppCompatActivity() {
 
-    private lateinit var etDocumento: EditText
     private lateinit var etNombre: EditText
+    private lateinit var etApellido: EditText
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
-    private lateinit var btnRegistrar: Button
+    private lateinit var etDireccion: EditText
+    private lateinit var spTipoDocumento: Spinner
+    private lateinit var etNumeroDocumento: EditText
+    private lateinit var etFechaNacimiento: EditText
+    private lateinit var etNumeroHijos: EditText
+    private lateinit var etEstrato: EditText
+    private lateinit var spAutorizacionDatos: Spinner
+    private lateinit var spGenero: Spinner
+    private lateinit var spEstadoCivil: Spinner
+    private lateinit var spRol: Spinner
+    private lateinit var spEps: Spinner
+    private lateinit var btnGuardar: Button
+
+    private var listaRoles = listOf<Rol>()
+    private var listaEps = listOf<Eps>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_paciente)
 
-        etDocumento = findViewById(R.id.spTipoDocumento)
         etNombre = findViewById(R.id.etNombre)
+        etApellido = findViewById(R.id.etApellido)
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
-        btnRegistrar = findViewById(R.id.btnGuardar)
+        etDireccion = findViewById(R.id.etDireccion)
+        spTipoDocumento = findViewById(R.id.spTipoDocumento)
+        etNumeroDocumento = findViewById(R.id.etNumeroDocumento)
+        etFechaNacimiento = findViewById(R.id.etFechaNacimiento)
+        etNumeroHijos = findViewById(R.id.etNumeroHijos)
+        etEstrato = findViewById(R.id.etEstrato)
+        spAutorizacionDatos = findViewById(R.id.spAutorizacionDatos)
+        spGenero = findViewById(R.id.spGenero)
+        spEstadoCivil = findViewById(R.id.spEstadoCivil)
+        spRol = findViewById(R.id.spRol)
+        spEps = findViewById(R.id.spEps)
+        btnGuardar = findViewById(R.id.btnGuardar)
 
-        btnRegistrar.setOnClickListener {
-            val request = RegisterRequest(
-                numero_documento = etDocumento.text.toString(),
-                password = etPassword.text.toString(),
-                nombre = etNombre.text.toString(),
-                email = etEmail.text.toString()
-            )
+        setupSpinner(spTipoDocumento, R.array.tipos_documento)
+        setupSpinner(spAutorizacionDatos, R.array.autorizacion_datos)
+        setupSpinner(spGenero, R.array.generos)
+        setupSpinner(spEstadoCivil, R.array.estados_civiles)
 
-            RetrofitClient.instance.registerUser(request)
-                .enqueue(object : Callback<RegisterResponse> {
-                    override fun onResponse(
-                        call: Call<RegisterResponse>,
-                        response: Response<RegisterResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            Toast.makeText(
-                                this@RegistroPaciente,
-                                "Usuario creado correctamente",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            // Redirigir al Login
-                            val intent = Intent(this@RegistroPaciente, Login::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(
-                                this@RegistroPaciente,
-                                "Error: ${response.code()}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
+        cargarRoles()
+        cargarEps()
+        setupDatePicker()
 
-                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                        Toast.makeText(
-                            this@RegistroPaciente,
-                            "Fallo en la conexión: ${t.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                })
+        btnGuardar.setOnClickListener {
+            if (validateFields()) {
+                val numeroDocumentoText = etNumeroDocumento.text.toString().trim()
+                if (numeroDocumentoText.isEmpty()) {
+                    Toast.makeText(this, "El número de documento es obligatorio", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val rolId = listaRoles.getOrNull(spRol.selectedItemPosition)?.id ?: 4
+                val epsId = listaEps.getOrNull(spEps.selectedItemPosition)?.id
+
+                val request = RegisterRequest(
+                    nombre = etNombre.text.toString(),
+                    segundoNombre = null,
+                    apellido = etApellido.text.toString(),
+                    segundoApellido = null,
+                    email = etEmail.text.toString(),
+                    password = etPassword.text.toString(),
+                    direccion = etDireccion.text.toString(),
+                    numeroDocumento = numeroDocumentoText,
+                    fechaNacimiento = etFechaNacimiento.text.toString(),
+                    numeroHijos = etNumeroHijos.text.toString().ifEmpty { null },
+                    estrato = etEstrato.text.toString().ifEmpty { null },
+                    autorizacionDatos = spAutorizacionDatos.selectedItem.toString().equals("Sí", ignoreCase = true),
+                    epsId = epsId,
+                    rolId = rolId,
+                    habilitar = true,
+                    genero = spGenero.selectedItem.toString(),
+                    estadoCivil = spEstadoCivil.selectedItem.toString(),
+                    tipoDocumento = spTipoDocumento.selectedItem.toString()
+                )
+
+                registerUser(request)
+            }
         }
+    }
+
+    private fun setupSpinner(spinner: Spinner, arrayResId: Int) {
+        val adapter = ArrayAdapter.createFromResource(
+            this,
+            arrayResId,
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+    }
+
+    private fun cargarRoles() {
+        RetrofitClient.rolesApi.getRoles().enqueue(object : Callback<List<Rol>> {
+            override fun onResponse(call: Call<List<Rol>>, response: Response<List<Rol>>) {
+                if (response.isSuccessful) {
+                    listaRoles = response.body() ?: listOf()
+                    Log.d("Roles", "Roles recibidos: $listaRoles")
+                    val nombresRoles = listaRoles.map { it.nombre }
+                    spRol.adapter = ArrayAdapter(this@RegistroPaciente, android.R.layout.simple_spinner_item, nombresRoles).apply {
+                        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    }
+                } else {
+                    Log.e("Roles", "Error al obtener roles: ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<List<Rol>>, t: Throwable) {
+                Log.e("Roles", "Fallo en llamada roles", t)
+            }
+        })
+    }
+
+    private fun cargarEps() {
+        RetrofitClient.epsApi.getEps().enqueue(object : Callback<List<Eps>> {
+            override fun onResponse(call: Call<List<Eps>>, response: Response<List<Eps>>) {
+                if (response.isSuccessful) {
+                    listaEps = response.body() ?: listOf()
+                    Log.d("EPS", "EPS recibidos: $listaEps")
+                    val nombresEps = listaEps.map { it.nombre }
+                    spEps.adapter = ArrayAdapter(this@RegistroPaciente, android.R.layout.simple_spinner_item, nombresEps).apply {
+                        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    }
+                } else {
+                    Log.e("EPS", "Error al obtener EPS: ${response.code()}")
+                }
+            }
+            override fun onFailure(call: Call<List<Eps>>, t: Throwable) {
+                Log.e("EPS", "Fallo en llamada EPS", t)
+            }
+        })
+    }
+
+
+    private fun setupDatePicker() {
+        etFechaNacimiento.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val year = cal.get(Calendar.YEAR)
+            val month = cal.get(Calendar.MONTH)
+            val day = cal.get(Calendar.DAY_OF_MONTH)
+            val dpd = DatePickerDialog(this, { _, y, m, d ->
+                val formattedDate = "%04d-%02d-%02d".format(y, m + 1, d)
+                etFechaNacimiento.setText(formattedDate)
+            }, year, month, day)
+            dpd.show()
+        }
+    }
+
+    private fun validateFields(): Boolean {
+        return when {
+            etNombre.text.isNullOrBlank() -> {
+                toastAndFocus("Ingrese el nombre", etNombre)
+                false
+            }
+            etApellido.text.isNullOrBlank() -> {
+                toastAndFocus("Ingrese el apellido", etApellido)
+                false
+            }
+            etEmail.text.isNullOrBlank() -> {
+                toastAndFocus("Ingrese el email", etEmail)
+                false
+            }
+            etPassword.text.isNullOrBlank() -> {
+                toastAndFocus("Ingrese la contraseña", etPassword)
+                false
+            }
+            etNumeroDocumento.text.isNullOrBlank() -> {
+                toastAndFocus("Ingrese el número de documento", etNumeroDocumento)
+                false
+            }
+            etFechaNacimiento.text.isNullOrBlank() -> {
+                toastAndFocus("Seleccione fecha de nacimiento", etFechaNacimiento)
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun toastAndFocus(message: String, view: EditText) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        view.requestFocus()
+    }
+
+    private fun registerUser(request: RegisterRequest) {
+        RetrofitClient.apiService.registerUser(request)
+            .enqueue(object : Callback<RegisterResponse> {
+                override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@RegistroPaciente, "Usuario creado correctamente", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@RegistroPaciente, Login::class.java))
+                        finish()
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("REGISTER_ERROR", errorBody ?: "Error desconocido")
+                        Toast.makeText(this@RegistroPaciente, "Error: $errorBody", Toast.LENGTH_LONG).show()
+                    }
+                }
+                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                    Toast.makeText(this@RegistroPaciente, "Fallo en la conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 }
