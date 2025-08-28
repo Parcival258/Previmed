@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipos_documento">
+        <item>Cédula de Ciudadanía</item>
+        <item>Tarjeta de Identidad</item>
+        <item>Cédula de Extranjería</item>
+    </string-array>
+    <string-array name="autorizacion_datos">
+        <item>Sí</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="generos">
+        <item>Masculino</item>
+        <item>Femenino</item>
+        <item>Otro</item>
+    </string-array>
+    <string-array name="estados_civiles">
+        <item>Soltero</item>
+        <item>Casado</item>
+        <item>Divorciado</item>
+        <item>Viudo</item>
+    </string-array>
+    <string-array name="roles">
+        <item>Paciente</item>
+        <item>Asesor</item>
+        <item>Administrador</item>
+    </string-array>
+
+    <string-array name="eps_list">
+        <item>EPS 1</item>
+        <item>EPS 2</item>
+        <item>EPS 3</item>
+    </string-array>
+
+</resources>
+
