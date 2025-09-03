@@ -48,7 +48,6 @@ class PersonaAdapter(
             tvNombre.text = persona.nombre
             tvCedula.text = persona.cedula
 
-
             // Click en nombre o cédula
             itemView.setOnClickListener {
                 onItemClick(persona)

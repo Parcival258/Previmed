@@ -28,6 +28,64 @@
             android:gravity="center"
             android:layout_marginBottom="24dp"
             />
+        <TextView
+            android:id="@+id/tvNumeroContrato"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Número de Contrato"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvFormaPago"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Forma de Pago"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvFechaInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha Inicio"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvFechaFin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha Fin"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvFirma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Firma"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvEstado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estado"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvPacientesAsociados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pacientes Asociados"
+            android:textSize="16sp"
+            android:layout_marginBottom="12dp"/>
+
+
 
         <TextView
             android:id="@+id/clausula_introduccion"
@@ -206,6 +264,15 @@
             android:layout_marginBottom="16dp"
             android:lineSpacingExtra="4dp"
             android:textStyle="bold"/>
+        <Button
+            android:id="@+id/btnDescargar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descargar PDF"
+            android:layout_marginTop="16dp"/>
+
 
     </LinearLayout>
+
+
 </ScrollView>

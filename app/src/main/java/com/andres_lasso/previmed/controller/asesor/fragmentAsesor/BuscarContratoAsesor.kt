@@ -1,87 +1,113 @@
 package com.andres_lasso.previmed.controller.asesor.fragmentAsesor
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.widget.SearchView
 import com.andres_lasso.previmed.R
-import com.andres_lasso.previmed.controller.asesor.ContratoAsesorActivity
-import com.andres_lasso.previmed.model.Persona
-import com.andres_lasso.previmed.controller.asesor.recycler.adapter.PersonaAdapter
+import com.andres_lasso.previmed.controller.asesor.ContratoDetalleDialog
+import com.andres_lasso.previmed.controller.asesor.recycler.adapter.MembresiaAdapter
+import com.andres_lasso.previmed.interfaces.RetrofitClient
+import com.andres_lasso.previmed.model.Membresia
+import kotlinx.coroutines.launch
 
 class BuscarContratoAsesor : AppCompatActivity() {
 
-    private val listaPersonasOriginal = listOf(
-        Persona("Daniela Fernanda Herrera Usuga", "1061715858"),
-        Persona("Marlio Hernan Cañar Rosero", "1061786160")
-    )
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: PersonaAdapter
-    private var personaSeleccionada: Persona? = null
+    private var listaOriginal: List<Membresia> = listOf()
+    private lateinit var adapter: MembresiaAdapter
+    private var paginaActual = 1
+    private val tamañoPagina = 20
+    private var cargando = false
+    private var finLista = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buscar_contrato_asesor)
 
-        recyclerView = findViewById(R.id.recycler_personas)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler_personas)
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
 
-        adapter = PersonaAdapter(
-            listaPersonasOriginal,
-            onItemClick = { persona ->
-                personaSeleccionada = persona
-                adapter.setPersonaSeleccionada(persona)
-                abrirContrato(persona)  // Abrir contrato al click en nombre o cédula
-            },
-            onDownloadClick = { persona ->
-                abrirContrato(persona, descargar = true) // Descargar contrato con ícono
-            }
-        )
-
+        adapter = MembresiaAdapter(emptyList()) { membresia ->
+            val dialog = ContratoDetalleDialog(membresia)
+            dialog.show(supportFragmentManager, "DetalleContrato")
+        }
         recyclerView.adapter = adapter
-        adapter.actualizarLista(listaPersonasOriginal)
 
-        findViewById<Button>(R.id.btn_ver_contrato).setOnClickListener {
-            personaSeleccionada?.let { abrirContrato(it) }
-        }
-
-        findViewById<Button>(R.id.btn_imprimir_contrato).setOnClickListener {
-            personaSeleccionada?.let { abrirContrato(it, imprimir = true) }
-        }
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(rv, dx, dy)
+                val total = layoutManager.itemCount
+                val lastVisible = layoutManager.findLastVisibleItemPosition()
+                if (!cargando && !finLista && lastVisible + 5 >= total) {
+                    cargarMembresiasPaginadas()
+                }
+            }
+        })
 
         val searchView = findViewById<SearchView>(R.id.search_view)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?) = false
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filtro = newText?.lowercase()?.trim() ?: ""
-                val resultado = listaPersonasOriginal.filter {
-                    it.nombre.lowercase().contains(filtro) || it.cedula.contains(filtro)
+                val resultado = listaOriginal.filter { membresia ->
+                    val nombres = membresia.membresiaPaciente?.mapNotNull { mp ->
+                        val u = mp.paciente?.usuario
+                        listOf(u?.nombre, u?.segundoNombre, u?.apellido, u?.segundoApellido)
+                            .filterNotNull().joinToString(" ")
+                    }?.joinToString(" ")?.lowercase() ?: ""
+
+                    val documentos = membresia.membresiaPaciente?.mapNotNull { mp ->
+                        mp.paciente?.usuario?.numeroDocumento
+                    }?.joinToString(" ")?.lowercase() ?: ""
+
+                    val nc = membresia.numeroContrato?.lowercase() ?: ""
+                    val fp = membresia.formaPago?.lowercase() ?: ""
+
+                    nombres.contains(filtro) || documentos.contains(filtro) ||
+                            nc.contains(filtro) || fp.contains(filtro)
                 }
                 adapter.actualizarLista(resultado)
-                personaSeleccionada = null
                 return true
             }
         })
 
-        personaSeleccionada = listaPersonasOriginal.firstOrNull()
-        personaSeleccionada?.let {
-            adapter.setPersonaSeleccionada(it)
-        }
+        cargarMembresiasPaginadas()
     }
 
-    private fun abrirContrato(persona: Persona, imprimir: Boolean = false, descargar: Boolean = false) {
-        val intent = Intent(this, ContratoAsesorActivity::class.java).apply {
-            putExtra("modoContrato", "personalizado")
-            putExtra("nombre", persona.nombre)
-            putExtra("cedula", persona.cedula)
-            putExtra("imprimir", imprimir)
-            putExtra("descargar", descargar)
+    private fun cargarMembresiasPaginadas() {
+        if (cargando || finLista) return
+        cargando = true
+
+        lifecycleScope.launch {
+            try {
+                val membresias = RetrofitClient.contratosApi.listarMembresias(paginaActual, tamañoPagina)
+                Log.d("BuscarContratoAsesor", "Página: $paginaActual, recibidas: ${membresias.size}")
+
+                if (membresias.isEmpty()) {
+                    finLista = true
+                } else {
+                    // Añadir sólo membresías nuevas que no estén ya en la lista (por idMembresia)
+                    listaOriginal = if (paginaActual == 1) {
+                        membresias
+                    } else {
+                        listaOriginal + membresias.filter { nueva ->
+                            listaOriginal.none { it.idMembresia == nueva.idMembresia }
+                        }
+                    }
+                    adapter.actualizarLista(listaOriginal)
+                    paginaActual++
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@BuscarContratoAsesor, "Error al cargar datos: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                Log.e("BuscarContratoAsesor", "Error al cargar membresías", e)
+            } finally {
+                cargando = false
+            }
         }
-        startActivity(intent)
     }
 }
