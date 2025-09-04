@@ -53,7 +53,7 @@ class Login : AppCompatActivity() {
                 password = password
             )
 
-            RetrofitClient.apiService.loginUser(request)
+            RetrofitClient.loginApi.loginUser(request)
                 .enqueue(object : Callback<LoginResponse> {
                     override fun onResponse(
                         call: Call<LoginResponse>,
