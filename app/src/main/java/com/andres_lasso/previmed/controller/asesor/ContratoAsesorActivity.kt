@@ -41,10 +41,25 @@ class ContratoAsesorActivity : AppCompatActivity() {
         binding = ActivityContratoAsesorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val imprimir = intent.getBooleanExtra("imprimir", false)
-        val descargar = intent.getBooleanExtra("descargar", false) // NUEVA línea
+        // Leer datos dinámicos pasados por Intent
+        val numeroContrato = intent.getStringExtra("numeroContrato") ?: ""
+        val formaPago = intent.getStringExtra("formaPago") ?: ""
+        val fechaInicio = intent.getStringExtra("fechaInicio") ?: ""
+        val fechaFin = intent.getStringExtra("fechaFin") ?: ""
+        val firma = intent.getStringExtra("firma") ?: ""
+        val estado = intent.getBooleanExtra("estado", false)
+        val pacientesAsociados = intent.getStringExtra("pacientesAsociados") ?: "No hay pacientes asociados"
 
-        // Establecer título e introducción con negritas en pantalla
+        // Asignar textos dinámicos
+        binding.tvNumeroContrato.text = numeroContrato
+        binding.tvFormaPago.text = formaPago
+        binding.tvFechaInicio.text = fechaInicio
+        binding.tvFechaFin.text = fechaFin
+        binding.tvFirma.text = firma
+        binding.tvEstado.text = if (estado) "Activo" else "Inactivo"
+        binding.tvPacientesAsociados.text = pacientesAsociados
+
+        // Título e introducción con negritas aplicadas
         binding.tituloContrato.text = getString(R.string.title_contrato)
         binding.clausulaIntroduccion.text = aplicarNegritas(getString(R.string.contrato_introduccion))
 
@@ -53,17 +68,12 @@ class ContratoAsesorActivity : AppCompatActivity() {
             binding.clausula5, binding.clausula6, binding.clausula7, binding.clausula8,
             binding.clausula9, binding.clausula10, binding.clausula11, binding.clausula12,
             binding.clausula13, binding.clausula14, binding.clausula15, binding.clausula16,
-            binding.clausula17, binding.clausula18, binding.firmacontratoTexto,
-            binding.contratoRepresentante, binding.contratoRepresentanteLegal,
-            binding.contratoRepresentantePrevi
+            binding.clausula17, binding.clausula18
         )
 
+        // Cargar las cláusulas con negritas
         clausulasViews.forEachIndexed { index, textView ->
-            val id = resources.getIdentifier(
-                "contrato_clausula_${index + 1}",
-                "string",
-                packageName
-            )
+            val id = resources.getIdentifier("contrato_clausula_${index + 1}", "string", packageName)
             if (id != 0) {
                 textView.text = aplicarNegritas(getString(id))
             } else {
@@ -71,23 +81,19 @@ class ContratoAsesorActivity : AppCompatActivity() {
             }
         }
 
+        // Textos fijos
         binding.firmacontratoTexto.text = getString(R.string.firmacontrato_texto)
         binding.contratoRepresentante.text = getString(R.string.contrato_representante)
         binding.contratoRepresentanteLegal.text = getString(R.string.contrato_representantelegal)
         binding.contratoRepresentantePrevi.text = getString(R.string.contrato_representanteprevi)
 
-        // AGREGADO: Si se pidió descargar (y opcionalmente imprimir)
-        if (descargar) {
-            descargarContratoPDF {
-                if (imprimir) {
-                    imprimirContrato()
-                }
-            }
-        } else if (imprimir) {
-            imprimirContrato()
+        // Botón para descargar PDF
+        binding.btnDescargar.setOnClickListener {
+            descargarContratoPDF()
         }
     }
 
+    // Aplica negritas en palabras clave dentro de un texto
     private fun aplicarNegritas(texto: String): SpannableString {
         val spannable = SpannableString(texto)
         palabrasNegritas.forEach { palabra ->
@@ -106,37 +112,7 @@ class ContratoAsesorActivity : AppCompatActivity() {
         return spannable
     }
 
-    private fun imprimirContrato() {
-        webView = WebView(this)
-
-        val clausulasHtml = StringBuilder()
-        clausulasHtml.append("<h2>Contrato - Previmed</h2>")
-        clausulasHtml.append("<p>${negritasHtml(getString(R.string.contrato_introduccion))}</p>")
-
-        for (i in 1..18) {
-            val resId = resources.getIdentifier("contrato_clausula_$i", "string", packageName)
-            if (resId != 0) {
-                val clausula = getString(resId)
-                clausulasHtml.append("<p>${negritasHtml(clausula)}</p>")
-            }
-        }
-
-        clausulasHtml.append("<p>${getString(R.string.firmacontrato_texto)}</p>")
-        clausulasHtml.append("<p>${getString(R.string.contrato_representante)}</p>")
-        clausulasHtml.append("<p>${getString(R.string.contrato_representantelegal)}</p>")
-        clausulasHtml.append("<p>${getString(R.string.contrato_representanteprevi)}</p>")
-
-        webView.loadDataWithBaseURL(null, clausulasHtml.toString(), "text/HTML", "UTF-8", null)
-        webView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                val printManager = getSystemService(Context.PRINT_SERVICE) as PrintManager
-                val jobName = "Contrato Previmed"
-                val printAdapter = webView.createPrintDocumentAdapter(jobName)
-                printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
-            }
-        }
-    }
-
+    // Aplica negritas en HTML
     private fun negritasHtml(texto: String): String {
         var resultado = texto
         palabrasNegritas.forEach { palabra ->
@@ -149,8 +125,8 @@ class ContratoAsesorActivity : AppCompatActivity() {
         return resultado
     }
 
-    // 🔽 NUEVA FUNCIÓN AGREGADA: Descargar como PDF (simulada con WebView e impresión silenciosa)
-    private fun descargarContratoPDF(onDescargaCompleta: () -> Unit) {
+    // Descarga el contrato como PDF usando WebView y PrintManager
+    private fun descargarContratoPDF() {
         webView = WebView(this)
 
         val clausulasHtml = StringBuilder()
@@ -160,8 +136,7 @@ class ContratoAsesorActivity : AppCompatActivity() {
         for (i in 1..18) {
             val resId = resources.getIdentifier("contrato_clausula_$i", "string", packageName)
             if (resId != 0) {
-                val clausula = getString(resId)
-                clausulasHtml.append("<p>${negritasHtml(clausula)}</p>")
+                clausulasHtml.append("<p>${negritasHtml(getString(resId))}</p>")
             }
         }
 
@@ -170,14 +145,13 @@ class ContratoAsesorActivity : AppCompatActivity() {
         clausulasHtml.append("<p>${getString(R.string.contrato_representantelegal)}</p>")
         clausulasHtml.append("<p>${getString(R.string.contrato_representanteprevi)}</p>")
 
-        webView.loadDataWithBaseURL(null, clausulasHtml.toString(), "text/HTML", "UTF-8", null)
+        webView.loadDataWithBaseURL(null, clausulasHtml.toString(), "text/html", "UTF-8", null)
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 val printManager = getSystemService(Context.PRINT_SERVICE) as PrintManager
                 val jobName = "Contrato_Previmed_PDF"
                 val printAdapter = webView.createPrintDocumentAdapter(jobName)
                 printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
-                onDescargaCompleta()
             }
         }
     }

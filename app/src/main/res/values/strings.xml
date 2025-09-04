@@ -66,5 +66,8 @@
         PREVIMED TU MEDICO EN CASA S.A.S</string>
     <string name="download_icon">Icono de descarga</string>
 
+    <string name="prompt_paciente">Selecciona el paciente</string>
+    <string name="prompt_plan">Selecciona el plan</string>
+
 
 </resources>
