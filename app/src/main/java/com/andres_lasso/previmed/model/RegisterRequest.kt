@@ -22,14 +22,5 @@ data class RegisterRequest(
     @SerializedName("estado_civil") val estadoCivil: String,
     @SerializedName("tipo_documento") val tipoDocumento: String
 )
-data class Rol(
-    val id: Int,
-    val nombre: String
-)
-
-data class Eps(
-    val id: Int,
-    val nombre: String
-)
 
 
