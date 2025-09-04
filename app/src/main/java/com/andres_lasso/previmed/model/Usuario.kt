@@ -2,7 +2,7 @@ package com.andres_lasso.previmed.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Usuario(
+data class Usuarisso(
     @SerializedName("idUsuario")
     val idUsuario: String,
     val nombre: String,

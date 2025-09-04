@@ -24,44 +24,55 @@
     </RelativeLayout>
 
     <!-- Contenedor blanco redondeado -->
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
         android:background="@drawable/rounded_top_white"
-        android:padding="16dp"
-        android:layout_marginTop="-20dp">
+        android:layout_marginTop="-20dp"
+        android:padding="16dp">
 
-        <!-- SearchView arriba -->
-        <SearchView
-            android:id="@+id/btn_Buscar_Usu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@color/white"
-            android:iconifiedByDefault="false"
-            android:queryHint="Buscar..."
-            android:elevation="4dp"
-            android:padding="4dp" />
-
-        <!-- RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerPacientes"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="12dp" />
-    </LinearLayout>
+            android:orientation="vertical">
 
-    <!-- Botón flotante -->
-    <Button
-        android:id="@+id/BotonAgUsuario"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
-        android:backgroundTint="#457B9D"
-        android:text="+"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp" />
+            <!-- SearchView arriba -->
+            <SearchView
+                android:id="@+id/btn_Buscar_Usu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@color/white"
+                android:iconifiedByDefault="false"
+                android:queryHint="Buscar..."
+                android:elevation="4dp"
+                android:padding="4dp" />
+
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPacientes"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="12dp" />
+        </LinearLayout>
+
+        <!-- Botón flotante ubicado abajo derecha -->
+        <Button
+            android:id="@+id/btn_agregarPacientess"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:text="+"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:backgroundTint="#457B9D"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="40dp"
+            android:elevation="8dp"
+            android:shape="oval"
+            android:stateListAnimator="@null"/>
+
+    </FrameLayout>
+
 </LinearLayout>

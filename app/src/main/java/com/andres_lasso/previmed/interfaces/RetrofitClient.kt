@@ -54,4 +54,8 @@ object RetrofitClient {
     val pacienteApi: PacienteApi by lazy {
         retrofit.create(PacienteApi::class.java)
     }
+    val planes: PlanesApi by lazy {
+        retrofit.create(PlanesApi::class.java)
+    }
+
 }

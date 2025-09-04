@@ -40,8 +40,3 @@ data class MembresiaRequest(
     val pacienteId: Int
 )
 
-data class Plan(
-    val idPlan: Int,
-    val tipoPlan: String,
-    val precio: Double
-)
