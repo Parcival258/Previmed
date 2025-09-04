@@ -1,5 +1,6 @@
 package com.andres_lasso.previmed.controller.asesor.recycler.adapter
 
+import PacienteClass
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,40 +9,35 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PacientesAsesorFragment
-import com.andres_lasso.previmed.controller.asesor.recycler.PacienteClass
-
-data class PacienteAseAdapter(
-    private val listaPacientes: List<PacienteClass>,
-    private val onClick: (PacienteClass) -> Unit
+import com.andres_lasso.previmed.model.PacienteData
+class PacienteAseAdapter(
+    private val listaPacientes: List<PacienteData>,
+    private val onClick: (PacienteData) -> Unit
 ) : RecyclerView.Adapter<PacienteAseAdapter.PacienteViewHolder>() {
 
-    class PacienteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class PacienteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nombre: TextView = itemView.findViewById(R.id.Nombre1)
         val doc: TextView = itemView.findViewById(R.id.textDoc)
-        val direccion: TextView = itemView.findViewById(R.id.textDireccion)
-        val plan: TextView = itemView.findViewById(R.id.textPlan)
-        val botonVer: ImageButton = itemView.findViewById(R.id.BotonMirarPac)
+
+        init {
+            itemView.setOnClickListener {
+                onClick(listaPacientes[adapterPosition])
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PacienteViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_pacientesasesor, parent, false)
-        return PacienteViewHolder(itemView)
+        return PacienteViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PacienteViewHolder, position: Int) {
         val paciente = listaPacientes[position]
-
-        holder.nombre.text = paciente.idNombre
-        holder.doc.text = "Doc: ${paciente.docPaciente}"
-        holder.direccion.text = "Dirección: ${paciente.direccionPaciente}"
-        holder.plan.text = "Plan: ${paciente.planPaciente}"
-
-        holder.botonVer.setOnClickListener {
-            onClick(paciente)
-        }
+        val nombreCompleto = "${paciente.usuario.nombre} ${paciente.usuario.apellido}"
+        holder.nombre.text = nombreCompleto
+        holder.doc.text = "Doc: ${paciente.usuario.numeroDocumento}"
     }
 
     override fun getItemCount(): Int = listaPacientes.size
 }
-

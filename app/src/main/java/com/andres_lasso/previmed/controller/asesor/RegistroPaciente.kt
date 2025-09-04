@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.andres_lasso.previmed.R
-import com.andres_lasso.previmed.controller.Login
+
+import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PacientesAsesorFragment
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.*
 import retrofit2.Call
@@ -29,11 +30,8 @@ class RegistroPaciente : AppCompatActivity() {
     private lateinit var spAutorizacionDatos: Spinner
     private lateinit var spGenero: Spinner
     private lateinit var spEstadoCivil: Spinner
-    private lateinit var spRol: Spinner
     private lateinit var etDireccionCobro: EditText
     private lateinit var btnGuardar: Button
-
-    private var listaRoles = listOf<Rol>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +50,6 @@ class RegistroPaciente : AppCompatActivity() {
         spAutorizacionDatos = findViewById(R.id.spAutorizacionDatos)
         spGenero = findViewById(R.id.spGenero)
         spEstadoCivil = findViewById(R.id.spEstadoCivil)
-        spRol = findViewById(R.id.spRol)
         etDireccionCobro = findViewById(R.id.etDireccionCobro)
         btnGuardar = findViewById(R.id.btnGuardar)
 
@@ -61,16 +58,12 @@ class RegistroPaciente : AppCompatActivity() {
         setupSpinner(spGenero, R.array.generos)
         setupSpinner(spEstadoCivil, R.array.estados_civiles)
 
-        cargarRoles()
         setupDatePicker()
 
         btnGuardar.setOnClickListener {
             if (!validarCampos()) return@setOnClickListener
 
-            val rolId = listaRoles.getOrNull(spRol.selectedItemPosition)?.idRol ?: run {
-                toast("Debe seleccionar un rol válido")
-                return@setOnClickListener
-            }
+            val rolId = 4 // Fijo para paciente
 
             val request = PacienteRequest(
                 nombre = etNombre.text.toString(),
@@ -96,7 +89,6 @@ class RegistroPaciente : AppCompatActivity() {
                 activo = true,
                 beneficiario = true
             )
-
             registrarPaciente(request)
         }
     }
@@ -105,26 +97,6 @@ class RegistroPaciente : AppCompatActivity() {
         val adapter = ArrayAdapter.createFromResource(this, arrayResId, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-    }
-
-    private fun cargarRoles() {
-        RetrofitClient.rolesApi.getRoles().enqueue(object : Callback<RolesResponse> {
-            override fun onResponse(call: Call<RolesResponse>, response: Response<RolesResponse>) {
-                if (response.isSuccessful) {
-                    listaRoles = response.body()?.msj?.filter { it.estado } ?: listOf()
-                    val nombres = listaRoles.map { it.nombreRol }
-                    spRol.adapter = ArrayAdapter(this@RegistroPaciente, android.R.layout.simple_spinner_item, nombres).apply {
-                        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    }
-                } else {
-                    toast("Error al cargar roles")
-                }
-            }
-
-            override fun onFailure(call: Call<RolesResponse>, t: Throwable) {
-                toast("Error de conexión roles")
-            }
-        })
     }
 
     private fun setupDatePicker() {
@@ -144,27 +116,13 @@ class RegistroPaciente : AppCompatActivity() {
 
     private fun validarCampos(): Boolean {
         return when {
-            etNombre.text.isNullOrBlank() -> {
-                toastAndFocus("Ingrese el nombre", etNombre); false
-            }
-            etApellido.text.isNullOrBlank() -> {
-                toastAndFocus("Ingrese el apellido", etApellido); false
-            }
-            etEmail.text.isNullOrBlank() -> {
-                toastAndFocus("Ingrese el email", etEmail); false
-            }
-            etPassword.text.isNullOrBlank() -> {
-                toastAndFocus("Ingrese la contraseña", etPassword); false
-            }
-            etNumeroDocumento.text.isNullOrBlank() -> {
-                toastAndFocus("Ingrese el número de documento", etNumeroDocumento); false
-            }
-            etFechaNacimiento.text.isNullOrBlank() -> {
-                toastAndFocus("Seleccione fecha de nacimiento", etFechaNacimiento); false
-            }
-            etDireccionCobro.text.isNullOrBlank() -> {
-                toastAndFocus("Ingrese la dirección de cobro", etDireccionCobro); false
-            }
+            etNombre.text.isNullOrBlank() -> { toastAndFocus("Ingrese el nombre", etNombre); false }
+            etApellido.text.isNullOrBlank() -> { toastAndFocus("Ingrese el apellido", etApellido); false }
+            etEmail.text.isNullOrBlank() -> { toastAndFocus("Ingrese el email", etEmail); false }
+            etPassword.text.isNullOrBlank() -> { toastAndFocus("Ingrese la contraseña", etPassword); false }
+            etNumeroDocumento.text.isNullOrBlank() -> { toastAndFocus("Ingrese el número de documento", etNumeroDocumento); false }
+            etFechaNacimiento.text.isNullOrBlank() -> { toastAndFocus("Seleccione fecha de nacimiento", etFechaNacimiento); false }
+            etDireccionCobro.text.isNullOrBlank() -> { toastAndFocus("Ingrese la dirección de cobro", etDireccionCobro); false }
             else -> true
         }
     }
@@ -179,17 +137,20 @@ class RegistroPaciente : AppCompatActivity() {
     }
 
     private fun registrarPaciente(request: PacienteRequest) {
-        RetrofitClient.pacienteApi.registrarPaciente(request).enqueue(object : Callback<PacienteResponse> {
-            override fun onResponse(call: Call<PacienteResponse>, response: Response<PacienteResponse>) {
-                if (response.isSuccessful) {
+        RetrofitClient.pacienteApi.registrarPaciente(request).enqueue(object : Callback<PacientesResponse> {
+            override fun onResponse(
+                call: Call<PacientesResponse>,
+                response: Response<PacientesResponse>
+            ) {
+                if (response.isSuccessful && response.body() != null) {
                     toast("Paciente registrado correctamente")
                 } else {
-                    toast("Error al registrar paciente")
+                    val errorBody = response.errorBody()?.string()
+                    toast("Error al registrar paciente: $errorBody")
                 }
             }
-
-            override fun onFailure(call: Call<PacienteResponse>, t: Throwable) {
-                toast("Fallo en la conexión")
+            override fun onFailure(call: Call<PacientesResponse>, t: Throwable) {
+                toast("Fallo en la conexión: ${t.message}")
             }
         })
     }

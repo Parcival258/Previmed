@@ -2,7 +2,7 @@ package com.andres_lasso.previmed.model
 
 import com.google.gson.annotations.SerializedName
 
-data class PacienteData(
+data class PacientesDataa(
     @SerializedName("idPaciente")
     val idPaciente: Int,
     @SerializedName("direccionCobro")
@@ -44,4 +44,17 @@ data class Eps(
 data class EpsResponse(
     @SerializedName("msj")
     val msj: List<Eps>
+)
+
+
+data class PacienteDataa(
+    val idPaciente: Int,
+    val usuario: Usuario
+    // otros campos omitidos porque ahora no se mostrarán
+)
+data class Usuariso(
+    val nombre: String,
+    val apellido: String,
+    val numeroDocumento: String
+// otros campos omitidos...
 )

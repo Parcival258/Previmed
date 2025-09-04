@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:text="Nombre"
+        android:text="Plan"
         android:textColor="@color/AzulOscuro_Prevemed"
         android:textSize="20dp" />
 
