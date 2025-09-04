@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contrato de afiliación" />
+
+        <TextView
+            android:id="@+id/tvNumeroContrato"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Número de Contrato:" />
+
+        <TextView
+            android:id="@+id/tvFormaPago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forma de Pago:" />
+
+        <TextView
+            android:id="@+id/tvFechaInicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha Inicio:" />
+
+        <TextView
+            android:id="@+id/tvFechaFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha Fin:" />
+
+        <TextView
+            android:id="@+id/tvFirma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Firma:" />
+
+        <TextView
+            android:id="@+id/tvEstado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado:" />
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pacientes asociados:" />
+
+        <TextView
+            android:id="@+id/tvPacientesAsociados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:text="Aquí se listan los pacientes" />
+
+        <Button
+            android:id="@+id/btnDescargarPdf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver contrato"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</ScrollView>
