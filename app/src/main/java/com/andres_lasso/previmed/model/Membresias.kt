@@ -1,14 +1,6 @@
 package com.andres_lasso.previmed.model
 
-data class Usuario(
-    val idUsuario: String?,
-    val nombre: String?,
-    val segundoNombre: String?,
-    val apellido: String?,
-    val segundoApellido: String?,
-    val email: String?,
-    val numeroDocumento: String?
-)
+
 
 data class Paciente(
     val idPaciente: Int?,

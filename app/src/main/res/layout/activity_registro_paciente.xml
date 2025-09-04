@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#2196F3"
-        android:text="Registro de Usuario"
+        android:text="Registro de Paciente"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -71,13 +71,7 @@
                 android:hint="Contraseña"
                 android:inputType="textPassword" />
 
-            <!-- Dirección -->
-            <EditText
-                android:id="@+id/etDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Dirección"
-                android:inputType="textPostalAddress" />
+
 
             <!-- Tipo de Documento -->
             <TextView
@@ -153,7 +147,7 @@
                 android:id="@+id/spGenero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <!-- Rol -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -165,17 +159,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!-- EPS -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="EPS"
-                android:textStyle="bold"
-                android:paddingTop="12dp"/>
-            <Spinner
-                android:id="@+id/spEps"
+            <!-- Dirección principal -->
+            <EditText
+                android:id="@+id/etDireccion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="Dirección Principal"
+                android:inputType="textPostalAddress" />
+
+            <!-- Dirección de Cobro -->
+            <EditText
+                android:id="@+id/etDireccionCobro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Dirección de Cobro"
+                android:inputType="textPostalAddress" />
+
+
 
 
             <!-- Estado Civil -->
@@ -195,7 +195,7 @@
                 android:id="@+id/btnGuardar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Registrar Usuario"
+                android:text="Registrar"
                 android:backgroundTint="#2196F3"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="20dp" />

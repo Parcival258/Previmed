@@ -51,4 +51,7 @@ object RetrofitClient {
     val contratosApi: Contratos by lazy {
         retrofit.create(Contratos::class.java)
     }
+    val pacienteApi: PacienteApi by lazy {
+        retrofit.create(PacienteApi::class.java)
+    }
 }
