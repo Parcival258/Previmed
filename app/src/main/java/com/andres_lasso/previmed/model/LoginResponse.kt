@@ -1,7 +1,23 @@
 package com.andres_lasso.previmed.model
 
+import com.google.gson.annotations.SerializedName
+
+
 data class LoginResponse(
-    val token: String?,   // si tu backend devuelve token
-    val message: String?, // si tu backend devuelve mensaje
-    val rol: String?      // si tu backend devuelve rol
+    @SerializedName("message")
+    val message: String,
+
+    @SerializedName("data")
+    val data: UserData,
+
+    @SerializedName("jwt")
+    val jwt: String
+)
+
+data class UserData(
+    @SerializedName("id")
+    val id: String,
+
+    @SerializedName("documento")
+    val documento: String
 )

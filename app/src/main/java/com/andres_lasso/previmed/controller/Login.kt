@@ -7,10 +7,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.andres_lasso.previmed.Menu
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.LoginRequest
 import com.andres_lasso.previmed.model.LoginResponse
+import com.andres_lasso.previmed.utils.PreferenceHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,60 +32,85 @@ class Login : AppCompatActivity() {
         ctpassword = findViewById(R.id.ctpassword)
         btnLogin = findViewById(R.id.loginButton)
 
-        // Acción al presionar el botón de login
+        // Si ya hay token, ir al menú
+        if (PreferenceHelper.hasToken(this)) {
+            startActivity(Intent(this, Menu::class.java))
+            finish()
+        }
+
         btnLogin.setOnClickListener {
+            val documento = ctdocumento.text.toString().trim()
+            val password = ctpassword.text.toString().trim()
+
+            if (documento.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Crear request correctamente con @SerializedName
             val request = LoginRequest(
-                numero_documento = ctdocumento.text.toString(),
-                password = ctpassword.text.toString()
+                numeroDocumento = documento,
+                password = password
             )
 
-            // Llamada a la API para login
-            RetrofitClient.loginApi.loginUser(request)
+            RetrofitClient.apiService.loginUser(request)
                 .enqueue(object : Callback<LoginResponse> {
-
                     override fun onResponse(
                         call: Call<LoginResponse>,
                         response: Response<LoginResponse>
                     ) {
-                        if (response.isSuccessful && response.body() != null) {
-                            val body = response.body()!!
+                        if (response.isSuccessful) {
+                            val body = response.body()
+                            if (body != null && body.jwt.isNotEmpty()) {
 
-                            // Mostrar info del backend en un Toast
-                            Toast.makeText(
-                                this@Login,
-                                "Login OK: token=${body.token}, rol=${body.rol}, msg=${body.message}",
-                                Toast.LENGTH_LONG
-                            ).show()
+                                // Guardar token
+                                PreferenceHelper.saveToken(this@Login, body.jwt)
 
-                            // Logcat para depuración
-                            Log.d("API_LOGIN", "Respuesta completa: $body")
+                                Toast.makeText(
+                                    this@Login,
+                                    body.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
 
-                            // TODO: Cambiar destino según el rol o pantalla principal
-                            val intent = Intent(this@Login, Login::class.java)
-                            startActivity(intent)
-                            finish()
+                                Log.d(
+                                    "API_LOGIN",
+                                    "JWT: ${body.jwt}, UserId: ${body.data.id}, Documento: ${body.data.documento}"
+                                )
 
+                                // Ir al menú
+                                val intent = Intent(this@Login, Menu::class.java)
+                                startActivity(intent)
+                                finish()
+
+                            } else {
+                                Toast.makeText(
+                                    this@Login,
+                                    "Error: no se recibió token",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.e("API_LOGIN", "Respuesta sin JWT")
+                            }
                         } else {
-                            // Error con código y cuerpo
                             val errorBody = response.errorBody()?.string()
                             Toast.makeText(
                                 this@Login,
-                                "Error: ${response.code()} - $errorBody",
-                                Toast.LENGTH_LONG
+                                "Credenciales incorrectas",
+                                Toast.LENGTH_SHORT
                             ).show()
-
-                            Log.e("API_LOGIN", "Error: ${response.code()} - $errorBody")
+                            Log.e(
+                                "API_LOGIN",
+                                "Error: ${response.code()} - $errorBody"
+                            )
                         }
                     }
 
                     override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                         Toast.makeText(
                             this@Login,
-                            "Fallo en la conexión: ${t.message}",
+                            "Error de conexión: ${t.message}",
                             Toast.LENGTH_SHORT
                         ).show()
-
-                        Log.e("API_LOGIN", "Fallo en conexión", t)
+                        Log.e("API_LOGIN", "Fallo conexión", t)
                     }
                 })
         }
