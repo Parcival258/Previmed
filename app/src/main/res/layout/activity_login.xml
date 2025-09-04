@@ -1,117 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
     android:background="@color/white"
-    android:fillViewport="true">
+    tools:context=".controller.Login">
 
-    <LinearLayout
+    <!-- Logo -->
+    <ImageView
+        android:layout_width="147dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/logo"
+        android:contentDescription="@string/app_name" />
+
+    <!-- Título -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Hola"
+        android:textColor="#20C997"
+        android:textSize="38sp"
+        android:textStyle="bold" />
+
+    <!-- Subtítulo -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Bienvenido a Previmed"
+        android:textColor="#707070"
+        android:textSize="20sp" />
+
+    <!-- Campo Documento -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:layout_marginTop="32dp"
+        android:hint="Documento"
+        app:boxStrokeColor="#20C997"
+        app:boxBackgroundMode="outline">
 
-        <!-- Logo -->
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/logo"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/app_name" />
-
-        <!-- Contenedor del formulario -->
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ctdocumento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@color/white"
-            android:elevation="6dp"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:inputType="text"
+            android:textColor="#000000"
+            android:textColorHint="#B0B0B0" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Títulos -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="BIENVENID@S"
-                android:textColor="#1C2A3A"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+    <!-- Campo Contraseña -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Contraseña"
+        app:boxStrokeColor="#20C997"
+        app:boxBackgroundMode="outline"
+        app:endIconMode="password_toggle">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:text="Ingresar Datos"
-                android:textColor="#1C2A3A"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <!-- Campo Documento -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/emailLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/AZUL_BORDES">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ctdocumento"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="DOCUMENTO"
-                    android:textColor="#000000"
-                    android:textColorHint="#B0B0B0"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Campo Contraseña -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/AZUL_BORDES"
-                app:endIconMode="password_toggle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ctpassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="CONTRASEÑA"
-                    android:inputType="textPassword"
-                    android:textColor="#000000"
-                    android:textColorHint="#B0B0B0" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Botón Login -->
-            <Button
-                android:id="@+id/loginButton"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/AZUL_GENERAL"
-                android:text="INGRESAR"
-                android:textAllCaps="true"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- Imagen inferior decorativa -->
-        <ImageView
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ctpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/login"
-            android:contentDescription="@string/app_name" />
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            android:textColorHint="#B0B0B0" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
-</ScrollView>
+    <!-- Botón Ingresar -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/btn_degradado"
+        android:text="Ingresar"
+        android:textStyle="bold"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>
