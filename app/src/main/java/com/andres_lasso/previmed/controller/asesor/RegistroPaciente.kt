@@ -14,6 +14,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import PacienteRequest
+import PacienteResponse
 
 class RegistroPaciente : AppCompatActivity() {
 
@@ -76,30 +78,34 @@ class RegistroPaciente : AppCompatActivity() {
                 }
 
                 val rolId = listaRoles.getOrNull(spRol.selectedItemPosition)?.id ?: 4
-                val epsId = listaEps.getOrNull(spEps.selectedItemPosition)?.id
+                val epsId = listaEps.getOrNull(spEps.selectedItemPosition)?.id ?: 1
 
-                val request = RegisterRequest(
+                val request = PacienteRequest(
                     nombre = etNombre.text.toString(),
-                    segundoNombre = null,
+                    segundo_nombre = null,
                     apellido = etApellido.text.toString(),
-                    segundoApellido = null,
+                    segundo_apellido = null,
                     email = etEmail.text.toString(),
                     password = etPassword.text.toString(),
                     direccion = etDireccion.text.toString(),
-                    numeroDocumento = numeroDocumentoText,
-                    fechaNacimiento = etFechaNacimiento.text.toString(),
-                    numeroHijos = etNumeroHijos.text.toString().ifEmpty { null },
-                    estrato = etEstrato.text.toString().ifEmpty { null },
-                    autorizacionDatos = spAutorizacionDatos.selectedItem.toString().equals("Sí", ignoreCase = true),
-                    epsId = epsId,
-                    rolId = rolId,
+                    numero_documento = numeroDocumentoText,
+                    fecha_nacimiento = etFechaNacimiento.text.toString(),
+                    numero_hijos = etNumeroHijos.text.toString().toIntOrNull(),
+                    estrato = etEstrato.text.toString().toIntOrNull(),
+                    autorizacion_datos = spAutorizacionDatos.selectedItem.toString().equals("Sí", ignoreCase = true),
                     habilitar = true,
                     genero = spGenero.selectedItem.toString(),
-                    estadoCivil = spEstadoCivil.selectedItem.toString(),
-                    tipoDocumento = spTipoDocumento.selectedItem.toString()
+                    estado_civil = spEstadoCivil.selectedItem.toString(),
+                    tipo_documento = spTipoDocumento.selectedItem.toString(),
+                    eps_id = epsId,
+                    rol_id = rolId,
+                    direccion_cobro = null,
+                    ocupacion = null,
+                    activo = true,
+                    beneficiario = true
                 )
 
-                registerUser(request)
+                registrarPaciente(request)
             }
         }
     }
@@ -119,13 +125,10 @@ class RegistroPaciente : AppCompatActivity() {
             override fun onResponse(call: Call<List<Rol>>, response: Response<List<Rol>>) {
                 if (response.isSuccessful) {
                     listaRoles = response.body() ?: listOf()
-                    Log.d("Roles", "Roles recibidos: $listaRoles")
                     val nombresRoles = listaRoles.map { it.nombre }
                     spRol.adapter = ArrayAdapter(this@RegistroPaciente, android.R.layout.simple_spinner_item, nombresRoles).apply {
                         setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     }
-                } else {
-                    Log.e("Roles", "Error al obtener roles: ${response.code()}")
                 }
             }
             override fun onFailure(call: Call<List<Rol>>, t: Throwable) {
@@ -139,13 +142,10 @@ class RegistroPaciente : AppCompatActivity() {
             override fun onResponse(call: Call<List<Eps>>, response: Response<List<Eps>>) {
                 if (response.isSuccessful) {
                     listaEps = response.body() ?: listOf()
-                    Log.d("EPS", "EPS recibidos: $listaEps")
                     val nombresEps = listaEps.map { it.nombre }
                     spEps.adapter = ArrayAdapter(this@RegistroPaciente, android.R.layout.simple_spinner_item, nombresEps).apply {
                         setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     }
-                } else {
-                    Log.e("EPS", "Error al obtener EPS: ${response.code()}")
                 }
             }
             override fun onFailure(call: Call<List<Eps>>, t: Throwable) {
@@ -153,7 +153,6 @@ class RegistroPaciente : AppCompatActivity() {
             }
         })
     }
-
 
     private fun setupDatePicker() {
         etFechaNacimiento.setOnClickListener {
@@ -204,21 +203,23 @@ class RegistroPaciente : AppCompatActivity() {
         view.requestFocus()
     }
 
-    private fun registerUser(request: RegisterRequest) {
-        RetrofitClient.apiService.registerUser(request)
-            .enqueue(object : Callback<RegisterResponse> {
-                override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+    private fun registrarPaciente(request: PacienteRequest) {
+        RetrofitClient.pacienteApi.registrarPaciente(request)
+            .enqueue(object : Callback<PacienteResponse> {
+                override fun onResponse(call: Call<PacienteResponse>, response: Response<PacienteResponse>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@RegistroPaciente, "Usuario creado correctamente", Toast.LENGTH_SHORT).show()
+                        val paciente = response.body()
+                        Toast.makeText(this@RegistroPaciente, "Paciente registrado: ${paciente?.nombre}", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@RegistroPaciente, Login::class.java))
                         finish()
                     } else {
                         val errorBody = response.errorBody()?.string()
-                        Log.e("REGISTER_ERROR", errorBody ?: "Error desconocido")
+                        Log.e("PACIENTE_ERROR", errorBody ?: "Error desconocido")
                         Toast.makeText(this@RegistroPaciente, "Error: $errorBody", Toast.LENGTH_LONG).show()
                     }
                 }
-                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+
+                override fun onFailure(call: Call<PacienteResponse>, t: Throwable) {
                     Toast.makeText(this@RegistroPaciente, "Fallo en la conexión: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
