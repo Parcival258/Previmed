@@ -15,6 +15,10 @@ class ContratoDetalleDialog(
     private val membresia: Membresia
 ) : DialogFragment() {
 
+    fun formatearFecha(fechaIso: String?): String {
+        return fechaIso?.split("T")?.get(0) ?: ""
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Crear el constructor del diálogo
         val builder = AlertDialog.Builder(requireContext())
@@ -25,8 +29,8 @@ class ContratoDetalleDialog(
         // Aquí se asignan los textos de la membresía a los campos de texto visibles del diálogo
         view.findViewById<TextView>(R.id.tvNumeroContrato).text = membresia.numeroContrato ?: ""
         view.findViewById<TextView>(R.id.tvFormaPago).text = membresia.formaPago ?: ""
-        view.findViewById<TextView>(R.id.tvFechaInicio).text = membresia.fechaInicio ?: ""
-        view.findViewById<TextView>(R.id.tvFechaFin).text = membresia.fechaFin ?: ""
+        view.findViewById<TextView>(R.id.tvFechaInicio).text = formatearFecha(membresia.fechaInicio)
+        view.findViewById<TextView>(R.id.tvFechaFin).text = formatearFecha(membresia.fechaFin)
         view.findViewById<TextView>(R.id.tvFirma).text = membresia.firma ?: ""
 
         // Muestra "Activo" o "Inactivo" según el estado de la membresía

@@ -8,7 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.andres_lasso.previmed.R
-import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.BarriosAsesorFragment
+
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.HomeAsesorFragment
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PacientesAsesorFragment
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PagosAsesorFragment
