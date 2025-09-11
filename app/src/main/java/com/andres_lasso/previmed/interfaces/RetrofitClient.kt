@@ -57,5 +57,9 @@ object RetrofitClient {
     val planes: PlanesApi by lazy {
         retrofit.create(PlanesApi::class.java)
     }
+    val barriosApi: BarriosApi by lazy {
+        retrofit.create(BarriosApi::class.java)
+    }
+
 
 }
