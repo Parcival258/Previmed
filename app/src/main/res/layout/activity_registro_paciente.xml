@@ -71,8 +71,6 @@
                 android:hint="Contraseña"
                 android:inputType="textPassword" />
 
-
-
             <!-- Tipo de Documento -->
             <TextView
                 android:layout_width="wrap_content"
@@ -159,6 +157,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <!-- NUEVO: Spinner de Plan -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Plan"
+                android:textStyle="bold"
+                android:paddingTop="12dp"/>
+            <Spinner
+                android:id="@+id/spPlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <!-- Dirección principal -->
             <EditText
                 android:id="@+id/etDireccion"
@@ -174,9 +184,6 @@
                 android:layout_height="wrap_content"
                 android:hint="Dirección de Cobro"
                 android:inputType="textPostalAddress" />
-
-
-
 
             <!-- Estado Civil -->
             <TextView

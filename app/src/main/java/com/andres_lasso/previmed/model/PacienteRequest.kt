@@ -17,11 +17,11 @@ data class PacienteRequest(
     val genero: String,
     val estado_civil: String,
     val tipo_documento: String,
-    val eps_id: Int = 1,   // Valor por defecto EPS
-    val rol_id: Int = 1,   // Valor por defecto Rol
+    val eps_id: Int = 1,
+    val rol_id: Int = 1,
     val direccion_cobro: String,
     val ocupacion: String? = null,
     val activo: Boolean = true,
     val beneficiario: Boolean = true,
-
+    val plan_id: Int? = null
 )

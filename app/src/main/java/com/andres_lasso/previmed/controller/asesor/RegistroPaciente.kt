@@ -1,13 +1,11 @@
 package com.andres_lasso.previmed.controller.asesor
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.andres_lasso.previmed.R
-
-import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PacientesAsesorFragment
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.*
 import retrofit2.Call
@@ -33,6 +31,11 @@ class RegistroPaciente : AppCompatActivity() {
     private lateinit var etDireccionCobro: EditText
     private lateinit var btnGuardar: Button
 
+    // Nuevo: spinner de planes y lista local
+    private lateinit var spPlan: Spinner
+    private val planesList: MutableList<Plan> = mutableListOf()
+    private var selectedPlanId: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_paciente)
@@ -53,12 +56,18 @@ class RegistroPaciente : AppCompatActivity() {
         etDireccionCobro = findViewById(R.id.etDireccionCobro)
         btnGuardar = findViewById(R.id.btnGuardar)
 
+        // Nuevo: findViewById para spinner de planes
+        spPlan = findViewById(R.id.spPlan)
+
         setupSpinner(spTipoDocumento, R.array.tipos_documento)
         setupSpinner(spAutorizacionDatos, R.array.autorizacion_datos)
         setupSpinner(spGenero, R.array.generos)
         setupSpinner(spEstadoCivil, R.array.estados_civiles)
 
         setupDatePicker()
+
+        // Cargar planes desde la API
+        fetchPlanes()
 
         btnGuardar.setOnClickListener {
             if (!validarCampos()) return@setOnClickListener
@@ -87,7 +96,8 @@ class RegistroPaciente : AppCompatActivity() {
                 direccion_cobro = etDireccionCobro.text.toString().ifBlank { "Sin dirección de cobro" },
                 ocupacion = null,
                 activo = true,
-                beneficiario = true
+                beneficiario = true,
+                plan_id = selectedPlanId // <-- enviamos el plan seleccionado
             )
             registrarPaciente(request)
         }
@@ -123,6 +133,7 @@ class RegistroPaciente : AppCompatActivity() {
             etNumeroDocumento.text.isNullOrBlank() -> { toastAndFocus("Ingrese el número de documento", etNumeroDocumento); false }
             etFechaNacimiento.text.isNullOrBlank() -> { toastAndFocus("Seleccione fecha de nacimiento", etFechaNacimiento); false }
             etDireccionCobro.text.isNullOrBlank() -> { toastAndFocus("Ingrese la dirección de cobro", etDireccionCobro); false }
+            selectedPlanId == null -> { toast("Seleccione un plan"); false } // si el plan es requerido
             else -> true
         }
     }
@@ -153,5 +164,45 @@ class RegistroPaciente : AppCompatActivity() {
                 toast("Fallo en la conexión: ${t.message}")
             }
         })
+    }
+
+    // --- Nuevas funciones para planes ---
+    private fun fetchPlanes() {
+        RetrofitClient.planes.getPlanes().enqueue(object : Callback<PlanesResponse> {
+            override fun onResponse(call: Call<PlanesResponse>, response: Response<PlanesResponse>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val lista = response.body()!!.planes
+                    planesList.clear()
+                    planesList.addAll(lista)
+                    populatePlanSpinner()
+                } else {
+                    toast("Error al cargar planes")
+                    populatePlanSpinner() // carga un spinner vacío / placeholder
+                }
+            }
+
+            override fun onFailure(call: Call<PlanesResponse>, t: Throwable) {
+                toast("Fallo al cargar planes: ${t.message}")
+                populatePlanSpinner()
+            }
+        })
+    }
+
+    private fun populatePlanSpinner() {
+        val names = mutableListOf<String>()
+        names.add("Seleccione un plan")
+        names.addAll(planesList.map { it.tipoPlan })
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, names)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spPlan.adapter = adapter
+
+        spPlan.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                selectedPlanId = if (position == 0) null else planesList[position - 1].idPlan
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                selectedPlanId = null
+            }
+        }
     }
 }
