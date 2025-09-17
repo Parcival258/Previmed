@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.andres_lasso.previmed.controller.medico.fragmentMedico.HistotyMedico
-import com.andres_lasso.previmed.controller.medico.fragmentMedico.HomeMedico
+import com.andres_lasso.previmed.controller.medico.fragmentMedico.HomeMedicoFragment
 import com.andres_lasso.previmed.controller.medico.fragmentMedico.VisitsMedico
 import com.andres_lasso.previmed.databinding.ActivityViewMedicoBinding
 
@@ -15,12 +15,14 @@ class ViewMedico : AppCompatActivity() {
     private lateinit var binding: ActivityViewMedicoBinding
     private var selectedIndex = -1
 
+    // Fragments que manejará el médico
     private val fragments = listOf(
-        HomeMedico(),
+        HomeMedicoFragment(),
         VisitsMedico(),
         HistotyMedico()
     )
 
+    // Ítems de navegación personalizados
     private val navItems by lazy {
         listOf(
             NavItem(binding.navHome, binding.homeBackground, binding.homeIcon, binding.homeText),
@@ -35,7 +37,7 @@ class ViewMedico : AppCompatActivity() {
         setContentView(binding.root)
 
         setupNavigation()
-        selectNavItem(0)
+        selectNavItem(0) // Cargar Home al inicio
     }
 
     private fun setupNavigation() {
@@ -61,7 +63,7 @@ class ViewMedico : AppCompatActivity() {
         navItems.forEach { navItem ->
             navItem.apply {
                 background.visibility = View.INVISIBLE
-                icon.setColorFilter(originalColor) // Restaurar color original en lugar de null
+                icon.setColorFilter(originalColor)
                 text.setTextColor(originalColor)
                 text.setTypeface(null, android.graphics.Typeface.NORMAL)
             }
@@ -83,6 +85,7 @@ class ViewMedico : AppCompatActivity() {
             .commit()
     }
 
+    // Modelo para manejar cada ítem de la barra de navegación
     private data class NavItem(
         val container: View,
         val background: View,
