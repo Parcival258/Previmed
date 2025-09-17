@@ -63,11 +63,8 @@
             android:name=".controller.Login"
             android:exported="false" />
         <activity
-            android:name=".controller.pacientes.SolicitarVisita"
-            android:exported="false" />
-        <activity
-            android:name=".controller.asesor.RegistroPaciente"
-            android:exported="false" />
+            android:name=".controller.paciente.SolicitarVisitaActivity"
+            android:exported="true" />
         <activity
             android:name=".controller.medico.Visitas"
             android:exported="false" />

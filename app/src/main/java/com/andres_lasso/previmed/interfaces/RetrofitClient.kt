@@ -1,10 +1,12 @@
 package com.andres_lasso.previmed.interfaces
 
+import com.andres_lasso.previmed.controller.medico.Visitas
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+
 
 object RetrofitClient {
 
@@ -51,4 +53,25 @@ object RetrofitClient {
     val contratosApi: Contratos by lazy {
         retrofit.create(Contratos::class.java)
     }
+
+    val pacienteApi: PacienteApi by lazy {
+        retrofit.create(PacienteApi::class.java)
+    }
+
+    val medicoApi: MedicosApi by lazy {
+        retrofit.create(MedicosApi::class.java)
+    }
+
+    val visitaApi: VisitaApi by lazy {
+        retrofit.create(VisitaApi::class.java)
+    }
+
+    val barriosApi: BarriosApi by lazy {
+        retrofit.create(BarriosApi::class.java)
+    }
+
+
+
+
+
 }
