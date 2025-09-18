@@ -8,27 +8,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.model.Plan
 
-class PlanesAdapter(private val listaPlanes: List<Plan>) :
-    RecyclerView.Adapter<PlanesAdapter.PlanViewHolder>() {
+class PlanesAdapter(private val listaPlanes: MutableList<Plan>) : RecyclerView.Adapter<PlanesAdapter.PlanViewHolder>() {
 
-    inner class PlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvTipoPlan: TextView = itemView.findViewById(R.id.tvTipoPlan)
-        val tvDescripcion: TextView = itemView.findViewById(R.id.tvDescripcionPlan)
-        val tvPrecio: TextView = itemView.findViewById(R.id.tvPrecioPlan)
+    class PlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tipoPlanTextView: TextView = itemView.findViewById(R.id.tvTipoPlan)
+        val precioTextView: TextView = itemView.findViewById(R.id.tvPrecioPlan)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_planes, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_planes, parent, false)
         return PlanViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PlanViewHolder, position: Int) {
         val plan = listaPlanes[position]
-        holder.tvTipoPlan.text = plan.tipoPlan
-        holder.tvDescripcion.text = plan.descripcion
-        holder.tvPrecio.text = plan.precio
+        holder.tipoPlanTextView.text = plan.tipoPlan
+        holder.precioTextView.text = plan.precio.toString()
     }
 
     override fun getItemCount(): Int = listaPlanes.size
+
+    // Nuevo método para agregar un plan y actualizar el RecyclerView
+    fun agregarPlan(plan: Plan) {
+        listaPlanes.add(plan)
+        notifyItemInserted(listaPlanes.size - 1)
+    }
 }

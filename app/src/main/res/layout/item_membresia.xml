@@ -2,22 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
-    android:orientation="vertical">
+    android:padding="15dp"
+    android:layout_margin="20dp"
+    android:background="@drawable/card_info"
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp">
 
     <TextView
         android:id="@+id/tvNombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Nombre completo"
         android:textStyle="bold"
-        android:textSize="16sp"
-        android:text="Nombre completo" />
+        android:textSize="18sp"
+        android:textColor="@color/AzulOscuro_Prevemed"
+        />
 
     <TextView
         android:id="@+id/tvNumeroContrato"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Número de contrato"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
+        android:textSize="16sp"
+        android:textColor="@color/AzulOscuro_Prevemed"
+        android:layout_marginTop="10dp" />
+
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.andres_lasso.previmed.controller.asesor.recycler.adapter
+/*package com.andres_lasso.previmed.controller.asesor.recycler.adapter
 
 
 import android.view.View
@@ -14,6 +14,7 @@ class BarriosViewHolder(view:View):RecyclerView.ViewHolder(view){
 
     fun render(barrios:BarriosClass){
         binding.btBarrio.text = barrios.nombreBarrio
-        binding.btCiudad.text = barrios.nombreCiudad
+
     }
 }
+*/
