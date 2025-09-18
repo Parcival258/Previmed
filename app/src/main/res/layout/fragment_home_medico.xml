@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".controller.medico.fragmentMedico.HomeMedico"
+    tools:context=".controller.medico.HomeMedicoFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -33,7 +33,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="24dp">
 
@@ -75,7 +75,7 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:src="@drawable/ic_paciente" />
 
                         <TextView
@@ -89,7 +89,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Patientes"
+                            android:text="Pacientes"
                             android:textColor="@android:color/darker_gray"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -104,20 +104,20 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:src="@drawable/ic_experience" />
 
                         <TextView
                             android:id="@+id/txt_experience"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:text="7 años"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:text="Experiencia"
                             android:textColor="@android:color/darker_gray"
                             android:textSize="12sp" />
@@ -127,7 +127,7 @@
                 <!-- Sección de información -->
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="Acerca de:"
                     android:textSize="16sp"
@@ -136,28 +136,38 @@
                 <TextView
                     android:id="@+id/txt_about"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Medico especialido en la atencion domiciliaria a pacientes de 3ra edad"
+                    android:text="Medico especializado en la atención domiciliaria a pacientes de 3ra edad"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
 
-                <!-- Boton -->
+                <!-- Botones -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
-                    <!--boton estado-->
+                    android:orientation="vertical">
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_estado"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="@drawable/btn_degradado"
-                        android:text="cambiar estado"
-                        android:textStyle="bold" />
+                        android:text="Cambiar estado"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"/>
 
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnLogout"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/btn_degradado"
+                        android:text="Cerrar sesión"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"/>
                 </LinearLayout>
 
             </LinearLayout>
