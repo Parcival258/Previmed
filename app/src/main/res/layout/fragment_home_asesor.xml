@@ -2,12 +2,13 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".controller.asesor.fragmentAsesor.HomeAsesorFragment">
 
+    <!-- Imagen del asesor -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="330dp"
@@ -19,8 +20,8 @@
             android:src="@drawable/asesor_img" />
     </LinearLayout>
 
+    <!-- Card con la información -->
     <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="280dp"
@@ -36,6 +37,7 @@
             android:paddingVertical="10dp"
             android:paddingHorizontal="20dp">
 
+            <!-- Info del asesor -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,9 +79,9 @@
                         android:textColor="@color/black"
                         android:textStyle="bold" />
                 </LinearLayout>
-
             </LinearLayout>
 
+            <!-- Título -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,6 +93,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"/>
 
+            <!-- Botón Planes -->
             <LinearLayout
                 android:id="@+id/btn_planes"
                 android:layout_width="match_parent"
@@ -113,6 +116,7 @@
                     android:layout_marginStart="16dp" />
             </LinearLayout>
 
+            <!-- Botón Barrios -->
             <LinearLayout
                 android:id="@+id/btn_barrios"
                 android:layout_width="match_parent"
@@ -135,6 +139,7 @@
                     android:layout_marginStart="16dp" />
             </LinearLayout>
 
+            <!-- Botón Contratos -->
             <LinearLayout
                 android:id="@+id/btn_contratos"
                 android:layout_width="match_parent"
@@ -156,6 +161,32 @@
                     android:textSize="18dp"
                     android:layout_marginStart="16dp" />
             </LinearLayout>
+
+            <!-- Botón Cerrar sesión -->
+            <LinearLayout
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="10dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_logout"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cerrar sesión"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:layout_marginStart="16dp" />
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

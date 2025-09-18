@@ -2,46 +2,58 @@ package com.andres_lasso.previmed.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import java.text.Normalizer
 
 object PreferenceHelper {
 
-    // Nombre del archivo donde se guardan las preferencias
     private const val PREF_NAME = "previmed_prefs"
-
-    // Clave para almacenar el token
     private const val TOKEN_KEY = "jwt"
+    private const val ROLE_KEY = "user_role"
 
-    /**
-     * Guarda el token en SharedPreferences
-     */
+    private fun prefs(context: Context): SharedPreferences {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    }
+
+    // ================== TOKEN ==================
     fun saveToken(context: Context, token: String) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putString(TOKEN_KEY, token).apply()
+        prefs(context).edit().putString(TOKEN_KEY, token).apply()
     }
 
-    /**
-     * Obtiene el token guardado en SharedPreferences
-     * Retorna null si no existe
-     */
     fun getToken(context: Context): String? {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        return prefs.getString(TOKEN_KEY, null)
+        return prefs(context).getString(TOKEN_KEY, null)
     }
 
-    /**
-     * Elimina el token (se usa al cerrar sesión)
-     */
     fun clearToken(context: Context) {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        prefs.edit().remove(TOKEN_KEY).apply()
+        prefs(context).edit().remove(TOKEN_KEY).apply()
     }
 
-    /**
-     * Verifica si hay un token guardado
-     * Devuelve true si el usuario está logeado, false si no
-     */
     fun hasToken(context: Context): Boolean {
-        val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        return prefs.contains(TOKEN_KEY)
+        return !getToken(context).isNullOrBlank()
+    }
+
+    // ================== ROL ==================
+    private fun normalizeRole(role: String?): String {
+        if (role.isNullOrBlank()) return ""
+        val normalized = Normalizer.normalize(role, Normalizer.Form.NFD)
+        return normalized.replace("\\p{Mn}+".toRegex(), "").lowercase()
+    }
+
+    fun saveRole(context: Context, role: String) {
+        val normalized = normalizeRole(role)
+        prefs(context).edit().putString(ROLE_KEY, normalized).apply()
+    }
+
+    fun getRole(context: Context): String? {
+        val rawRole = prefs(context).getString(ROLE_KEY, null)
+        return normalizeRole(rawRole)
+    }
+
+    fun clearRole(context: Context) {
+        prefs(context).edit().remove(ROLE_KEY).apply()
+    }
+
+    // ================== SESIÓN ==================
+    fun clearSession(context: Context) {
+        prefs(context).edit().clear().apply()
     }
 }

@@ -19,5 +19,20 @@ data class UserData(
     val id: String,
 
     @SerializedName("documento")
-    val documento: String
+    val documento: String,
+
+    @SerializedName("rol")
+    val rol: RolLogin
+)
+
+// 👇 Este Rol es el del login
+data class RolLogin(
+    @SerializedName("idRol")
+    val idRol: Int,
+
+    @SerializedName("nombreRol")
+    val nombreRol: String,
+
+    @SerializedName("estado")
+    val estado: Boolean
 )
