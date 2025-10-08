@@ -36,12 +36,12 @@ object RetrofitClient {
         retrofit.create(ApiService::class.java)
     }
 
-    val rolesApi: RolesApi by lazy {
-        retrofit.create(RolesApi::class.java)
+    val rolesApi: PacienteApi.RolesApi by lazy {
+        retrofit.create(PacienteApi.RolesApi::class.java)
     }
 
-    val epsApi: EpsApi by lazy {
-        retrofit.create(EpsApi::class.java)
+    val epsApi: PacienteApi.EpsApi by lazy {
+        retrofit.create(PacienteApi.EpsApi::class.java)
     }
 
     val loginApi: LoginApi by lazy {
@@ -57,9 +57,15 @@ object RetrofitClient {
     val planes: PlanesApi by lazy {
         retrofit.create(PlanesApi::class.java)
     }
-    val barriosApi: BarriosApi by lazy {
-        retrofit.create(BarriosApi::class.java)
+    val visitas: VisitaService by lazy {
+        retrofit.create(VisitaService::class.java)
     }
+
+    val pacienteApiService: PacienteApi by lazy {
+        retrofit.create(PacienteApi::class.java)
+    }
+
+
 
 
 }

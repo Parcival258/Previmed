@@ -12,7 +12,6 @@ import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.recycler.BarriosClass
 import com.andres_lasso.previmed.controller.asesor.recycler.adapter.BarriosAdapter
 import com.andres_lasso.previmed.interfaces.RetrofitClient
-import com.andres_lasso.previmed.model.BarriosResponse
 import kotlinx.coroutines.launch
 
 class Barrios : AppCompatActivity() {
@@ -37,10 +36,10 @@ class Barrios : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.barriosApi.listarBarrios()
+                val response = RetrofitClient.visitas.getBarrios()
                 if (response.isSuccessful) {
-                    val responseList: List<BarriosResponse> = response.body()?.msj ?: emptyList()
-                    listaOriginal = responseList.map {
+                    val listarBarrios = response.body()?.msj ?: emptyList()
+                    listaOriginal = listarBarrios.map {
                         BarriosClass(
                             idBarrio = it.idBarrio,
                             nombreBarrio = it.nombreBarrio,
@@ -51,6 +50,7 @@ class Barrios : AppCompatActivity() {
                             comuna = null
                         )
                     }
+
                     adapter.actualizarLista(listaOriginal)
                 } else {
                     Toast.makeText(this@Barrios, "Error al cargar barrios", Toast.LENGTH_SHORT).show()
