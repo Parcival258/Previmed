@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controller.pacientes.fragmentBeneficiario.VisitaBeneficiarioFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#EFF1FF"
@@ -15,14 +12,12 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-
         <ImageView
             android:layout_width="130dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginTop="35dp"
             android:src="@drawable/logo" />
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,9 +27,7 @@
             android:textSize="20sp"
             android:textColor="#000000"
             android:layout_marginTop="32dp"
-            android:layout_marginBottom="24dp"
-            />
-
+            android:layout_marginBottom="24dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -42,8 +35,7 @@
             android:text="Dirección: *"
             android:textColor="#000000"
             android:layout_marginBottom="4dp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/edDireccion"
@@ -54,16 +46,15 @@
             android:textColor="#000000"
             android:layout_marginBottom="16dp"
             android:elevation="2dp"
-            android:hint="Dirección:"
-            />
+            android:hint="Dirección:" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Descripción: *"
             android:textColor="#000000"
             android:layout_marginBottom="4dp"
-            android:textStyle="bold"/>
-
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/edDescripcion"
@@ -74,8 +65,28 @@
             android:textColor="#000000"
             android:layout_marginBottom="16dp"
             android:elevation="2dp"
-            android:hint="Opcional*"
-            />
+            android:hint="Opcional*" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Teléfono de contacto: *"
+            android:textColor="#000000"
+            android:layout_marginBottom="4dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="@color/white"
+            android:textColor="#000000"
+            android:layout_marginBottom="16dp"
+            android:elevation="2dp"
+            android:hint="Ej: 3001234567"
+            android:inputType="phone" />
+
 
         <CheckBox
             android:id="@+id/checkMedico"
@@ -84,10 +95,7 @@
             android:text="¿Deseas un médico en específico?"
             android:textColor="#000000"
             android:layout_marginBottom="16dp"
-            android:textStyle="bold"
-
-
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -95,7 +103,7 @@
             android:text="Seleccione médico"
             android:textColor="#000000"
             android:layout_marginBottom="4dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinnerMedicos"
@@ -104,7 +112,20 @@
             android:background="@color/white"
             android:padding="10dp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seleccione barrio"
+            android:textColor="#000000"
+            android:layout_marginBottom="4dp"
+            android:textStyle="bold" />
 
+        <Spinner
+            android:id="@+id/spinnerBarrios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="10dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_solicitar"
@@ -114,9 +135,7 @@
             android:background="@drawable/btn_fondo_previmed"
             android:text="Solicitar"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            />
-
+            android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_cancelar"
@@ -126,11 +145,7 @@
             android:background="@drawable/btn_cancelar"
             android:text="Cancelar"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
-
-            />
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-
-</FrameLayout>
+</ScrollView>
