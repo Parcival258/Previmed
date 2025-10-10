@@ -1,5 +1,7 @@
 package com.andres_lasso.previmed.model
 
+import com.google.gson.annotations.SerializedName
+
 data class UsuarioMedico(
     val id_usuario: String,
     val nombre: String,
@@ -13,9 +15,9 @@ data class Medico(
     val disponibilidad: Boolean,
     val estado: Boolean,
     val usuario_id: String,
-    val usuario: Usuario
+    val usuario: UsuarioMedico
 )
 
-data class MedicosResponse(
-    val data: List<Medico>?
+    data class MedicosListResponse(
+    @SerializedName("data") val data: List<MedicoIndividualResponse>
 )

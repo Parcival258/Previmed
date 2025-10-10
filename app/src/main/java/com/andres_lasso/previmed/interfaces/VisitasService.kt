@@ -1,7 +1,10 @@
 package com.andres_lasso.previmed.interfaces
 
 import com.andres_lasso.previmed.model.BarriosResponse
-import com.andres_lasso.previmed.model.MedicosResponse
+
+import com.andres_lasso.previmed.model.MedicoListWrapper
+import com.andres_lasso.previmed.model.MedicosListResponse
+
 import com.andres_lasso.previmed.model.VisitaResponse
 import com.andres_lasso.previmed.model.VisitasRequest
 import retrofit2.Response
@@ -22,7 +25,10 @@ interface VisitaService {
     suspend fun cancelarVisita(@Path("id") visitaId: String)
 
     @GET("medicos")
-    suspend fun getMedicos(): Response<MedicosResponse>
+    suspend fun getMedicos(): Response<MedicoListWrapper>
+
+    @GET("medicos/{id}")
+    suspend fun getMedicoById(@Path("id") idMedico: Int): Response<MedicoListWrapper>
 
     @GET("barrios")
     suspend fun getBarrios(): Response<BarriosResponse>
