@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.andres_lasso.previmed.databinding.FragmentVisitaBeneficiarioBinding
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.*
+import com.andres_lasso.previmed.utils.MedicoCache
 import com.andres_lasso.previmed.utils.PreferenceHelper
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -30,8 +31,12 @@ class VisitaBeneficiarioFragment : Fragment() {
 
     private val apiService = RetrofitClient.visitas
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        FragmentVisitaBeneficiarioBinding.inflate(inflater, container, false).also { _binding = it }.root
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = FragmentVisitaBeneficiarioBinding.inflate(inflater, container, false)
+        .also { _binding = it }.root
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,17 +51,18 @@ class VisitaBeneficiarioFragment : Fragment() {
         }
 
         binding.btnSolicitar.setOnClickListener {
-            val direccion = binding.edDireccion.text.toString().trim()
-            val descripcion = binding.edDescripcion.text.toString().trim()
-            val deseaMedico = binding.checkMedico.isChecked
-            val medicoPos = binding.spinnerMedicos.selectedItemPosition
-            val barrioPos = binding.spinnerBarrios.selectedItemPosition
-            edTelefono = binding.edTelefono
+            val direccion      = binding.edDireccion.text.toString().trim()
+            val descripcion    = binding.edDescripcion.text.toString().trim()
+            val deseaMedico    = binding.checkMedico.isChecked
+            val medicoPos      = binding.spinnerMedicos.selectedItemPosition
+            val barrioPos      = binding.spinnerBarrios.selectedItemPosition
+            edTelefono         = binding.edTelefono
 
-            val idPacienteStr = PreferenceHelper.getIdPaciente(requireContext())
-            val idPaciente = idPacienteStr?.toIntOrNull() ?: 0
+            val idPacienteStr  = PreferenceHelper.getIdPaciente(requireContext())
+            val idPaciente     = idPacienteStr?.toIntOrNull() ?: 0
+            val telefono       = edTelefono.text.toString().trim()
 
-            val telefono = edTelefono.text.toString().trim()
+            /* ---------- VALIDACIONES BÁSICAS ---------- */
             if (telefono.isEmpty()) {
                 Toast.makeText(requireContext(), "Ingresa un teléfono de contacto", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -65,7 +71,6 @@ class VisitaBeneficiarioFragment : Fragment() {
                 Toast.makeText(requireContext(), "Número debe tener 10 dígitos y empezar con 3", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
             if (idPaciente == 0) {
                 Toast.makeText(requireContext(), "No hay paciente autenticado", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -74,28 +79,47 @@ class VisitaBeneficiarioFragment : Fragment() {
                 Toast.makeText(requireContext(), "La dirección es obligatoria", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (deseaMedico && medicoPos == 0) {
-                Toast.makeText(requireContext(), "Selecciona un médico", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
             if (barrioPos == 0) {
                 Toast.makeText(requireContext(), "Selecciona un barrio", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val medicoId = if (deseaMedico) medicos[medicoPos - 1].id_medico else 0
-            val barrioId = barrios[barrioPos - 1].idBarrio
+            /* ---------- LÓGICA DEL MÉDICO ---------- */
+            val medicoId: Int
+            if (deseaMedico) {
+                // Manual: debe seleccionar uno y que esté disponible
+                if (medicoPos == 0) {
+                    Toast.makeText(requireContext(), "Selecciona un médico", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                val medicoSeleccionado = medicos[medicoPos - 1]
+                if (!medicoSeleccionado.disponibilidad) {
+                    Toast.makeText(requireContext(), "El médico seleccionado no está disponible", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                medicoId = medicoSeleccionado.id_medico
+            } else {
+                // Automático: el primer médico disponible
+                val medicoDisponible = medicos.firstOrNull { it.disponibilidad }
+                if (medicoDisponible == null) {
+                    Toast.makeText(requireContext(), "No hay médicos disponibles en este momento", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                medicoId = medicoDisponible.id_medico
+            }
+
+            val barrioId   = barrios[barrioPos - 1].idBarrio
             val fechaVisita = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
 
             val visita = VisitasRequest(
                 fecha_visita = fechaVisita,
-                descripcion = if (descripcion.isNotEmpty()) descripcion else null,
-                direccion = direccion,
-                estado = true,
-                telefono = telefono,
-                paciente_id = idPaciente,
-                medico_id = medicoId,
-                barrio_id = barrioId
+                descripcion  = descripcion.takeIf { it.isNotEmpty() },
+                direccion    = direccion,
+                estado       = true,
+                telefono     = telefono,
+                paciente_id  = idPaciente,
+                medico_id    = medicoId,
+                barrio_id    = barrioId
             )
 
             lifecycleScope.launch {
@@ -121,7 +145,38 @@ class VisitaBeneficiarioFragment : Fragment() {
         binding.spinnerMedicos.setSelection(0)
         binding.spinnerBarrios.setSelection(0)
         edTelefono.text.clear()
+
+        // Actualiza la caché de médicos para que el listado refleje el nombre correcto
+        lifecycleScope.launch {
+            try {
+                val resp = RetrofitClient.visitas.getMedicos()
+                if (resp.isSuccessful) {
+                    resp.body()?.data?.let { MedicoCache.set(it) }
+                }
+            } catch (e: Exception) {
+                // silencioso
+            }
+        }
     }
+
+
+    private fun mapToOldMedico(list: List<MedicoIndividualResponse>): List<Medico> =
+        list.map { src ->
+            Medico(
+                id_medico = src.idMedico,
+                disponibilidad = src.disponibilidad,
+                estado = src.estado,
+                usuario_id = src.usuarioId,
+                usuario = UsuarioMedico(
+                    id_usuario = src.usuario?.id_usuario ?: "",
+                    nombre = src.usuario?.nombre ?: "",
+                    apellido = src.usuario?.apellido ?: "",
+                    email = src.usuario?.email ?: "",
+                    numero_documento = src.usuario?.numero_documento ?: ""
+                )
+            )
+        }
+
 
     private fun cargarMedicos() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -129,24 +184,39 @@ class VisitaBeneficiarioFragment : Fragment() {
                 val response = apiService.getMedicos()
                 if (response.isSuccessful) {
                     medicos.clear()
-                    medicos.addAll(response.body()?.data ?: emptyList())
+                    // Convierte la lista nueva a la clase antigua
+                    val nuevos = response.body()?.data ?: emptyList()
+                    medicos.addAll(mapToOldMedico(nuevos))
+
+                    // Filtra solo disponibles para el Spinner
+                    val disponibles = medicos.filter { it.estado && it.disponibilidad }
+
                     val listaNombres = mutableListOf("Seleccione un médico")
-                    listaNombres.addAll(medicos.map { med ->
+                    listaNombres.addAll(disponibles.map { med ->
                         val user = med.usuario
-                        if (user != null) {
-                            "Dr. ${user.nombre} ${user.apellido}"
-                        } else {
-                            "Dr. Asignado"
-                        }
+                        if (user != null) "${user.nombre} ${user.apellido}" else "Médico asignado"
                     })
-                    val adaptador = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listaNombres)
+
+                    val adaptador = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item,
+                        listaNombres
+                    )
                     adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     binding.spinnerMedicos.adapter = adaptador
                 } else {
-                    Toast.makeText(requireContext(), "Error cargando médicos: ${response.code()}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Error cargando médicos: ${response.code()}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error cargando médicos: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Error cargando médicos: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

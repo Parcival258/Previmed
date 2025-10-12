@@ -9,11 +9,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andres_lasso.previmed.controller.pacientes.recycler.adapter.*
 import com.andres_lasso.previmed.databinding.FragmentVispendientesBeneficiarioBinding
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.utils.PreferenceHelper
+import com.andres_lasso.previmed.utils.MedicoCache
+import kotlinx.coroutines.launch
 
 class VispendientesBeneficiarioFragment : Fragment() {
 
@@ -29,22 +32,20 @@ class VispendientesBeneficiarioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("VISITA_FRAG", "🚀 Fragmento VispendientesBeneficiarioFragment creado")
+        Log.d("VISITA_FRAG", "🚀 Fragmento iniciado")
 
         val idPacienteStr = PreferenceHelper.getIdPaciente(requireContext())
-        Log.d("VISITA_FRAG", "Valor crudo de PreferenceHelper: '$idPacienteStr'")
-
         val idPaciente = idPacienteStr?.toIntOrNull() ?: 0
-        Log.d("VISITA_FRAG", "ID paciente convertido: $idPaciente")
 
         if (idPaciente == 0) {
-            Log.e("VISITA_FRAG", "❌ ID paciente es 0 o inválido")
+            Log.e("VISITA_FRAG", "❌ ID paciente inválido")
             Toast.makeText(requireContext(), "No hay paciente autenticado", Toast.LENGTH_SHORT).show()
             return
         }
 
-        Log.d("VISITA_FRAG", "✅ ID paciente válido: $idPaciente")
+        Log.d("VISITA_FRAG", "✅ ID paciente: $idPaciente")
 
+        // Configurar ViewModel
         val visitaRepo = VisitaRepo(RetrofitClient.visitas)
         viewModel = ViewModelProvider(
             this,
@@ -53,6 +54,7 @@ class VispendientesBeneficiarioFragment : Fragment() {
             }
         )[VisitaViewModel::class.java]
 
+        // Configurar Adapter
         adapter = VisitaAdapter(emptyList()) { visita ->
             viewModel.cancelarVisita(visita.idVisita.toString(), idPaciente)
         }
@@ -60,13 +62,46 @@ class VispendientesBeneficiarioFragment : Fragment() {
         binding.rvVisitas.adapter = adapter
         binding.rvVisitas.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.visitas.observe(viewLifecycleOwner) { listaVisitas ->
-            Log.d("VISITA_FRAG", "📦 Visitas recibidas: ${listaVisitas.size}")
-            adapter.submitList(listaVisitas)
+        // PASO 1: Cargar caché de médicos PRIMERO
+        lifecycleScope.launch {
+            try {
+                Log.d("VISITA_FRAG", "📡 Cargando médicos...")
+                val resp = RetrofitClient.visitas.getMedicos()
+
+                if (resp.isSuccessful) {
+                    val lista = resp.body()?.data ?: emptyList()
+                    MedicoCache.set(lista)
+                    Log.d("VISITA_FRAG", "✅ Caché cargada con ${lista.size} médicos")
+
+                    // Debug: mostrar algunos médicos
+                    lista.take(3).forEach { medico ->
+                        Log.d("VISITA_FRAG", "   ID: ${medico.idMedico}, Nombre: ${medico.usuario?.nombre} ${medico.usuario?.apellido}")
+                    }
+
+                    // PASO 2: DESPUÉS de cargar caché, obtener visitas
+                    viewModel.obtenerVisitas(idPaciente)
+                } else {
+                    Log.e("VISITA_FRAG", "❌ Error al cargar médicos: ${resp.code()}")
+                    Toast.makeText(requireContext(), "Error al cargar médicos", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e("VISITA_FRAG", "❌ Excepción: ${e.message}", e)
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        Log.d("VISITA_FRAG", "📡 Llamando a viewModel.obtenerVisitas($idPaciente)")
-        viewModel.obtenerVisitas(idPaciente)
+        // PASO 3: Observar las visitas
+        viewModel.visitas.observe(viewLifecycleOwner) { listaVisitas ->
+            Log.d("VISITA_FRAG", "📦 ${listaVisitas.size} visitas recibidas")
+
+            // Debug: verificar que se obtienen los nombres
+            listaVisitas.forEach { visita ->
+                val nombre = MedicoCache.getNombre(visita.medicoId)
+                Log.d("VISITA_FRAG", "   Visita ${visita.idVisita} - Médico ID ${visita.medicoId} = $nombre")
+            }
+
+            adapter.submitList(listaVisitas)
+        }
     }
 
     override fun onDestroyView() {
