@@ -1,31 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- 🔹 Tipos de documento -->
     <string-array name="tipos_documento">
-        <item>Cédula de Ciudadanía</item>
+        <item>Seleccione un tipo de documento</item>
+        <item>Registro Civil</item>
         <item>Tarjeta de Identidad</item>
+        <item>Cédula de Ciudadanía</item>
+        <item>Tarjeta de Extranjería</item>
         <item>Cédula de Extranjería</item>
+        <item>Pasaporte</item>
+        <item>Documento de Identificación Extranjero (DIE)</item>
+        <item>Permiso Especial de Permanencia (PEP)</item>
     </string-array>
+
+    <!-- 🔹 Autorización de datos -->
     <string-array name="autorizacion_datos">
         <item>Sí</item>
         <item>No</item>
     </string-array>
+
+    <!-- 🔹 Formas de pago -->
+    <string-array name="formas_pago">
+        <item>Seleccione una forma de pago</item>
+    </string-array>
+
+    <!-- 🔹 Géneros -->
     <string-array name="generos">
         <item>Masculino</item>
         <item>Femenino</item>
         <item>Otro</item>
     </string-array>
+
+    <!-- 🔹 Estados civiles -->
     <string-array name="estados_civiles">
         <item>Soltero</item>
         <item>Casado</item>
         <item>Divorciado</item>
         <item>Viudo</item>
     </string-array>
+
+    <!-- 🔹 Roles dinámicos (general) -->
     <string-array name="roles">
         <item>Paciente</item>
         <item>Asesor</item>
         <item>Administrador</item>
     </string-array>
 
+    <!-- 🔹 Roles estáticos (para spinner bloqueado en "Paciente") -->
+    <string-array name="rol_paciente">
+        <item>Paciente</item>
+    </string-array>
+
+    <!-- 🔹 Lista de EPS -->
     <string-array name="eps_list">
         <item>EPS 1</item>
         <item>EPS 2</item>
@@ -33,4 +60,3 @@
     </string-array>
 
 </resources>
-

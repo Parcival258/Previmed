@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.andres_lasso.previmed.R
+import com.andres_lasso.previmed.RegistroUsuario
 import com.andres_lasso.previmed.ViewMedico
 import com.andres_lasso.previmed.controller.asesor.ViewAsesor
 import com.andres_lasso.previmed.controller.pacientes.ViewBeneficiario
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 goToRoleActivity(role)
             } else {
                 PreferenceHelper.clearSession(this)
-                startActivity(Intent(this, Login::class.java))
+                startActivity(Intent(this, RegistroUsuario::class.java))
             }
 
             finish()

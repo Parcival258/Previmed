@@ -34,7 +34,7 @@ class PlanesView : AppCompatActivity() {
     }
 
     private fun cargarPlanes() {
-        RetrofitClient.planes.getPlanes().enqueue(object : Callback<PlanesResponse> {
+        RetrofitClient.planesApi.getPlanes().enqueue(object : Callback<PlanesResponse> {
             override fun onResponse(call: Call<PlanesResponse>, response: Response<PlanesResponse>) {
                 if (response.isSuccessful) {
                     val planes = response.body()?.planes?.filter { it.estado } ?: listOf()

@@ -2,95 +2,52 @@ package com.andres_lasso.previmed.model
 
 import com.google.gson.annotations.SerializedName
 
+// -----------------------------
+// ✅ MODELO PRINCIPAL
+// -----------------------------
 data class PacientesResponse(
-    @SerializedName("message")
     val message: String?,
-
-    @SerializedName("data")
-    val data: List<PacienteData>
+    val data: List<PacienteData>? // ✅ lista de pacientes
 )
+
+// ✅ Para el POST /pacientes
+data class PacienteCreadoResponse(
+    val message: String?,
+    val data: PacienteCreadoData?
+)
+
+data class PacienteCreadoData(
+    @SerializedName("idPaciente") val idPaciente: Int,
+    val direccionCobro: String?,
+    val ocupacion: String?,
+    val activo: Boolean?,
+    val beneficiario: Boolean?,
+    val usuarioId: String?
+)
+
 
 data class PacienteData(
-    @SerializedName("idPaciente")
-    val idPaciente: Int,
-
-    @SerializedName("direccionCobro")
+    @SerializedName("id_paciente")
+    val idPaciente: Int?,        // <- cambiar a nullable
+    @SerializedName("direccion_cobro")
     val direccionCobro: String?,
-
     @SerializedName("ocupacion")
     val ocupacion: String?,
-
     @SerializedName("activo")
-    val activo: Boolean,
-
+    val activo: Boolean?,
     @SerializedName("beneficiario")
-    val beneficiario: Boolean,
-
-    @SerializedName("pacienteId")
+    val beneficiario: Boolean?,
+    @SerializedName("paciente_id")
     val pacienteId: Int?,
-
-    @SerializedName("usuarioId")
-    val usuarioId: String,
-
+    @SerializedName("usuario_id")
+    val usuarioId: String?,
     @SerializedName("usuario")
-    val usuario: Usuario
+    val usuario: Usuario?,
+    @SerializedName("membresia_paciente")
+    val membresiaPaciente: List<MembresiaPaciente>? = emptyList()
 )
 
-data class Usuario(
-    @SerializedName("idUsuario")
-    val idUsuario: String,
 
-    @SerializedName("nombre")
-    val nombre: String,
 
-    @SerializedName("segundoNombre")
-    val segundoNombre: String?,
-
-    @SerializedName("apellido")
-    val apellido: String,
-
-    @SerializedName("segundoApellido")
-    val segundoApellido: String?,
-
-    @SerializedName("email")
-    val email: String,
-
-    @SerializedName("password")
-    val password: String,
-
-    @SerializedName("direccion")
-    val direccion: String,
-
-    @SerializedName("numeroDocumento")
-    val numeroDocumento: String,
-
-    @SerializedName("fechaNacimiento")
-    val fechaNacimiento: String,
-
-    @SerializedName("numeroHijos")
-    val numeroHijos: String?,
-
-    @SerializedName("estrato")
-    val estrato: String?,
-
-    @SerializedName("autorizacionDatos")
-    val autorizacionDatos: Boolean,
-
-    @SerializedName("epsId")
-    val epsId: Int?,
-
-    @SerializedName("rolId")
-    val rolId: Int,
-
-    @SerializedName("habilitar")
-    val habilitar: Boolean,
-
-    @SerializedName("genero")
-    val genero: String,
-
-    @SerializedName("estadoCivil")
-    val estadoCivil: String,
-
-    @SerializedName("tipoDocumento")
-    val tipoDocumento: String
-)
+// Alias útil si más adelante usas respuestas genéricas
+typealias PacientesListResponse = ApiResponse<List<PacienteData>>

@@ -1,7 +1,9 @@
 package com.andres_lasso.previmed.model
 
-data class RegisterResponse(
-    val msg: String,
-    val data: Any?
-)
+import com.google.gson.annotations.SerializedName
 
+data class RegisterResponse(
+    @SerializedName("idUsuario") val idUsuario: String?,
+    val nombre: String?,
+    val email: String?
+)

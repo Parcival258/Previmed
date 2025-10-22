@@ -29,7 +29,7 @@ class VisitaBeneficiarioFragment : Fragment() {
     private val barrios = mutableListOf<Barrio>()
     private lateinit var edTelefono: EditText
 
-    private val apiService = RetrofitClient.visitas
+    private val apiService = RetrofitClient.visitasApi
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -149,7 +149,7 @@ class VisitaBeneficiarioFragment : Fragment() {
         // Actualiza la caché de médicos para que el listado refleje el nombre correcto
         lifecycleScope.launch {
             try {
-                val resp = RetrofitClient.visitas.getMedicos()
+                val resp = RetrofitClient.visitasApi.getMedicos()
                 if (resp.isSuccessful) {
                     resp.body()?.data?.let { MedicoCache.set(it) }
                 }

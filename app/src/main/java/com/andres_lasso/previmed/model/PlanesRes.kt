@@ -4,8 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class PlanesResponse(
     @SerializedName("msj")
-    val planes: List<Plan>
+    val planes: List<Plan> = emptyList()
 )
+
 
 data class Plan(
     @SerializedName("idPlan")
@@ -19,5 +20,21 @@ data class Plan(
     @SerializedName("estado")
     val estado: Boolean,
     @SerializedName("cantidadBeneficiarios")
-    val cantidadBeneficiarios: Int
+    val cantidadBeneficiarios: Int,
+    @SerializedName("planXBeneficios")
+    val planXBeneficios: List<PlanXBeneficio> = emptyList()
 )
+
+data class PlanXBeneficio(
+    val planId: Int,
+    val beneficioId: Int,
+    val idPlanXBeneficios: Int,
+    val beneficio: Beneficio?
+)
+
+data class Beneficio(
+    val idBeneficio: Int,
+    val tipoBeneficio: String
+)
+
+

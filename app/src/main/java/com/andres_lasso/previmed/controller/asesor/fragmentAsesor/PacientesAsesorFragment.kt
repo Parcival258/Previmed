@@ -1,6 +1,5 @@
 package com.andres_lasso.previmed.controller.asesor.fragmentAsesor
 
-import PacienteClass
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,17 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
-import com.andres_lasso.previmed.controller.asesor.AgregarPaciente
-import com.andres_lasso.previmed.controller.asesor.RegistroPaciente
+import com.andres_lasso.previmed.RegistroUsuario
 import com.andres_lasso.previmed.controller.asesor.recycler.adapter.PacienteAseAdapter
 import com.andres_lasso.previmed.interfaces.RetrofitClient
+import com.andres_lasso.previmed.model.ApiResponse
 import com.andres_lasso.previmed.model.PacienteData
-import com.andres_lasso.previmed.model.PacienteDataa
-import com.andres_lasso.previmed.model.PacientesResponse
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 class PacientesAsesorFragment : Fragment() {
 
     private lateinit var adapter: PacienteAseAdapter
@@ -39,22 +36,18 @@ class PacientesAsesorFragment : Fragment() {
 
         val btnAgregarUsuario = view.findViewById<Button>(R.id.btn_agregarPacientess)
         btnAgregarUsuario.setOnClickListener {
-            val intent = Intent(requireContext(), RegistroPaciente::class.java)
+            val intent = Intent(requireContext(), RegistroUsuario::class.java)
             startActivity(intent)
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerPacientes)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = PacienteAseAdapter(listaFiltrada) { paciente ->
-            Toast.makeText(
-                requireContext(),
-                "Paciente: ${paciente.usuario.nombre}",
-                Toast.LENGTH_SHORT
-            ).show()
+            val nombre = paciente.usuario?.nombre ?: "Desconocido"
+            Toast.makeText(requireContext(), "Paciente: $nombre", Toast.LENGTH_SHORT).show()
         }
         recyclerView.adapter = adapter
 
-        // Aquí está el código para hacer que searchView funcione
         val searchView = view.findViewById<SearchView>(R.id.btn_Buscar_Usu)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false
@@ -69,36 +62,37 @@ class PacientesAsesorFragment : Fragment() {
         return view
     }
 
-
     private fun cargarPacientes() {
-        RetrofitClient.pacienteApi.getPacientes().enqueue(object : Callback<PacientesResponse> {
-            override fun onResponse(
-                call: Call<PacientesResponse>,
-                response: Response<PacientesResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val pacientes = response.body()?.data
-                    if (pacientes != null) {
+        RetrofitClient.pacienteApi.getPacientes()
+            .enqueue(object : Callback<ApiResponse<List<PacienteData>>> {
+                override fun onResponse(
+                    call: Call<ApiResponse<List<PacienteData>>>,
+                    response: Response<ApiResponse<List<PacienteData>>>
+                ) {
+                    if (response.isSuccessful) {
+                        val pacientes = response.body()?.data ?: emptyList()
                         listaCompleta.clear()
                         listaCompleta.addAll(pacientes)
                         listaFiltrada.clear()
                         listaFiltrada.addAll(pacientes)
                         adapter.notifyDataSetChanged()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Error al cargar pacientes (${response.code()})",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
-                } else {
-                    Toast.makeText(requireContext(), "Error al cargar pacientes", Toast.LENGTH_LONG)
-                        .show()
                 }
-            }
 
-            override fun onFailure(call: Call<PacientesResponse>, t: Throwable) {
-                Toast.makeText(
-                    requireContext(),
-                    "Error de conexión: ${t.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        })
+                override fun onFailure(call: Call<ApiResponse<List<PacienteData>>>, t: Throwable) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error de conexión: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
     }
 
     private fun filtrarLista(texto: String?) {
@@ -107,9 +101,11 @@ class PacientesAsesorFragment : Fragment() {
             listaFiltrada.addAll(listaCompleta)
         } else {
             val filtro = texto.lowercase()
-            val filtrados = listaCompleta.filter {
-                val nombreCompleto = "${it.usuario.nombre} ${it.usuario.apellido}".lowercase()
-                nombreCompleto.contains(filtro) || it.usuario.numeroDocumento.contains(filtro)
+            val filtrados = listaCompleta.filter { paciente ->
+                val usuario = paciente.usuario
+                val nombreCompleto = "${usuario?.nombre ?: ""} ${usuario?.apellido ?: ""}".lowercase()
+                val documento = usuario?.numeroDocumento?.lowercase() ?: ""
+                nombreCompleto.contains(filtro) || documento.contains(filtro)
             }
             listaFiltrada.addAll(filtrados)
         }

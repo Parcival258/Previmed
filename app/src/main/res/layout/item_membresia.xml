@@ -2,30 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp"
-    android:layout_margin="20dp"
-    android:background="@drawable/card_info"
-    android:layout_marginBottom="5dp"
     android:orientation="vertical"
-    android:layout_marginTop="10dp">
-
-    <TextView
-        android:id="@+id/tvNombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nombre completo"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="@color/AzulOscuro_Prevemed"
-        />
+    android:padding="12dp"
+    android:background="?attr/selectableItemBackground"
+    android:layout_marginBottom="8dp">
 
     <TextView
         android:id="@+id/tvNumeroContrato"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Número de contrato"
+        android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="@color/AzulOscuro_Prevemed"
-        android:layout_marginTop="10dp" />
+        android:text="Contrato: CT-XXXXXX"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvNombrePaciente"
+        android:text="Paciente: ---"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvDocumento"
+        android:text="Documento: ---"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvFormaPago"
+        android:text="Forma de pago: ---"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvEstado"
+        android:text="Estado: ---"
+        android:textColor="@android:color/holo_green_dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

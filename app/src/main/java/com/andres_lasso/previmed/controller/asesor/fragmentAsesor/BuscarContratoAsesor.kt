@@ -6,29 +6,31 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.widget.SearchView
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.ContratoDetalleDialog
 import com.andres_lasso.previmed.controller.asesor.recycler.adapter.MembresiaAdapter
 import com.andres_lasso.previmed.interfaces.RetrofitClient
+import com.andres_lasso.previmed.model.ApiResponse
 import com.andres_lasso.previmed.model.Membresia
-import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class BuscarContratoAsesor : AppCompatActivity() {
+
     private var listaOriginal: List<Membresia> = listOf()
     private lateinit var adapter: MembresiaAdapter
     private var paginaActual = 1
-    private val tamañoPagina = 20
+    private val pageSize = 20
     private var cargando = false
     private var finLista = false
 
     private val handler = Handler(Looper.getMainLooper())
     private val pollingInterval = 5000L // 5 segundos
 
-    // Polling - refresca la lista periódicamente
     private val pollingRunnable = object : Runnable {
         override fun run() {
             paginaActual = 1
@@ -67,6 +69,7 @@ class BuscarContratoAsesor : AppCompatActivity() {
         val searchView = findViewById<SearchView>(R.id.search_view)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?) = false
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filtro = newText?.lowercase()?.trim() ?: ""
                 val resultado = listaOriginal.filter { membresia ->
@@ -75,14 +78,18 @@ class BuscarContratoAsesor : AppCompatActivity() {
                         listOf(u?.nombre, u?.segundoNombre, u?.apellido, u?.segundoApellido)
                             .filterNotNull().joinToString(" ")
                     }?.joinToString(" ")?.lowercase() ?: ""
+
                     val documentos = membresia.membresiaPaciente?.mapNotNull { mp ->
                         mp.paciente?.usuario?.numeroDocumento
                     }?.joinToString(" ")?.lowercase() ?: ""
+
                     val nc = membresia.numeroContrato?.lowercase() ?: ""
                     val fp = membresia.formaPago?.lowercase() ?: ""
 
-                    nombres.contains(filtro) || documentos.contains(filtro) ||
-                            nc.contains(filtro) || fp.contains(filtro)
+                    nombres.contains(filtro) ||
+                            documentos.contains(filtro) ||
+                            nc.contains(filtro) ||
+                            fp.contains(filtro)
                 }
                 adapter.actualizarLista(resultado)
                 return true
@@ -102,35 +109,55 @@ class BuscarContratoAsesor : AppCompatActivity() {
         handler.removeCallbacks(pollingRunnable)
     }
 
-    // reset=true para reiniciar la lista (usado en polling)
     private fun cargarMembresiasPaginadas(reset: Boolean = false) {
         if (cargando || finLista) return
         cargando = true
 
-        lifecycleScope.launch {
-            try {
-                val membresias = RetrofitClient.contratosApi.listarMembresias(paginaActual, tamañoPagina)
-                Log.d("BuscarContratoAsesor", "Página: $paginaActual, recibidas: ${membresias.size}")
+        RetrofitClient.membresiaApi.listarMembresias()
+            .enqueue(object : Callback<ApiResponse<List<Membresia>>> {
+                override fun onResponse(
+                    call: Call<ApiResponse<List<Membresia>>>,
+                    response: Response<ApiResponse<List<Membresia>>>
+                ) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val membresias = response.body()!!.data ?: emptyList()
+                        Log.d("BuscarContratoAsesor", "Página: $paginaActual, recibidas: ${membresias.size}")
 
-                if (membresias.isEmpty()) {
-                    finLista = true
-                } else {
-                    listaOriginal = if (paginaActual == 1 || reset) {
-                        membresias
-                    } else {
-                        listaOriginal + membresias.filter { nueva ->
-                            listaOriginal.none { it.idMembresia == nueva.idMembresia }
+                        if (membresias.isEmpty()) {
+                            finLista = true
+                        } else {
+                            listaOriginal = if (paginaActual == 1 || reset) {
+                                membresias
+                            } else {
+                                listaOriginal + membresias.filter { nueva ->
+                                    listaOriginal.none { it.idMembresia == nueva.idMembresia }
+                                }
+                            }
+                            adapter.actualizarLista(listaOriginal)
+                            paginaActual++
                         }
+                    } else {
+                        Toast.makeText(
+                            this@BuscarContratoAsesor,
+                            "Error: ${response.message()}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
-                    adapter.actualizarLista(listaOriginal)
-                    paginaActual++
+                    cargando = false
                 }
-            } catch (e: Exception) {
-                Toast.makeText(this@BuscarContratoAsesor, "Error al cargar datos: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
-                Log.e("BuscarContratoAsesor", "Error al cargar membresías", e)
-            } finally {
-                cargando = false
-            }
-        }
+
+                override fun onFailure(
+                    call: Call<ApiResponse<List<Membresia>>>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(
+                        this@BuscarContratoAsesor,
+                        "Error al cargar datos: ${t.localizedMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    Log.e("BuscarContratoAsesor", "Error al cargar membresías", t)
+                    cargando = false
+                }
+            })
     }
 }
