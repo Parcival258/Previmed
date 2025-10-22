@@ -30,8 +30,6 @@
         <activity android:name=".controller.asesor.AsociarBeneficiario" />
         <activity android:name=".controller.asesor.PagosAdd" />
         <activity android:name=".controller.asesor.PagosView" />
-
-        <!-- ✅ Nueva actividad para registrar pago -->
         <activity android:name=".controller.asesor.RegistrarPagoActivity" />
 
         <!-- 🧍 Actividades de pacientes -->

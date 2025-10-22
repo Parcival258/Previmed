@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    tools:context=".controller.asesor.AsociarBeneficiarioActivity">
+    tools:context=".controller.asesor.AsociarBeneficiario">
 
     <!-- 🔵 Título -->
     <TextView
@@ -24,12 +24,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 🧾 Contenido desplazable -->
     <ScrollView
         android:id="@+id/scrollContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/tvTitulo"
         app:layout_constraintBottom_toTopOf="@id/layoutBotones"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +39,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- 🔹 Seleccionar Titular -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,57 +53,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:padding="10dp"
-                android:elevation="2dp" />
+                android:padding="10dp" />
 
-            <!-- 🔹 Buscar Beneficiario -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Buscar Beneficiario"
+                android:text="Seleccionar Beneficiario"
                 android:textColor="#2196F3"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:paddingTop="20dp"
                 android:paddingBottom="8dp" />
 
-            <LinearLayout
+            <Spinner
+                android:id="@+id/spBeneficiario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:background="@android:color/white"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:elevation="2dp"
-                android:gravity="center_vertical">
+                android:padding="10dp" />
 
-                <EditText
-                    android:id="@+id/etBuscarBeneficiario"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Ingrese nombre o documento"
-                    android:inputType="text"
-                    android:padding="8dp" />
-
-                <ImageButton
-                    android:id="@+id/btnBuscar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@android:drawable/ic_menu_search"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="Buscar" />
-            </LinearLayout>
-
-            <!-- 🔹 Resultados -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvResultados"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:visibility="gone" />
-
-            <!-- Loader -->
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyle"
@@ -118,7 +83,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- 🟢 Zona inferior fija -->
     <LinearLayout
         android:id="@+id/layoutBotones"
         android:layout_width="0dp"
@@ -141,20 +105,12 @@
             android:textStyle="bold"
             android:padding="14dp"
             android:elevation="3dp"
-            android:enabled="false" />
+            android:enabled="true" />
 
         <Button
             android:id="@+id/btnOmitir"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Omitir"
-            android:backgroundTint="#FFC107"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:padding="14dp"
-            android:layout_marginTop="12dp"
-            android:elevation="3dp" />
-
+            android:text="Omitir" />
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,8 +27,8 @@ data class PacienteCreadoData(
 
 
 data class PacienteData(
-    @SerializedName("id_paciente")
-    val idPaciente: Int?,        // <- cambiar a nullable
+    @SerializedName(value = "idPaciente", alternate = ["id_paciente"])
+    val idPaciente: Int?,
     @SerializedName("direccion_cobro")
     val direccionCobro: String?,
     @SerializedName("ocupacion")
