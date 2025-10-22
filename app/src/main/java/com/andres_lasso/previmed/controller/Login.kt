@@ -130,21 +130,30 @@ class Login : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 Log.d("LOGIN", "🔍 Obteniendo perfil para UUID: $usuarioId")
-                val response = RetrofitClient.pacienteApiService.getPacienteByUsuarioId(usuarioId)
+
+                // 👇 Ejecutamos la llamada Retrofit de tipo Call<> dentro de una corrutina
+                val response = RetrofitClient.pacienteApi
+                    .getPacienteByUsuarioId(usuarioId)
+                    .execute() // Ejecuta la request y obtiene Response<ApiResponse<PacienteData>>
+
                 if (response.isSuccessful && response.body() != null) {
-                    val idPaciente = response.body()!!.data.id_paciente
+                    val idPaciente = response.body()!!.data?.idPaciente
+
                     PreferenceHelper.saveIdPaciente(this@Login, idPaciente.toString())
                     Log.d("LOGIN", "✅ ID paciente guardado: $idPaciente")
                     Log.d("LOGIN", "🔍 Valor leído después de guardar: ${PreferenceHelper.getIdPaciente(this@Login)}")
+
                     goToRoleActivity(role)
                 } else {
                     Toast.makeText(this@Login, "Error obteniendo datos del paciente", Toast.LENGTH_SHORT).show()
-                    Log.e("LOGIN", "Error: ${response.code()}")
+                    Log.e("LOGIN", "Error: ${response.code()} - ${response.errorBody()?.string()}")
                 }
+
             } catch (e: Exception) {
                 Toast.makeText(this@Login, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 Log.e("LOGIN", "Error obteniendo paciente", e)
             }
         }
     }
+
 }

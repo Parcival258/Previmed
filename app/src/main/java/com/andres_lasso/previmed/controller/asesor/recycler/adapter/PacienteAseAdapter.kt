@@ -1,15 +1,13 @@
 package com.andres_lasso.previmed.controller.asesor.recycler.adapter
 
-import PacienteClass
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
-import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PacientesAsesorFragment
 import com.andres_lasso.previmed.model.PacienteData
+
 class PacienteAseAdapter(
     private val listaPacientes: List<PacienteData>,
     private val onClick: (PacienteData) -> Unit
@@ -34,9 +32,16 @@ class PacienteAseAdapter(
 
     override fun onBindViewHolder(holder: PacienteViewHolder, position: Int) {
         val paciente = listaPacientes[position]
-        val nombreCompleto = "${paciente.usuario.nombre} ${paciente.usuario.apellido}"
+        val usuario = paciente.usuario
+
+        // Usamos llamadas seguras y valores por defecto
+        val nombre = usuario?.nombre ?: "Sin nombre"
+        val apellido = usuario?.apellido ?: ""
+        val numeroDocumento = usuario?.numeroDocumento ?: "Sin documento"
+
+        val nombreCompleto = "$nombre $apellido".trim()
         holder.nombre.text = nombreCompleto
-        holder.doc.text = "Doc: ${paciente.usuario.numeroDocumento}"
+        holder.doc.text = "Doc: $numeroDocumento"
     }
 
     override fun getItemCount(): Int = listaPacientes.size

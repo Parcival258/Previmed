@@ -46,7 +46,7 @@ class VispendientesBeneficiarioFragment : Fragment() {
         Log.d("VISITA_FRAG", "✅ ID paciente: $idPaciente")
 
         // Configurar ViewModel
-        val visitaRepo = VisitaRepo(RetrofitClient.visitas)
+        val visitaRepo = VisitaRepo(RetrofitClient.visitasApi)
         viewModel = ViewModelProvider(
             this,
             object : ViewModelProvider.Factory {
@@ -66,7 +66,7 @@ class VispendientesBeneficiarioFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 Log.d("VISITA_FRAG", "📡 Cargando médicos...")
-                val resp = RetrofitClient.visitas.getMedicos()
+                val resp = RetrofitClient.visitasApi.getMedicos()
 
                 if (resp.isSuccessful) {
                     val lista = resp.body()?.data ?: emptyList()

@@ -2,35 +2,58 @@ package com.andres_lasso.previmed.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Usuarisso(
+// -----------------------------
+// ✅ USUARIO (implementa lo de UsuarioSimple.kt + campos extendidos)
+// -----------------------------
+data class Usuario(
     @SerializedName("idUsuario")
-    val idUsuario: String,
-    val nombre: String,
-    @SerializedName("segundoNombre")
-    val segundoNombre: String?,
-    val apellido: String,
-    @SerializedName("segundoApellido")
-    val segundoApellido: String?,
-    val email: String,
-    val password: String,
-    val direccion: String,
-    @SerializedName("numeroDocumento")
-    val numeroDocumento: String,
-    @SerializedName("fechaNacimiento")
-    val fechaNacimiento: String,
-    @SerializedName("numeroHijos")
-    val numeroHijos: String?,
-    val estrato: String?,
-    @SerializedName("autorizacionDatos")
-    val autorizacionDatos: Boolean,
-    @SerializedName("epsId")
-    val epsId: Int?,
-    @SerializedName("rolId")
-    val rolId: Int,
-    val habilitar: Boolean,
-    val genero: String,
-    @SerializedName("estadoCivil")
-    val estadoCivil: String,
-    @SerializedName("tipoDocumento")
-    val tipoDocumento: String
+    val idUsuario: String?, // UUID (varchar)
+
+    @SerializedName("nombre")
+    val nombre: String?,
+
+    @SerializedName("segundo_nombre")
+    val segundoNombre: String? = null,
+
+    @SerializedName("apellido")
+    val apellido: String?,
+
+    @SerializedName("segundo_apellido")
+    val segundoApellido: String? = null,
+
+    @SerializedName("email")
+    val email: String?,
+
+    @SerializedName("numero_documento")
+    val numeroDocumento: String? = null,
+
+    @SerializedName("fecha_nacimiento")
+    val fechaNacimiento: String? = null,
+
+    @SerializedName("numero_hijos")
+    val numeroHijos: String? = null,
+
+    @SerializedName("estrato")
+    val estrato: String? = null,
+
+    @SerializedName("autorizacion_datos")
+    val autorizacionDatos: Boolean? = null,
+
+    @SerializedName("eps_id")
+    val epsId: Int? = null,
+
+    @SerializedName("rol_id")
+    val rolId: Int? = null,
+
+    @SerializedName("habilitar")
+    val habilitar: Boolean? = null,
+
+    @SerializedName("genero")
+    val genero: String? = null,
+
+    @SerializedName("estado_civil")
+    val estadoCivil: String? = null,
+
+    @SerializedName("tipo_documento")
+    val tipoDocumento: String? = null
 )

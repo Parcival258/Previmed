@@ -34,7 +34,8 @@ class ContratoDetalleDialog(
         view.findViewById<TextView>(R.id.tvFirma).text = membresia.firma ?: ""
 
         // Muestra "Activo" o "Inactivo" según el estado de la membresía
-        view.findViewById<TextView>(R.id.tvEstado).text = if (membresia.estado) "Activo" else "Inactivo"
+        view.findViewById<TextView>(R.id.tvEstado).text =
+            if (membresia.estado == true) "Activo" else "Inactivo"
 
         // Aquí se crea un texto con la información de los pacientes asociados, juntándola para mostrarla legible
         val pacientes = membresia.membresiaPaciente?.mapNotNull { mp ->

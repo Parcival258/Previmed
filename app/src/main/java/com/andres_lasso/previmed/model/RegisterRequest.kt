@@ -22,5 +22,3 @@ data class RegisterRequest(
     @SerializedName("estado_civil") val estadoCivil: String,
     @SerializedName("tipo_documento") val tipoDocumento: String
 )
-
-

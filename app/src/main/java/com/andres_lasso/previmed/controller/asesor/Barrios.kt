@@ -36,15 +36,16 @@ class Barrios : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.visitas.getBarrios()
-                if (response.isSuccessful) {
-                    val listarBarrios = response.body()?.msj ?: emptyList()
+                val response = RetrofitClient.visitasApi.getBarrios()
+                if (response.isSuccessful && response.body() != null) {
+                    val listarBarrios = response.body()!!.msj
+
                     listaOriginal = listarBarrios.map {
                         BarriosClass(
                             idBarrio = it.idBarrio,
                             nombreBarrio = it.nombreBarrio,
-                            latitud = it.latitud,
-                            longitud = it.longitud,
+                            latitud = it.latitud ?: 0.0,
+                            longitud = it.longitud ?: 0.0,
                             habilitar = it.estado,
                             ciudad = null,
                             comuna = null
@@ -59,6 +60,7 @@ class Barrios : AppCompatActivity() {
                 Toast.makeText(this@Barrios, "Error de conexión", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 
     private fun filtrarLista(query: String) {

@@ -2,21 +2,6 @@ package com.andres_lasso.previmed.model
 
 import com.google.gson.annotations.SerializedName
 
-data class PacientesDataa(
-    @SerializedName("idPaciente")
-    val idPaciente: Int,
-    @SerializedName("direccionCobro")
-    val direccionCobro: String?,
-    val ocupacion: String?,
-    val activo: Boolean,
-    val beneficiario: Boolean,
-    @SerializedName("pacienteId")
-    val pacienteId: Int?,
-    @SerializedName("usuarioId")
-    val usuarioId: String,
-    val usuario: Usuario
-)
-
 data class Rol(
     @SerializedName("idRol")
     val idRol: Int,
@@ -26,12 +11,6 @@ data class Rol(
     val estado: Boolean
 )
 
-data class RolesResponse(
-    @SerializedName("msj")
-    val msj: List<Rol>
-)
-
-// Modelo para EPS
 data class Eps(
     @SerializedName("idEps")
     val idEps: Int,
@@ -41,20 +20,10 @@ data class Eps(
     val estado: Boolean
 )
 
+
 data class EpsResponse(
-    @SerializedName("msj")
-    val msj: List<Eps>
+    val epsList: List<Eps> // el nombre no importa, pero debe coincidir con el tipo esperado
 )
 
 
-data class PacienteDataa(
-    val idPaciente: Int,
-    val usuario: Usuario
-    // otros campos omitidos porque ahora no se mostrarán
-)
-data class Usuariso(
-    val nombre: String,
-    val apellido: String,
-    val numeroDocumento: String
-// otros campos omitidos...
-)
+
