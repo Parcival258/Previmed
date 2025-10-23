@@ -58,6 +58,46 @@
                 android:padding="10dp"
                 android:layout_marginTop="8dp" />
 
+            <!-- 📅 Fecha de inicio -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de Inicio"
+                android:textColor="#2196F3"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etFechaInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Selecciona fecha de inicio"
+                android:focusable="false"
+                android:clickable="true"
+                android:background="@android:color/white"
+                android:padding="10dp"
+                android:layout_marginTop="8dp" />
+
+            <!-- 📅 Fecha de fin -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de Fin"
+                android:textColor="#2196F3"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etFechaFin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Selecciona fecha de fin"
+                android:focusable="false"
+                android:clickable="true"
+                android:background="@android:color/white"
+                android:padding="10dp"
+                android:layout_marginTop="8dp" />
+
             <!-- 📅 Fecha de pago -->
             <TextView
                 android:layout_width="match_parent"
@@ -94,48 +134,39 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:padding="10dp"
-                android:text="Forma de pago ID: -"
+                android:text="Forma de pago: -"
                 android:layout_marginTop="8dp" />
 
-            <TextView
-                android:id="@+id/tvFechasContrato"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:padding="10dp"
-                android:text="Contrato: "
-                android:layout_marginTop="8dp" />
 
-            <!-- 📸 Subir foto -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Comprobante (Foto)"
-                android:textColor="#2196F3"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp" />
+            <!--  <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="Comprobante (Foto)"
+                 android:textColor="#2196F3"
+                 android:textStyle="bold"
+                 android:layout_marginTop="16dp" />
 
-            <Button
-                android:id="@+id/btnSubirFoto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Seleccionar Imagen"
-                android:backgroundTint="#03A9F4"
-                android:textColor="@android:color/white"
-                android:layout_marginTop="8dp" />
+             <Button
+                 android:id="@+id/btnSubirFoto"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="Seleccionar Imagen"
+                 android:backgroundTint="#03A9F4"
+                 android:textColor="@android:color/white"
+                 android:layout_marginTop="8dp" />
 
-            <ImageView
-                android:id="@+id/imgPreview"
-                android:layout_width="220dp"
-                android:layout_height="220dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"
-                android:background="#E0E0E0"
-                android:visibility="gone" />
+             <ImageView
+                 android:id="@+id/imgPreview"
+                 android:layout_width="220dp"
+                 android:layout_height="220dp"
+                 android:layout_gravity="center"
+                 android:layout_marginTop="10dp"
+                 android:scaleType="centerCrop"
+                 android:background="#E0E0E0"
+                 android:visibility="gone" />-->
 
             <ProgressBar
-                android:id="@+id/pbCargandoPago"
+                android:id="@+id/pbCargargandu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
