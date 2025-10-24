@@ -2,6 +2,7 @@ package com.andres_lasso.previmed.controller.asesor
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import com.andres_lasso.previmed.utils.GlobalData
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -138,7 +139,7 @@ class ContratoActivity : AppCompatActivity() {
                         val idMembresia = membresiaCreada.idMembresia ?: 0
 
                         Log.d("ContratoActivity", "✅ ID obtenido directamente: $idMembresia")
-                        Log.d("ContratoActivity", "🧩 Detalle completo: $membresiaCreada")
+                        GlobalData.ultimaMembresiaId = idMembresia // ✅ Guardamos globalmente
 
                         tvIdMembresia.text = "Contrato creado con ID: $idMembresia"
                         tvIdMembresia.visibility = View.VISIBLE
@@ -151,14 +152,14 @@ class ContratoActivity : AppCompatActivity() {
 
                         // Ir a la pantalla siguiente
                         val intent = Intent(this@ContratoActivity, AsociarBeneficiario::class.java)
-                        intent.putExtra("MEMBRESIA_ID", idMembresia)
                         intent.putExtra("FORMA_PAGO", formaPago)
                         intent.putExtra("FORMA_PAGO_ID", formaPagoId)
                         intent.putExtra("PLAN_ID", planId ?: -1)
                         intent.putExtra("PACIENTE_ID_TITULAR", pacienteId ?: -1)
                         startActivity(intent)
                         finish()
-                    } else {
+                    }
+                    else {
                         Toast.makeText(
                             this@ContratoActivity,
                             "Error al registrar contrato: ${response.message()}",

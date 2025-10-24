@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import com.andres_lasso.previmed.utils.GlobalData
 import android.os.Looper
 import android.view.View
 import android.widget.*
@@ -197,12 +198,24 @@ class AsociarBeneficiario : AppCompatActivity() {
 
     /** 🔹 Navegar a la pantalla de Registrar Pago */
     private fun irARegistrarPago() {
+        val membresiaId = GlobalData.ultimaMembresiaId ?: -1
+        val formaPagoId = intent.getIntExtra("FORMA_PAGO_ID", -1)
+        val formaPago = intent.getStringExtra("FORMA_PAGO") ?: "Desconocido"
+
+        android.util.Log.d("AsociarBeneficiario", "➡️ Ir a registrar pago con MEMBRESIA_ID=$membresiaId")
+
+        if (membresiaId == -1) {
+            Toast.makeText(this, "⚠️ No se encontró una membresía válida", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val intent = Intent(this, RegistrarPagoActivity::class.java)
-        intent.putExtra("MEMBRESIA_ID", 1)
-        intent.putExtra("FORMA_PAGO_ID", 1)
-        intent.putExtra("FORMA_PAGO", "Efectivo")
+        intent.putExtra("MEMBRESIA_ID", membresiaId)
+        intent.putExtra("FORMA_PAGO_ID", formaPagoId)
+        intent.putExtra("FORMA_PAGO", formaPago)
         startActivity(intent)
     }
+
 
     /** 🔹 Mostrar diálogo con autocierre */
     private fun mostrarDialogo(titulo: String, mensaje: String) {
