@@ -8,7 +8,6 @@
     android:background="#F5F5F5"
     tools:context=".controller.asesor.AsociarBeneficiario">
 
-    <!-- 🔵 Título -->
     <TextView
         android:id="@+id/tvTitulo"
         android:layout_width="0dp"
@@ -64,6 +63,18 @@
                 android:textSize="16sp"
                 android:paddingTop="20dp"
                 android:paddingBottom="8dp" />
+
+            <!-- 🔍 Buscador de beneficiarios -->
+            <EditText
+                android:id="@+id/etBuscarBeneficiario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Buscar beneficiario..."
+                android:background="@android:color/white"
+                android:drawableStart="@android:drawable/ic_menu_search"
+                android:padding="10dp"
+                android:inputType="textPersonName"
+                android:layout_marginBottom="8dp"/>
 
             <Spinner
                 android:id="@+id/spBeneficiario"

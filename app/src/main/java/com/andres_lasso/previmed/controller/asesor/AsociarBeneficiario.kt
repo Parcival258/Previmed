@@ -4,8 +4,9 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import com.andres_lasso.previmed.utils.GlobalData
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.ApiResponse
 import com.andres_lasso.previmed.model.PacienteData
+import com.andres_lasso.previmed.utils.GlobalData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,12 +23,14 @@ class AsociarBeneficiario : AppCompatActivity() {
 
     private lateinit var spTitular: Spinner
     private lateinit var spBeneficiario: Spinner
+    private lateinit var etBuscarBeneficiario: EditText
     private lateinit var btnAsociar: Button
     private lateinit var btnOmitir: Button
     private lateinit var progressBar: ProgressBar
 
     private var listaTitulares: List<PacienteData> = emptyList()
     private var listaBeneficiarios: List<PacienteData> = emptyList()
+    private var listaFiltradaBeneficiarios: List<PacienteData> = emptyList()
 
     private var titularSeleccionado: PacienteData? = null
     private var beneficiarioSeleccionado: PacienteData? = null
@@ -36,37 +40,29 @@ class AsociarBeneficiario : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_asociar_beneficiario)
 
-        // Referencias del layout
+        // 🔹 Inicializar vistas
         spTitular = findViewById(R.id.spTitular)
         spBeneficiario = findViewById(R.id.spBeneficiario)
+        etBuscarBeneficiario = findViewById(R.id.etBuscarBeneficiario)
         btnAsociar = findViewById(R.id.btnAsociar)
         btnOmitir = findViewById(R.id.btnOmitir)
         progressBar = findViewById(R.id.progressBar)
 
-        // Recuperar ID del titular pasado desde la actividad anterior
         titularIdExtra = intent.getIntExtra("PACIENTE_ID_TITULAR", -1).takeIf { it != -1 }
 
-        // Cargar datos
         cargarPacientes()
 
-        // Eventos de botones
         btnAsociar.setOnClickListener {
-            android.util.Log.d("BTN_ASOCIAR", "👉 Botón presionado")
-
             if (titularSeleccionado != null && beneficiarioSeleccionado != null) {
-                android.util.Log.d("BTN_ASOCIAR", "Titular: ${titularSeleccionado?.idPaciente}, Beneficiario: ${beneficiarioSeleccionado?.idPaciente}")
                 asociarBeneficiarioConTitular(beneficiarioSeleccionado!!, titularSeleccionado!!)
             } else {
                 mostrarDialogo("Error", "Debe seleccionar titular y beneficiario para asociar.")
             }
         }
 
-        btnOmitir.setOnClickListener {
-            irARegistrarPago()
-        }
+        btnOmitir.setOnClickListener { irARegistrarPago() }
     }
 
-    /** 🔹 Cargar todos los pacientes (titulares y beneficiarios) */
     private fun cargarPacientes() {
         progressBar.visibility = View.VISIBLE
 
@@ -77,21 +73,19 @@ class AsociarBeneficiario : AppCompatActivity() {
                     response: Response<ApiResponse<List<PacienteData>>>
                 ) {
                     progressBar.visibility = View.GONE
-
                     val pacientes = response.body()?.data ?: emptyList()
                     if (pacientes.isEmpty()) {
                         mostrarDialogo("Aviso", "No hay pacientes registrados.")
                         return
                     }
 
-                    listaTitulares = pacientes.filter { it.beneficiario != true } // los que NO son beneficiarios
-                    listaBeneficiarios = pacientes.filter { it.beneficiario == true || it.pacienteId == null } // los que pueden ser dependientes
-
-                    android.util.Log.d("PACIENTES", "Total: ${pacientes.size}")
-                    android.util.Log.d("PACIENTES", "Titulares: ${listaTitulares.size}, Beneficiarios: ${listaBeneficiarios.size}")
+                    listaTitulares = pacientes.filter { (it.beneficiario == false || it.beneficiario == true) && it.pacienteId == null }
+                    listaBeneficiarios = pacientes.filter { it.pacienteId == null }
+                    listaFiltradaBeneficiarios = listaBeneficiarios
 
                     configurarSpinnerTitulares()
                     configurarSpinnerBeneficiarios()
+                    configurarBuscadorBeneficiarios()
                 }
 
                 override fun onFailure(call: Call<ApiResponse<List<PacienteData>>>, t: Throwable) {
@@ -101,17 +95,12 @@ class AsociarBeneficiario : AppCompatActivity() {
             })
     }
 
-    /** 🔹 Configura el spinner de titulares */
     private fun configurarSpinnerTitulares() {
-        val nombres = listaTitulares.map {
-            "${it.usuario?.nombre ?: ""} ${it.usuario?.apellido ?: ""} (ID: ${it.idPaciente ?: "?"})"
-        }
-
+        val nombres = listaTitulares.map { "${it.usuario?.nombre ?: ""} ${it.usuario?.apellido ?: ""} (ID: ${it.idPaciente ?: "?"})" }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, nombres)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spTitular.adapter = adapter
 
-        // Si venía un titular desde otra Activity, seleccionarlo
         titularSeleccionado = titularIdExtra?.let { id -> listaTitulares.find { it.idPaciente == id } }
         titularSeleccionado?.let {
             val pos = listaTitulares.indexOf(it)
@@ -122,41 +111,49 @@ class AsociarBeneficiario : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 titularSeleccionado = listaTitulares[position]
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                titularSeleccionado = null
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) { titularSeleccionado = null }
         }
     }
 
-    /** 🔹 Configura el spinner de beneficiarios */
     private fun configurarSpinnerBeneficiarios() {
-        val nombres = listaBeneficiarios.map {
+        val nombres = listaFiltradaBeneficiarios.map {
             "${it.usuario?.nombre ?: ""} ${it.usuario?.apellido ?: ""} (ID: ${it.idPaciente ?: "?"})"
         }
-
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, nombres)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spBeneficiario.adapter = adapter
 
         spBeneficiario.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                beneficiarioSeleccionado = listaBeneficiarios[position]
+                beneficiarioSeleccionado = listaFiltradaBeneficiarios[position]
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                beneficiarioSeleccionado = null
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) { beneficiarioSeleccionado = null }
         }
     }
 
-    private fun asociarBeneficiarioConTitular(beneficiario: PacienteData, titular: PacienteData) {
-        android.util.Log.d("ASOCIAR", "🚀 Iniciando asociación...")
+    /** 🔎 Filtro del buscador */
+    private fun configurarBuscadorBeneficiarios() {
+        etBuscarBeneficiario.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val texto = s.toString().trim().lowercase()
+                listaFiltradaBeneficiarios = if (texto.isEmpty()) {
+                    listaBeneficiarios
+                } else {
+                    listaBeneficiarios.filter {
+                        val nombre = "${it.usuario?.nombre ?: ""} ${it.usuario?.apellido ?: ""}".lowercase()
+                        nombre.contains(texto)
+                    }
+                }
+                configurarSpinnerBeneficiarios()
+            }
+        })
+    }
 
+    private fun asociarBeneficiarioConTitular(beneficiario: PacienteData, titular: PacienteData) {
         val idBeneficiario = beneficiario.idPaciente
         val idTitular = titular.idPaciente
-
-        android.util.Log.d("ASOCIAR", "IDs -> Titular=$idTitular, Beneficiario=$idBeneficiario")
 
         if (idBeneficiario == null || idTitular == null) {
             mostrarDialogo("Error", "IDs inválidos para la asociación.")
@@ -164,10 +161,7 @@ class AsociarBeneficiario : AppCompatActivity() {
         }
 
         progressBar.visibility = View.VISIBLE
-        val body = mapOf(
-            "paciente_id" to idTitular,
-            "beneficiario" to true
-        )
+        val body = mapOf("paciente_id" to idTitular, "beneficiario" to true)
 
         RetrofitClient.pacienteApi.asociarBeneficiario(idBeneficiario, body)
             .enqueue(object : Callback<ApiResponse<PacienteData>> {
@@ -176,39 +170,27 @@ class AsociarBeneficiario : AppCompatActivity() {
                     response: Response<ApiResponse<PacienteData>>
                 ) {
                     progressBar.visibility = View.GONE
-                    android.util.Log.d("ASOCIAR", "Respuesta código: ${response.code()}")
-                    android.util.Log.d("ASOCIAR", "Cuerpo: ${response.body()}")
-
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful)
                         mostrarDialogo("Éxito", "El beneficiario fue asociado correctamente.")
-                    } else {
+                    else
                         mostrarDialogo("Error", "No se pudo asociar el beneficiario. Código: ${response.code()}")
-                    }
                 }
 
                 override fun onFailure(call: Call<ApiResponse<PacienteData>>, t: Throwable) {
                     progressBar.visibility = View.GONE
-                    android.util.Log.e("ASOCIAR", "Error de conexión: ${t.message}")
                     mostrarDialogo("Error", "Error al conectar: ${t.localizedMessage}")
                 }
             })
     }
 
-
-
-    /** 🔹 Navegar a la pantalla de Registrar Pago */
     private fun irARegistrarPago() {
         val membresiaId = GlobalData.ultimaMembresiaId ?: -1
         val formaPagoId = intent.getIntExtra("FORMA_PAGO_ID", -1)
         val formaPago = intent.getStringExtra("FORMA_PAGO") ?: "Desconocido"
-
-        android.util.Log.d("AsociarBeneficiario", "➡️ Ir a registrar pago con MEMBRESIA_ID=$membresiaId")
-
         if (membresiaId == -1) {
             Toast.makeText(this, "⚠️ No se encontró una membresía válida", Toast.LENGTH_SHORT).show()
             return
         }
-
         val intent = Intent(this, RegistrarPagoActivity::class.java)
         intent.putExtra("MEMBRESIA_ID", membresiaId)
         intent.putExtra("FORMA_PAGO_ID", formaPagoId)
@@ -216,15 +198,12 @@ class AsociarBeneficiario : AppCompatActivity() {
         startActivity(intent)
     }
 
-
-    /** 🔹 Mostrar diálogo con autocierre */
     private fun mostrarDialogo(titulo: String, mensaje: String) {
         val dialog = AlertDialog.Builder(this)
             .setTitle(titulo)
             .setMessage(mensaje)
             .setPositiveButton("Aceptar", null)
             .create()
-
         dialog.show()
         Handler(Looper.getMainLooper()).postDelayed({ dialog.dismiss() }, 2500)
     }
