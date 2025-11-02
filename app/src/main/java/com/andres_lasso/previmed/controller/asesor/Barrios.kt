@@ -37,18 +37,22 @@ class Barrios : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val response = RetrofitClient.visitasApi.getBarrios()
+
+                // 💡 Agrega estas líneas para ver la respuesta completa
+                println("🔥 Código de respuesta: ${response.code()}")
+                println("🔥 Cuerpo bruto: ${response.errorBody()?.string()}")
+                println("🔥 Cuerpo parsed (body): ${response.body()}")
+
                 if (response.isSuccessful && response.body() != null) {
                     val listarBarrios = response.body()!!.msj
 
                     listaOriginal = listarBarrios.map {
                         BarriosClass(
-                            idBarrio = it.idBarrio,
-                            nombreBarrio = it.nombreBarrio,
+                            idBarrio = it.idBarrio ?: 0,
+                            nombreBarrio = it.nombreBarrio ?: "",
                             latitud = it.latitud ?: 0.0,
                             longitud = it.longitud ?: 0.0,
-                            habilitar = it.estado,
-                            ciudad = null,
-                            comuna = null
+                            estado = it.estado ?: false
                         )
                     }
 
@@ -57,6 +61,7 @@ class Barrios : AppCompatActivity() {
                     Toast.makeText(this@Barrios, "Error al cargar barrios", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 Toast.makeText(this@Barrios, "Error de conexión", Toast.LENGTH_SHORT).show()
             }
         }
@@ -64,8 +69,12 @@ class Barrios : AppCompatActivity() {
     }
 
     private fun filtrarLista(query: String) {
-        val filtrada = if (query.isEmpty()) listaOriginal else listaOriginal.filter {
-            it.nombreBarrio.lowercase().contains(query)
+        val filtrada = if (query.isEmpty()) {
+            listaOriginal
+        } else {
+            listaOriginal.filter {
+                (it.nombreBarrio ?: "").lowercase().contains(query)
+            }
         }
         adapter.actualizarLista(filtrada)
     }

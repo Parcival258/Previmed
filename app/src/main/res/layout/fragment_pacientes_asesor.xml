@@ -1,78 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context=".controller.asesor.PacientesView">
 
-    <!-- Encabezado -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:background="@color/AZUL_GENERAL"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingHorizontal="12dp">
 
+        <!-- Título centrado -->
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvTituloPacientes"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pacientes"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:paddingVertical="10dp" />
 
-    <!-- Contenedor blanco redondeado -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/rounded_top_white"
-        android:layout_marginTop="-20dp"
-        android:padding="16dp">
-
-        <LinearLayout
+        <!-- SearchView -->
+        <SearchView
+            android:id="@+id/btn_Buscar_Usu"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/white"
+            android:iconifiedByDefault="false"
+            android:queryHint="Buscar..."
+            android:elevation="4dp"
+            android:padding="4dp" />
 
-            <!-- SearchView arriba -->
-            <SearchView
-                android:id="@+id/btn_Buscar_Usu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:background="@color/white"
-                android:iconifiedByDefault="false"
-                android:queryHint="Buscar..."
-                android:elevation="4dp"
-                android:padding="4dp" />
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPacientes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"
+            android:paddingHorizontal="4dp" />
 
-            <!-- RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerPacientes"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="12dp" />
-        </LinearLayout>
+    </LinearLayout>
 
-        <!-- Botón flotante ubicado abajo derecha -->
-        <Button
-            android:id="@+id/btn_agregarPacientess"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:text="+"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:backgroundTint="#457B9D"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="40dp"
-            android:elevation="8dp"
-            android:shape="oval"
-            android:stateListAnimator="@null"/>
+    <!-- Botón flotante igual que el tuyo -->
+    <Button
+        android:id="@+id/btn_agregarPacientess"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:text="+"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:backgroundTint="#457B9D"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="80dp"
+        android:elevation="8dp"
+        android:shape="oval"
+        android:stateListAnimator="@null"/>
 
-    </FrameLayout>
 
-</LinearLayout>
+</FrameLayout>
