@@ -3,14 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@drawable/bg_item_membresia"
+    android:elevation="2dp"
     android:padding="12dp"
-    android:background="?attr/selectableItemBackground"
     android:layout_marginBottom="8dp">
 
     <TextView
         android:id="@+id/tvNumeroContrato"
         android:textStyle="bold"
         android:textSize="16sp"
+        android:textColor="@color/AzulCielo_Prevemed"
         android:text="Contrato: CT-XXXXXX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -18,24 +20,29 @@
     <TextView
         android:id="@+id/tvNombrePaciente"
         android:text="Paciente: ---"
+        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/tvDocumento"
-        android:text="Documento: ---"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:text=""
+        android:textSize="14sp"
+        android:layout_width="1sp"
+        android:layout_height="1sp" />
 
     <TextView
         android:id="@+id/tvFormaPago"
         android:text="Forma de pago: ---"
+        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/tvEstado"
         android:text="Estado: ---"
+        android:textStyle="bold"
+        android:textSize="14sp"
         android:textColor="@android:color/holo_green_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

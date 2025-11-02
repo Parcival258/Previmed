@@ -15,22 +15,45 @@
         android:orientation="vertical"
         android:padding="12dp">
 
+        <!-- 🧾 Número o código del contrato -->
         <TextView
-            android:id="@+id/tvBarrioNombre"
+            android:id="@+id/tvCodigoContrato"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre del barrio"
+            android:text="Contrato #12345"
             android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="@color/black" />
 
+        <!-- 👤 Nombre del paciente -->
         <TextView
-            android:id="@+id/tvEstadoBarrio"
+            android:id="@+id/tvNombrePaciente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Juan Pérez"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="4dp" />
+
+        <!-- 📅 Fecha de inicio -->
+        <TextView
+            android:id="@+id/tvFechaInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Inicio: 01/11/2025"
+            android:textSize="14sp"
+            android:textColor="#616161"
+            android:layout_marginTop="2dp" />
+
+        <!-- ⚙️ Estado visual (Activo / Inactivo) -->
+        <TextView
+            android:id="@+id/tvEstadoContrato"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Activo"
             android:textSize="14sp"
-            android:layout_marginTop="4dp"
+            android:textStyle="bold"
+            android:layout_marginTop="6dp"
             android:textColor="@android:color/holo_green_dark" />
 
     </LinearLayout>

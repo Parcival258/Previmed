@@ -6,6 +6,8 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andres_lasso.previmed.controller.asesor.recycler.adapter.PlanesAdapter
 import com.andres_lasso.previmed.databinding.ActivityPlanesViewBinding
@@ -25,6 +27,13 @@ class PlanesView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPlanesViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Evitar que el contenido tape los íconos de la barra superior
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val statusBarInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.setPadding(0, statusBarInsets.top, 0, 0)
+            insets
+        }
 
         adapter = PlanesAdapter(listaPlanes)
         binding.recyclerPlanesAsesor.layoutManager = LinearLayoutManager(this)
@@ -56,13 +65,12 @@ class PlanesView : AppCompatActivity() {
         })
     }
 
-    // Método público para agregar un nuevo plan y actualizar la lista automáticamente
     fun agregarNuevoPlan(plan: Plan) {
         listaPlanes.add(plan)
         adapter.agregarPlan(plan)
     }
-    private val pollingInterval = 5000L // 5 segundos
 
+    private val pollingInterval = 5000L
     private val pollingHandler = Handler(Looper.getMainLooper())
     private val pollingRunnable = object : Runnable {
         override fun run() {
@@ -80,6 +88,4 @@ class PlanesView : AppCompatActivity() {
         super.onPause()
         pollingHandler.removeCallbacks(pollingRunnable)
     }
-
 }
-

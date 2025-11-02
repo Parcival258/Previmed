@@ -1,136 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp"
-    android:layout_margin="10dp"
-    android:background="@drawable/card_info"
-    android:orientation="vertical"
-    android:layout_marginBottom="5dp"
-    android:layout_marginTop="10dp">
-
-    <ImageButton
-        android:id="@+id/img_pago_eviencia"
-        android:layout_width="120dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:background="@drawable/ic_img" />
-
-    <!-- Info siempre visible -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:paddingHorizontal="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textColor="@color/AzulOscuro_Prevemed"
-            android:text="N° Recibo" />
-
-        <TextView
-            android:id="@+id/tvNumRecibo"
-            android:layout_weight="2"
-            android:gravity="end"
-            android:textColor="@color/AzulOscuro_Prevemed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="22" />
-    </LinearLayout>
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="5dp"
+    android:backgroundTint="@android:color/white">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textColor="@color/AzulOscuro_Prevemed"
-            android:text="N° Contrato" />
-
-        <TextView
-            android:id="@+id/tvNumContrato"
-            android:layout_weight="2"
-            android:gravity="end"
-            android:textColor="@color/AzulOscuro_Prevemed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="45" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textColor="@color/AzulOscuro_Prevemed"
-            android:text="Titular" />
-
-        <TextView
-            android:id="@+id/tvTitular"
-            android:layout_weight="2"
-            android:gravity="end"
-            android:textColor="@color/AzulOscuro_Prevemed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="jsjd" />
-
-    </LinearLayout>
-
-    <!-- Layout que se expandirá/colapsará -->
-    <LinearLayout
-        android:id="@+id/expandableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:paddingTop="8dp">
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvCobrador"
+        <!-- 📸 Imagen de evidencia -->
+        <ImageButton
+            android:id="@+id/img_pago_eviencia"
+            android:layout_width="120dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_img"
+            android:scaleType="centerCrop"
+            android:contentDescription="Evidencia del pago" />
+
+        <!-- 🧾 Info visible -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cobrador" />
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
 
-        <TextView
-            android:id="@+id/tvFechaCobro"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="N° Recibo"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvNumRecibo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="22"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fecha de Cobro" />
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
 
-        <TextView
-            android:id="@+id/tvFechaInicio"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="N° Contrato"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvNumContrato"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="45"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fecha Inicio" />
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
 
-        <TextView
-            android:id="@+id/tvFechaFin"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Titular"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvTitular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="jsjd"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- 🔽 Sección expandible -->
+        <LinearLayout
+            android:id="@+id/expandableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fecha Fin" />
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="8dp">
 
-        <TextView
-            android:id="@+id/tvFormaPago"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Forma de Pago" />
+            <TextView
+                android:id="@+id/tvCobrador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cobrador"
+                android:textSize="14sp"
+                android:textColor="#555555" />
 
-        <TextView
-            android:id="@+id/tvMonto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Monto" />
+            <TextView
+                android:id="@+id/tvFechaCobro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de Cobro"
+                android:textSize="14sp"
+                android:textColor="#555555" />
+
+            <TextView
+                android:id="@+id/tvFechaInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha Inicio"
+                android:textSize="14sp"
+                android:textColor="#555555" />
+
+            <TextView
+                android:id="@+id/tvFechaFin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha Fin"
+                android:textSize="14sp"
+                android:textColor="#555555" />
+
+            <TextView
+                android:id="@+id/tvFormaPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Forma de Pago"
+                android:textSize="14sp"
+                android:textColor="#555555" />
+
+            <TextView
+                android:id="@+id/tvMonto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monto"
+                android:textSize="14sp"
+                android:textColor="#555555" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>
