@@ -1,13 +1,14 @@
 package com.andres_lasso.previmed.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Barrio(
-    val idBarrio: Int,
-    val nombreBarrio: String,
-    val latitud: Double?,
-    val longitud: Double?,
-    val estado: Boolean
+    @SerializedName("idBarrio") val idBarrio: Int,
+    @SerializedName("nombreBarrio") val nombreBarrio: String, //
+    @SerializedName("latitud") val latitud: Double?,
+    @SerializedName("longitud") val longitud: Double?,
+    @SerializedName("estado") val estado: Boolean
 )
 
 data class BarriosResponse(
-    val msj: List<Barrio>
-)
+    @SerializedName("msj") val msj: List<Barrio>)

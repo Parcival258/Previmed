@@ -46,8 +46,10 @@ data class PacienteData(
     @SerializedName("membresia_paciente")
     val membresiaPaciente: List<MembresiaPaciente>? = emptyList()
 )
-
-
+data class PacienteResponse(
+    @SerializedName("message") val message: String?,
+    @SerializedName("data") val data: Paciente?
+)
 
 // Alias útil si más adelante usas respuestas genéricas
 typealias PacientesListResponse = ApiResponse<List<PacienteData>>

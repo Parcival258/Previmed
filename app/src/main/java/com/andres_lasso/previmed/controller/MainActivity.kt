@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 goToRoleActivity(role)
             } else {
                 PreferenceHelper.clearSession(this)
-                startActivity(Intent(this, RegistroUsuario::class.java))
+                startActivity(Intent(this, Login::class.java))
             }
 
             finish()

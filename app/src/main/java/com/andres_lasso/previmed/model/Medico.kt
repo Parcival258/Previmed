@@ -3,21 +3,33 @@ package com.andres_lasso.previmed.model
 import com.google.gson.annotations.SerializedName
 
 data class UsuarioMedico(
-    val id_usuario: String,
-    val nombre: String,
-    val apellido: String,
-    val email: String,
-    val numero_documento: String
+    @SerializedName("id_usuario") val id_usuario: String,
+    @SerializedName("nombre") val nombre: String,
+    @SerializedName("apellido") val apellido: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("numero_documento") val numero_documento: String
 )
 
 data class Medico(
-    val id_medico: Int,
-    val disponibilidad: Boolean,
-    val estado: Boolean,
-    val usuario_id: String,
-    val usuario: UsuarioMedico
+    @SerializedName("id_medico") val id_medico: Int,
+    @SerializedName("disponibilidad") var disponibilidad: Boolean?,
+    @SerializedName("estado") var estado: Boolean?,
+    @SerializedName("usuario_id") val usuario_id: String,
+    @SerializedName("usuario") val usuario: UsuarioMedico
 )
 
-    data class MedicosListResponse(
-    @SerializedName("data") val data: List<MedicoIndividualResponse>
+// 👇 Si tu backend devuelve { "msj": { ... } }
+data class MedicoResponse(
+    @SerializedName("data") val data: Medico?,
+    @SerializedName("msj") val msj: Medico
+)
+{
+    // Un único punto de acceso seguro al médico
+    val medicoOrNull: Medico?
+        get() = data ?: msj
+}
+
+data class MedicoUpdateRequest(
+    val disponibilidad: Boolean?,
+    val estado: Boolean?
 )

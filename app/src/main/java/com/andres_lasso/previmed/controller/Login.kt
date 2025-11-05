@@ -28,12 +28,14 @@ class Login : AppCompatActivity() {
     private lateinit var ctpassword: EditText
     private lateinit var btnLogin: Button
 
+    // 🔤 Normaliza el rol eliminando tildes y convirtiendo a minúsculas
     private fun normalizeRole(raw: String?): String {
         if (raw.isNullOrBlank()) return ""
         val normalized = Normalizer.normalize(raw, Normalizer.Form.NFD)
         return normalized.replace("\\p{Mn}+".toRegex(), "").lowercase()
     }
 
+    // 🚀 Redirige según el rol del usuario
     private fun goToRoleActivity(role: String) {
         val destination = when (role) {
             "beneficiario", "paciente" -> ViewBeneficiario::class.java
@@ -50,7 +52,11 @@ class Login : AppCompatActivity() {
             finish()
         } else {
             PreferenceHelper.clearSession(this)
-            Toast.makeText(this, "Rol no reconocido. Contacte al administrador.", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "Rol no reconocido. Contacte al administrador.",
+                Toast.LENGTH_LONG
+            ).show()
             Log.e("LOGIN", "Rol no reconocido: $role")
         }
     }
@@ -65,9 +71,11 @@ class Login : AppCompatActivity() {
 
         Log.d("LOGIN", "🚀 LoginActivity creado")
 
+        // 🔐 Si ya hay token, entrar directo
         if (PreferenceHelper.hasToken(this)) {
             val savedRole = PreferenceHelper.getRole(this)
             Log.d("LOGIN", "Token existente, rol: $savedRole")
+
             if (!savedRole.isNullOrBlank()) {
                 goToRoleActivity(normalizeRole(savedRole))
                 return
@@ -76,6 +84,7 @@ class Login : AppCompatActivity() {
             }
         }
 
+        // 🟢 Acción del botón de login
         btnLogin.setOnClickListener {
             val documento = ctdocumento.text.toString().trim()
             val password = ctpassword.text.toString().trim()
@@ -89,9 +98,14 @@ class Login : AppCompatActivity() {
 
             RetrofitClient.loginApi.loginUser(request)
                 .enqueue(object : Callback<LoginResponse> {
-                    override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+
+                    override fun onResponse(
+                        call: Call<LoginResponse>,
+                        response: Response<LoginResponse>
+                    ) {
                         if (response.isSuccessful) {
                             val body = response.body()
+
                             if (body != null && body.jwt.isNotEmpty()) {
                                 val roleNormalized = normalizeRole(body.data.rol.nombreRol)
                                 val usuarioId = body.data.id
@@ -99,54 +113,120 @@ class Login : AppCompatActivity() {
                                 PreferenceHelper.saveToken(this@Login, body.jwt)
                                 PreferenceHelper.saveRole(this@Login, roleNormalized)
 
-                                Log.d("LOGIN", "✅ Login exitoso - UUID: $usuarioId - Rol: $roleNormalized")
+                                Log.d(
+                                    "LOGIN",
+                                    "✅ Login exitoso - UUID: $usuarioId - Rol: $roleNormalized"
+                                )
 
-                                if (roleNormalized == "paciente") {
-                                    obtenerIdPaciente(usuarioId, roleNormalized)
-                                } else {
-                                    Toast.makeText(this@Login, body.message, Toast.LENGTH_LONG).show()
-                                    goToRoleActivity(roleNormalized)
+                                when (roleNormalized) {
+                                    "paciente" -> obtenerIdPaciente(usuarioId, roleNormalized)
+                                    "medico" -> obtenerIdMedico(usuarioId, roleNormalized)
+                                    else -> {
+                                        Toast.makeText(
+                                            this@Login,
+                                            body.message,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        goToRoleActivity(roleNormalized)
+                                    }
                                 }
                             } else {
-                                Toast.makeText(this@Login, "Error: no se recibió token", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@Login,
+                                    "Error: no se recibió token",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 Log.e("LOGIN", "Respuesta sin JWT")
                             }
+
                         } else {
                             val errorBody = response.errorBody()?.string()
-                            Toast.makeText(this@Login, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@Login,
+                                "Credenciales incorrectas",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             Log.e("LOGIN", "Error: ${response.code()} - $errorBody")
                         }
                     }
 
                     override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                        Toast.makeText(this@Login, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@Login,
+                            "Error de conexión: ${t.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         Log.e("LOGIN", "Fallo conexión", t)
                     }
                 })
         }
     }
 
+    // 🟢 MÉDICO → obtener id_medico con el usuario_id
+    private fun obtenerIdMedico(usuarioId: String, role: String) {
+        lifecycleScope.launch {
+            try {
+                Log.d("LOGIN", "🔍 Buscando médico con usuario_id: $usuarioId")
+
+                val response = RetrofitClient.medicoApi.obtenerMedicoPorUsuario(usuarioId)
+
+                if (response.isSuccessful && response.body() != null) {
+                    val medicoResponse = response.body()
+                    val medico = medicoResponse?.msj
+
+                    if (medico != null) {
+                        PreferenceHelper.saveIdMedico(this@Login, medico.id_medico)
+                        Log.d("LOGIN", "✅ Médico encontrado: ${medico.id_medico}")
+                        goToRoleActivity(role)
+                    } else {
+                        Toast.makeText(
+                            this@Login,
+                            "No se encontró médico",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(
+                        this@Login,
+                        "Error al obtener médico",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            } catch (e: Exception) {
+                Log.e("LOGIN", "❌ Error: ${e.message}")
+            }
+        }
+    }
+
+    // 🧍 PACIENTE → obtener id_paciente con el usuario_id
     private fun obtenerIdPaciente(usuarioId: String, role: String) {
         lifecycleScope.launch {
             try {
                 Log.d("LOGIN", "🔍 Obteniendo perfil para UUID: $usuarioId")
 
-                // 👇 Ejecutamos la llamada Retrofit de tipo Call<> dentro de una corrutina
                 val response = RetrofitClient.pacienteApi
                     .getPacienteByUsuarioId(usuarioId)
-                    .execute() // Ejecuta la request y obtiene Response<ApiResponse<PacienteData>>
+                    .execute()
 
                 if (response.isSuccessful && response.body() != null) {
                     val idPaciente = response.body()!!.data?.idPaciente
 
                     PreferenceHelper.saveIdPaciente(this@Login, idPaciente.toString())
                     Log.d("LOGIN", "✅ ID paciente guardado: $idPaciente")
-                    Log.d("LOGIN", "🔍 Valor leído después de guardar: ${PreferenceHelper.getIdPaciente(this@Login)}")
 
                     goToRoleActivity(role)
+
                 } else {
-                    Toast.makeText(this@Login, "Error obteniendo datos del paciente", Toast.LENGTH_SHORT).show()
-                    Log.e("LOGIN", "Error: ${response.code()} - ${response.errorBody()?.string()}")
+                    Toast.makeText(
+                        this@Login,
+                        "Error obteniendo datos del paciente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e(
+                        "LOGIN",
+                        "Error: ${response.code()} - ${response.errorBody()?.string()}"
+                    )
                 }
 
             } catch (e: Exception) {
@@ -155,5 +235,4 @@ class Login : AppCompatActivity() {
             }
         }
     }
-
 }

@@ -18,6 +18,14 @@
         <color name="AzulOscuro_Prevemed">#0D47A1</color> <!-- Azul oscuro -->
 
 
+    <color name="verde_estado">#2ECC71</color> <!-- verde suave -->
+    <color name="rojo_estado">#E74C3C</color>  <!-- rojo elegante -->
+    <color name="amarillo_estado">#FFF176</color>
+
+    <color name="fondo_app">#F5F7FB</color>
+    <color name="negro_texto">#2B2B2B</color>
+    <color name="gris_suave">#E0E0E0</color>
+
 
 
 </resources>

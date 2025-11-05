@@ -3,7 +3,7 @@ package com.andres_lasso.previmed.interfaces
 import com.andres_lasso.previmed.model.BarriosResponse
 
 import com.andres_lasso.previmed.model.MedicoListWrapper
-import com.andres_lasso.previmed.model.MedicosListResponse
+import com.andres_lasso.previmed.model.MedicoResponse
 
 import com.andres_lasso.previmed.model.VisitaResponse
 import com.andres_lasso.previmed.model.VisitasRequest
@@ -32,4 +32,9 @@ interface VisitaService {
 
     @GET("barrios")
     suspend fun getBarrios(): Response<BarriosResponse>
+
+    // 🔹 Obtener visitas de un médico
+    @GET("visitas/medico/{id}")
+    suspend fun getVisitasPorMedico(@Path("id") idMedico: Int): Response<VisitaResponse>
+
 }
