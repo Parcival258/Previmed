@@ -16,6 +16,7 @@ interface MembresiaApi {
     fun obtenerMembresia(@Path("id") id: Int): Call<ApiResponse<MembresiaResponse>>
 
     @GET("membresias")
-    fun listarMembresias(): Call<ApiResponse<List<Membresia>>>
+    fun listarMembresias(): Call<List<Membresia>>
+
 }
 

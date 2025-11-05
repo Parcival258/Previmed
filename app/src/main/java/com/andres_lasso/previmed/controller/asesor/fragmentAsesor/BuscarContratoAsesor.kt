@@ -3,17 +3,18 @@ package com.andres_lasso.previmed.controller.asesor.fragmentAsesor
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.ContratoDetalleDialog
 import com.andres_lasso.previmed.controller.asesor.recycler.adapter.MembresiaAdapter
 import com.andres_lasso.previmed.interfaces.RetrofitClient
-import com.andres_lasso.previmed.model.ApiResponse
 import com.andres_lasso.previmed.model.Membresia
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,12 +50,14 @@ class BuscarContratoAsesor : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
 
+        // Inicializa el adaptador con el clic para mostrar detalles
         adapter = MembresiaAdapter(emptyList()) { membresia ->
             val dialog = ContratoDetalleDialog(membresia)
             dialog.show(supportFragmentManager, "DetalleContrato")
         }
         recyclerView.adapter = adapter
 
+        // Scroll infinito
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(rv, dx, dy)
@@ -66,12 +69,14 @@ class BuscarContratoAsesor : AppCompatActivity() {
             }
         })
 
-        val searchView = findViewById<SearchView>(R.id.search_view)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?) = false
+        // --- 🔍 NUEVA BARRA DE BÚSQUEDA ---
+        val etBuscarContrato = findViewById<EditText>(R.id.etBuscarContrato)
+        etBuscarContrato.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                val filtro = newText?.lowercase()?.trim() ?: ""
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val filtro = s?.toString()?.lowercase()?.trim() ?: ""
                 val resultado = listaOriginal.filter { membresia ->
                     val nombres = membresia.membresiaPaciente?.mapNotNull { mp ->
                         val u = mp.paciente?.usuario
@@ -92,7 +97,6 @@ class BuscarContratoAsesor : AppCompatActivity() {
                             fp.contains(filtro)
                 }
                 adapter.actualizarLista(resultado)
-                return true
             }
         })
 
@@ -114,14 +118,14 @@ class BuscarContratoAsesor : AppCompatActivity() {
         cargando = true
 
         RetrofitClient.membresiaApi.listarMembresias()
-            .enqueue(object : Callback<ApiResponse<List<Membresia>>> {
+            .enqueue(object : Callback<List<Membresia>> {
                 override fun onResponse(
-                    call: Call<ApiResponse<List<Membresia>>>,
-                    response: Response<ApiResponse<List<Membresia>>>
+                    call: Call<List<Membresia>>,
+                    response: Response<List<Membresia>>
                 ) {
                     if (response.isSuccessful && response.body() != null) {
-                        val membresias = response.body()!!.data ?: emptyList()
-                        Log.d("BuscarContratoAsesor", "Página: $paginaActual, recibidas: ${membresias.size}")
+                        val membresias = response.body()!!
+                        Log.d("BuscarContratoAsesor", "Recibidas: ${membresias.size}")
 
                         if (membresias.isEmpty()) {
                             finLista = true
@@ -146,10 +150,7 @@ class BuscarContratoAsesor : AppCompatActivity() {
                     cargando = false
                 }
 
-                override fun onFailure(
-                    call: Call<ApiResponse<List<Membresia>>>,
-                    t: Throwable
-                ) {
+                override fun onFailure(call: Call<List<Membresia>>, t: Throwable) {
                     Toast.makeText(
                         this@BuscarContratoAsesor,
                         "Error al cargar datos: ${t.localizedMessage}",
