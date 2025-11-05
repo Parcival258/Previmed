@@ -1,44 +1,52 @@
 package com.andres_lasso.previmed.controller.pacientes.recycler.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.andres_lasso.previmed.databinding.ItemVisitaBinding
+import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.model.Visita
 import com.andres_lasso.previmed.utils.MedicoCache
 
 class VisitaAdapter(
     private var visitas: List<Visita>,
-    private val onCancelClick: (Visita) -> Unit
-) : RecyclerView.Adapter<VisitaAdapter.VisitaViewHolder>() {
+    private val onCancelarClick: (Visita) -> Unit
+) : RecyclerView.Adapter<VisitaAdapter.ViewHolder>() {
 
-    inner class VisitaViewHolder(val binding: ItemVisitaBinding) :
-        RecyclerView.ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VisitaViewHolder {
-        val binding = ItemVisitaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return VisitaViewHolder(binding)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val txtPacienteNombre: TextView = view.findViewById(R.id.txtPacienteNombre)
+        val txtDireccion: TextView = view.findViewById(R.id.txtDireccion)
+        val txtFecha: TextView = view.findViewById(R.id.txtFecha)
+        val btnCancelar: ImageView = view.findViewById(R.id.btnCancelar)
     }
 
-    override fun onBindViewHolder(holder: VisitaViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_visita_pendiente, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val visita = visitas[position]
 
-        val fecha = visita.fechaVisita.take(10)
-        holder.binding.tvFecha.text = "Visita Pendiente $fecha"
+        // Mostrar el nombre del médico (si existe)
+        val nombreMedico = MedicoCache.getNombre(visita.medicoId ?: -1)
+        holder.txtPacienteNombre.text = nombreMedico ?: "Médico desconocido"
 
-        val idMedico = visita.medicoId
-        val nombre = MedicoCache.getNombre(idMedico)
-        holder.binding.tvMedico.text = nombre ?: "Cargando médico..."
+        // Dirección y fecha
+        holder.txtDireccion.text = "📍 ${visita.direccion ?: "Dirección no disponible"}"
+        holder.txtFecha.text = "🗓 ${visita.fechaVisita?.take(10) ?: "Sin fecha"}"
 
-
-
-        holder.binding.btnCancelar.setOnClickListener { onCancelClick(visita) }
+        // Botón para cancelar
+        holder.btnCancelar.setOnClickListener { onCancelarClick(visita) }
     }
 
-    override fun getItemCount() = visitas.size
+    override fun getItemCount(): Int = visitas.size
 
-    fun submitList(newList: List<Visita>) {
-        visitas = newList
+    fun submitList(nuevaLista: List<Visita>) {
+        visitas = nuevaLista
         notifyDataSetChanged()
     }
 }

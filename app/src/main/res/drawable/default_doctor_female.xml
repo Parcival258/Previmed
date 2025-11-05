@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+    <!-- Fondo circular -->
+    <path
+        android:fillColor="#E8F0FE"
+        android:pathData="M256,0C114.6,0 0,114.6 0,256s114.6,256 256,256 256,-114.6 256,-256S397.4,0 256,0z" />
+
+    <!-- Rostro -->
+    <path
+        android:fillColor="#FFB6C1"
+        android:pathData="M256,256m-96,0a96,96 0,1 0,192 0a96,96 0,1 0,-192 0" />
+
+    <!-- Bata médica -->
+    <path
+        android:fillColor="#B388FF"
+        android:pathData="M128,448c0,-70.7 57.3,-128 128,-128s128,57.3 128,128H128z" />
+</vector>

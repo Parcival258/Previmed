@@ -2,6 +2,7 @@ package com.andres_lasso.previmed.interfaces
 
 import com.andres_lasso.previmed.model.*
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface PacienteApi {
@@ -52,9 +53,10 @@ interface PacienteApi {
 
     /** 🔹 Obtener paciente por id */
     @GET("pacientes/{id}")
-    fun getPacienteById(
+    suspend fun getPacienteById(
         @Path("id") id: Int
-    ): Call<ApiResponse<PacienteData>>
+    ): Response<PacienteResponse>
+
 
     /** 🔹 Asociar beneficiario usando ID del beneficiario */
     @PUT("pacientes/asociar/{id}")
@@ -82,4 +84,6 @@ interface PacienteApi {
     fun deletePacienteById(
         @Path("id") id: Int
     ): Call<ApiResponse<Unit>>
+
+
 }

@@ -10,7 +10,7 @@ object MedicoCache {
     }
 
     fun getNombre(idMedico: Int): String? {
-        val med = medicos?.firstOrNull { it.idMedico == idMedico }
+        val med = medicos?.firstOrNull { it.id_medico == idMedico }
         return if (med?.usuario != null) {
             "${med.usuario.nombre} ${med.usuario.apellido}"
         } else {

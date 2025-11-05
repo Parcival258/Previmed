@@ -33,9 +33,11 @@ object RetrofitClient {
 
     // 🧠 Configuración de Gson (snake_case ↔ camelCase)
     private val gson = GsonBuilder()
-        .setLenient()
-        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        .setLenient() // Permite leer JSON flexible
+        .serializeNulls() // Acepta valores nulos sin fallar
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES) // Convierte idMedico ↔ id_medico automáticamente
         .create()
+
 
     // 🚀 Instancia principal de Retrofit
     private val retrofit: Retrofit by lazy {
@@ -60,4 +62,6 @@ object RetrofitClient {
         retrofit.create(FormaPagoApi::class.java)
     }
     val registerApi: RegisterApi by lazy { retrofit.create(RegisterApi::class.java) }
+    val medicoApi: MedicoApi by lazy { retrofit.create(MedicoApi::class.java) }
+
 }

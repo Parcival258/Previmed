@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- ENCABEZADO -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="4dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtPacienteNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre Paciente"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/txtDireccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dirección"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txtFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnVer"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/see"
+                android:contentDescription="Ver detalles"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:id="@+id/btnCancelar"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/drop"
+                android:contentDescription="Cancelar visita" />
+        </LinearLayout>
+
+        <!-- 🔽 SECCIÓN DE DETALLES (INICIALMENTE OCULTA) -->
+        <LinearLayout
+            android:id="@+id/cardDetalles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingTop="8dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
+
+            <TextView
+                android:id="@+id/txtBarrio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏘 Barrio: ---"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtTelefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="☎️ Teléfono: ---"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🧾 Descripción: ---"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

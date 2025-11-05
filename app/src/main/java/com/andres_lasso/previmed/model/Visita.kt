@@ -1,32 +1,37 @@
 package com.andres_lasso.previmed.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Visita(
-    val idVisita: Int,
-    val fechaVisita: String,
-    val descripcion: String,
-    val direccion: String,
-    val estado: Boolean,
-    val pacienteId: Int,
-    val medicoId: Int,
-    val telefono: String,
-    val barrioId: Int,
-    val medico: Medico,
-    val paciente: Paciente,
-    val barrio: Barrio
+    @SerializedName("idVisita") val idVisita: Int?,
+    @SerializedName("fechaVisita") val fechaVisita: String?,
+    @SerializedName("descripcion") val descripcion: String?,
+    @SerializedName("direccion") val direccion: String?,
+    @SerializedName("estado") val estado: Boolean?,
+    @SerializedName("pacienteId") val pacienteId: Int?,
+    @SerializedName("medicoId") val medicoId: Int?,
+    @SerializedName("telefono") val telefono: String?,
+    @SerializedName("barrioId") val barrioId: Int?,
+    @SerializedName("paciente") val paciente: Paciente?,
+    @SerializedName("barrio") val barrio: Barrio?,
+    @SerializedName("medico") val medico: Medico?,
+    @SerializedName("nombreBarrio") val nombreBarrio: String? = null
+
 )
 
 data class VisitaResponse(
-    val msj: List<Visita>
+    @SerializedName("msj") val msj: List<Visita>?,
+    @SerializedName("data") val data: List<Visita>?
 
 )
 
 data class VisitasRequest(
-    val fecha_visita: String,
-    val descripcion: String?,
-    val direccion: String,
-    val estado: Boolean = true,
-    val telefono: String,
-    val paciente_id: Int,
-    val medico_id: Int,
-    val barrio_id: Int
+    @SerializedName("fechaVisita") val fechaVisita: String,
+    @SerializedName("descripcion") val descripcion: String?,
+    @SerializedName("direccion") val direccion: String,
+    @SerializedName("estado") val estado: Boolean = true,
+    @SerializedName("telefono") val telefono: String,
+    @SerializedName("pacienteId") val pacienteId: Int,
+    @SerializedName("medicoId") val medicoId: Int,
+    @SerializedName("barrioId") val barrioId: Int
 )
