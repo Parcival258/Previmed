@@ -51,13 +51,7 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/btnVer"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/see"
-                android:contentDescription="Ver detalles"
-                android:layout_marginEnd="8dp" />
+            
 
             <ImageView
                 android:id="@+id/btnCancelar"

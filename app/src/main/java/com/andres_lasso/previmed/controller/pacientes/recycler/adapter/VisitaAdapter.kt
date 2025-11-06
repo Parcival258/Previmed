@@ -31,7 +31,7 @@ class VisitaAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val visita = visitas[position]
 
-        // Mostrar el nombre del médico (si existe)
+        // Nombre del médico
         val nombreMedico = MedicoCache.getNombre(visita.medicoId ?: -1)
         holder.txtPacienteNombre.text = nombreMedico ?: "Médico desconocido"
 
@@ -39,7 +39,7 @@ class VisitaAdapter(
         holder.txtDireccion.text = "📍 ${visita.direccion ?: "Dirección no disponible"}"
         holder.txtFecha.text = "🗓 ${visita.fechaVisita?.take(10) ?: "Sin fecha"}"
 
-        // Botón para cancelar
+        // Botón cancelar
         holder.btnCancelar.setOnClickListener { onCancelarClick(visita) }
     }
 

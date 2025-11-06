@@ -23,6 +23,20 @@ class MainActivity : AppCompatActivity() {
         return normalized.replace("\\p{Mn}+".toRegex(), "").lowercase()
     }
 
+    private fun crearCanalNotificacion() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            val nombre = "PDF Descargas"
+            val descripcion = "Notificaciones de PDFs generados"
+            val importancia = android.app.NotificationManager.IMPORTANCE_DEFAULT
+            val canal = android.app.NotificationChannel("PDF_CHANNEL", nombre, importancia).apply {
+                description = descripcion
+            }
+            val manager = getSystemService(android.app.NotificationManager::class.java)
+            manager.createNotificationChannel(canal)
+        }
+    }
+
+
     private fun goToRoleActivity(role: String) {
         val destination = when (role) {
             "beneficiario", "paciente" -> ViewBeneficiario::class.java
@@ -41,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        crearCanalNotificacion()
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

@@ -1,53 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<!-- fragment_contrato_beneficiario.xml -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:padding="16dp"
-    tools:context=".controller.pacientes.fragmentBeneficiario.ContratoBeneficiarioFragment">
-
-
+    android:background="#F5F5F5"
+    android:paddingBottom="80dp">
 
     <LinearLayout
-        android:layout_width="411dp"
-        android:layout_height="114dp"
-        android:background="@drawable/esquinas_redondeadas"
-        android:orientation="vertical"
-        android:gravity="bottom|center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/contratoBeneficiario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="2dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="¡Tu Contrato!"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-
-
-    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <!-- Encabezado mejorado -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@drawable/esquinas_redondeadas"
+            android:padding="20dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
+            <TextView
+                android:id="@+id/txtTituloContrato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contrato"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-            <androidx.cardview.widget.CardView
+        <!-- Contenedor con padding -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Card: Número de contrato -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -55,186 +52,179 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Datos Titular:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Nombre: Pepe Perez"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
+                        android:text="Número de contrato:"
+                        android:textColor="#999"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/txtNumeroContrato"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Tipo de Plan:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Familiar"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Descripción:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Soporte para 6 integrantes"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Próximo pago:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="01-06-2025"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Datos Beneficiario:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Nombres:"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Pepe Perez, Pepa Perez"
-                            android:textColor="@android:color/black"/>
-                    </LinearLayout>
-
+                        android:text=""
+                        android:textColor="#333"
+                        android:textSize="16sp" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-
-            <androidx.cardview.widget.CardView
+            <!-- Card: Fechas -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="16dp"
-                android:elevation="2dp"
-                android:background="@drawable/esquinas_redondeadas">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
-                <ScrollView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:padding="16dp">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/title_contrato"
-                            android:textSize="16sp"
-                            android:textColor="@android:color/black"
-                            android:textStyle="bold"
-                            />
+                        android:text="Fecha de inicio:"
+                        android:textColor="#999"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/contrato_introduccion"
-                            android:textSize="16sp"
-                            android:textColor="@android:color/black"/>
+                    <TextView
+                        android:id="@+id/tvFechaInicio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#333"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/contrato_clausula_1"
-                            android:textSize="16sp"
-                            android:textColor="@android:color/black"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/contrato_clausula_2"
-                            android:textSize="16sp"
-                            android:textColor="@android:color/black"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha de fin:"
+                        android:textColor="#999"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
 
-                    </LinearLayout>
-                </ScrollView>
-            </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/tvFechaFin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#333"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
+            <!-- Card: Plan y Precio -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Plan:"
+                        android:textColor="#999"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/txtPlan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#333"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Precio del plan:"
+                        android:textColor="#999"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvPrecioPlan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#333"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Beneficiarios -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Beneficiarios:"
+                        android:textColor="#999"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/txtBeneficios"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#333"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Loading -->
+            <TextView
+                android:id="@+id/txtCargando"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cargando información..."
+                android:textAlignment="center"
+                android:textColor="#666"
+                android:paddingTop="16dp" />
         </LinearLayout>
-    </ScrollView>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGenerarPDF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descargar contrato"
+            android:icon="@drawable/ic_download"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="@color/AZUL_GENERAL"
+            android:textColor="@android:color/white"/>
 
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/DescargarContrato"
-        android:layout_width="200dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="96dp"
-        android:background="@drawable/btn_degradado_selector"
-        android:text="Descargar Contrato 📄"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold" />
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -24,7 +24,6 @@ class VisitasPendientesAdapter(
         val txtBarrio: TextView = view.findViewById(R.id.txtBarrio)
         val txtTelefono: TextView = view.findViewById(R.id.txtTelefono)
         val txtDescripcion: TextView = view.findViewById(R.id.txtDescripcion)
-        val btnVer: ImageView = view.findViewById(R.id.btnVer)
         val btnCancelar: ImageView = view.findViewById(R.id.btnCancelar)
         val cardDetalles: LinearLayout = view.findViewById(R.id.cardDetalles)
     }
@@ -64,22 +63,6 @@ class VisitasPendientesAdapter(
         holder.txtTelefono.text = "☎️ ${visita.telefono ?: "No disponible"}"
         holder.txtDescripcion.text = "🧾 ${visita.descripcion ?: "Sin descripción"}"
 
-        // 👁 Alternar visibilidad del card con animación
-        holder.btnVer.setOnClickListener {
-            val isVisible = holder.cardDetalles.visibility == View.VISIBLE
-            if (isVisible) {
-                val fadeOut = AlphaAnimation(1f, 0f)
-                fadeOut.duration = 200
-                holder.cardDetalles.startAnimation(fadeOut)
-                holder.cardDetalles.visibility = View.GONE
-            } else {
-                val fadeIn = AlphaAnimation(0f, 1f)
-                fadeIn.duration = 200
-                holder.cardDetalles.visibility = View.VISIBLE
-                holder.cardDetalles.startAnimation(fadeIn)
-                onVerClick(visita)
-            }
-        }
 
         // ❌ Cancelar visita
         holder.btnCancelar.setOnClickListener {

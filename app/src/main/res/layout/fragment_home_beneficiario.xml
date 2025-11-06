@@ -1,150 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
+    android:background="#F5F7FA"
+    android:paddingBottom="80dp"
     tools:context=".controller.pacientes.fragmentBeneficiario.HomeBeneficiarioFragment">
 
     <LinearLayout
-        android:layout_width="411dp"
-        android:layout_height="114dp"
-        android:background="@drawable/esquinas_redondeadas"
-        android:orientation="vertical"
-        android:gravity="bottom|center_horizontal">
-
-        <TextView
-            android:id="@+id/saludo_beneficiario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="2dp"
-            android:fontFamily="sans-serif-medium"
-            android:padding="8dp"
-            android:text="¡Hola, Usuario!"
-            android:textColor="@color/white"
-            android:textSize="24sp" />
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="16dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/estado_servicio"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Estado del servicio"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:fontFamily="sans-serif-condensed-light"
-            android:padding="8dp"
-            android:elevation="2dp"
-            android:textStyle="bold"/>
-
-        <View
-            android:id="@+id/indicador_estado"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/circle_red" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="25dp">
-
+        <!-- Header con saludo -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/esquinas_redondeadas"
+            android:padding="24dp"
             android:orientation="vertical"
-            android:gravity="center"
-            android:background="@drawable/card_info"
-            android:padding="25dp">
+            android:gravity="center_horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/saludo_beneficiario"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Visitas asignadas:"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
+                android:text="¡Buenos días!"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="No tienes visitas asignadas"
-                android:textColor="@color/black"/>
+                android:text="Bienvenido a tu portal de salud"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:alpha="0.8"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
+        <!-- Contenedor principal -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"
-            android:background="@drawable/card_info"
-            android:padding="25dp"
-            android:layout_marginTop="25dp">
+            android:padding="16dp">
 
-            <TextView
+            <!-- Card: Estado del Servicio -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Plan:"
-                android:textStyle="bold"/>
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Estado del Servicio"
+                            android:textSize="12sp"
+                            android:textColor="#999"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:id="@+id/estado_servicio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cargando..."
+                            android:textSize="18sp"
+                            android:textColor="#333"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/indicador_estado"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/circle_green"
+                        android:elevation="2dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Visitas -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Próxima Visita"
+                        android:textSize="12sp"
+                        android:textColor="#999"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tv_visitas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sin visitas agendadas"
+                        android:textSize="16sp"
+                        android:textColor="#333"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Solicita una visita en el apartado de visitas"
+                        android:textSize="12sp"
+                        android:textColor="#999"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Plan -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="#F0F4FF">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tu Plan"
+                        android:textSize="12sp"
+                        android:textColor="#2196F3"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tv_plan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cargando..."
+                        android:textSize="20sp"
+                        android:textColor="#2196F3"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✓ Acceso 24/7 a médicos"
+                        android:textSize="12sp"
+                        android:textColor="#666"
+                        android:layout_marginTop="12dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Botones de acción -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/ir_beneficiarios"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/btn_fondo_previmed"
+                    android:text="Mis Beneficiarios"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/borde_imagen"
+                    android:text="Cerrar Sesión"
+                    android:textColor="#2196F3"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Mensaje de ayuda -->
             <TextView
+                android:id="@+id/mensaje_ayuda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Tu plan es premium"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="25dp"
-            android:layout_marginTop="25dp">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/ir_beneficiarios"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:text="¿Necesitas ayuda? Contacta con soporte"
+                android:textSize="14sp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/btn_fondo_previmed"
-                android:text="Mis beneficiarios"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"/>
-
-            <!-- Botón Cerrar Sesión -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnLogout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/btn_fondo_previmed"
-                android:text="Cerrar sesión"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"/>
+                android:textColor="#999" />
         </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/mensaje_ayuda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¿En qué podemos ayudarte hoy? 😄"
-        android:textSize="18sp"
-        android:layout_marginTop="32dp"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"/>
-</LinearLayout>
+</ScrollView>
