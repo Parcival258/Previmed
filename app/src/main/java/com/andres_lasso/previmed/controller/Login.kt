@@ -16,7 +16,9 @@ import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.LoginRequest
 import com.andres_lasso.previmed.model.LoginResponse
 import com.andres_lasso.previmed.utils.PreferenceHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -205,33 +207,29 @@ class Login : AppCompatActivity() {
             try {
                 Log.d("LOGIN", "🔍 Obteniendo perfil para UUID: $usuarioId")
 
-                val response = RetrofitClient.pacienteApi
-                    .getPacienteByUsuarioId(usuarioId)
-                    .execute()
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.pacienteApi.getPacienteByUsuarioId(usuarioId).execute()
+                }
 
                 if (response.isSuccessful && response.body() != null) {
                     val idPaciente = response.body()!!.data?.idPaciente
-
                     PreferenceHelper.saveIdPaciente(this@Login, idPaciente.toString())
-                    Log.d("LOGIN", "✅ ID paciente guardado: $idPaciente")
+                    PreferenceHelper.saveUsuarioId(this@Login, usuarioId)
 
+                    Log.d("LOGIN", "✅ ID paciente: $idPaciente | UUID guardado: $usuarioId")
                     goToRoleActivity(role)
-
                 } else {
+                    Log.e("LOGIN", "Error ${response.code()} - ${response.errorBody()?.string()}")
                     Toast.makeText(
                         this@Login,
                         "Error obteniendo datos del paciente",
                         Toast.LENGTH_SHORT
                     ).show()
-                    Log.e(
-                        "LOGIN",
-                        "Error: ${response.code()} - ${response.errorBody()?.string()}"
-                    )
                 }
 
             } catch (e: Exception) {
-                Toast.makeText(this@Login, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 Log.e("LOGIN", "Error obteniendo paciente", e)
+                Toast.makeText(this@Login, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -73,4 +73,13 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    //para notificaciones
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core:1.12.0")
+
+    // Para usar FileProvider
+    implementation("androidx.appcompat:appcompat:1.7.0")
+
+    // PDF con iText7
+    implementation("com.itextpdf:itext7-core:7.2.5")
 }

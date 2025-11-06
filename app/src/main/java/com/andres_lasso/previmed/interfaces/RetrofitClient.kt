@@ -1,5 +1,7 @@
 package com.andres_lasso.previmed.interfaces
 
+import com.andres_lasso.previmed.network.PagosApi
+import com.andres_lasso.previmed.network.PagosApiService
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -63,5 +65,11 @@ object RetrofitClient {
     }
     val registerApi: RegisterApi by lazy { retrofit.create(RegisterApi::class.java) }
     val medicoApi: MedicoApi by lazy { retrofit.create(MedicoApi::class.java) }
+
+    val pagosApi: PagosApiService by lazy { retrofit.create(PagosApiService::class.java)
+    }
+    val beneficiarioApi: BeneficiarioService by lazy {
+        retrofit.create(BeneficiarioService::class.java)
+    }
 
 }
