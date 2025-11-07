@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#F5F7FA"
-    android:paddingBottom="80dp"
     tools:context=".controller.pacientes.fragmentBeneficiario.HomeBeneficiarioFragment">
 
+    <!-- Header con saludo -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@drawable/esquinas_redondeadas"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-        <!-- Header con saludo -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/saludo_beneficiario"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/esquinas_redondeadas"
-            android:padding="24dp"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:text="¡Buenas noches!"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/saludo_beneficiario"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="¡Buenos días!"
-                android:textColor="@color/white"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bienvenido a tu portal de salud"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:alpha="0.8"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bienvenido a tu portal de salud"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:alpha="0.8"
-                android:layout_marginTop="4dp" />
-        </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingBottom="20dp">
 
-        <!-- Contenedor principal -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#1F1F1F">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -74,7 +75,7 @@
                             android:layout_height="wrap_content"
                             android:text="Estado del Servicio"
                             android:textSize="12sp"
-                            android:textColor="#999"
+                            android:textColor="#BBBBBB"
                             android:textStyle="bold"
                             android:layout_marginBottom="4dp" />
 
@@ -84,7 +85,7 @@
                             android:layout_height="wrap_content"
                             android:text="Cargando..."
                             android:textSize="18sp"
-                            android:textColor="#333"
+                            android:textColor="#FFFFFF"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -104,7 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#1F1F1F">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -117,7 +119,7 @@
                         android:layout_height="wrap_content"
                         android:text="Próxima Visita"
                         android:textSize="12sp"
-                        android:textColor="#999"
+                        android:textColor="#BBBBBB"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp" />
 
@@ -127,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:text="Sin visitas agendadas"
                         android:textSize="16sp"
-                        android:textColor="#333"
+                        android:textColor="#FFFFFF"
                         android:textStyle="bold" />
 
                     <TextView
@@ -135,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:text="Solicita una visita en el apartado de visitas"
                         android:textSize="12sp"
-                        android:textColor="#999"
+                        android:textColor="#BBBBBB"
                         android:layout_marginTop="8dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -223,5 +225,5 @@
                 android:layout_marginTop="32dp"
                 android:textColor="#999" />
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>
