@@ -127,20 +127,53 @@ class Login : AppCompatActivity() {
                     progressBar.visibility = View.GONE
                     btnLogin.text = "Ingresar"
 
-                    if (response.isSuccessful) {
-                        val body = response.body()
+                    try {
+                        if (response.isSuccessful) {
+                            val body = response.body()
 
-                        if (body != null && body.jwt.isNotEmpty()) {
-                            val roleNormalized = normalizeRole(body.data.rol.nombreRol)
+                            if (body == null) {
+                                Toast.makeText(
+                                    this@Login,
+                                    "Error al procesar la respuesta del servidor.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.e("LOGIN", "❌ Respuesta nula del servidor")
+                                return
+                            }
+
+                            // ✅ Caso: servidor responde 200 sin token ni data (por ejemplo: "Usuario no encontrado")
+                            if (body.jwt.isNullOrEmpty() || body.data == null) {
+                                val mensajeServidor = body.msg ?: body.message ?: ""
+
+                                if (mensajeServidor.contains("no encontrado", ignoreCase = true) ||
+                                    mensajeServidor.contains("credenciales", ignoreCase = true) ||
+                                    mensajeServidor.contains("incorrect", ignoreCase = true)
+                                ) {
+                                    Toast.makeText(
+                                        this@Login,
+                                        "Credenciales incorrectas. Verifique su documento o contraseña.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    Log.w("LOGIN", "⚠️ Credenciales incorrectas detectadas: $mensajeServidor")
+                                    return
+                                } else {
+                                    Toast.makeText(
+                                        this@Login,
+                                        "Error al procesar la respuesta del servidor.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    Log.e("LOGIN", "❌ Respuesta incompleta del servidor: $mensajeServidor")
+                                    return
+                                }
+                            }
+
+                            val roleNormalized = normalizeRole(body.data.rol?.nombreRol)
                             val usuarioId = body.data.id
 
                             PreferenceHelper.saveToken(this@Login, body.jwt)
                             PreferenceHelper.saveRole(this@Login, roleNormalized)
 
-                            Log.d(
-                                "LOGIN",
-                                "✅ Login exitoso - UUID: $usuarioId - Rol: $roleNormalized"
-                            )
+                            Log.d("LOGIN", "✅ Login exitoso - UUID: $usuarioId - Rol: $roleNormalized")
 
                             when (roleNormalized) {
                                 "paciente" -> obtenerIdPaciente(usuarioId, roleNormalized)
@@ -148,29 +181,28 @@ class Login : AppCompatActivity() {
                                 else -> {
                                     Toast.makeText(
                                         this@Login,
-                                        body.message,
-                                        Toast.LENGTH_LONG
+                                        body.message ?: "Inicio de sesión correcto",
+                                        Toast.LENGTH_SHORT
                                     ).show()
                                     goToRoleActivity(roleNormalized)
                                 }
                             }
                         } else {
-                            Toast.makeText(
-                                this@Login,
-                                "Error: no se recibió token",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            Log.e("LOGIN", "Respuesta sin JWT")
-                        }
+                            // 💬 Mensajes personalizados según el código HTTP
+                            val errorMessage = when (response.code()) {
+                                400, 401 -> "Credenciales incorrectas. Verifique su documento o contraseña."
+                                403 -> "No tiene permisos para acceder."
+                                404 -> "Usuario no encontrado."
+                                500 -> "Credenciales incorrectas. Verifique su documento o contraseña."
+                                else -> "Error desconocido (${response.code()})."
+                            }
 
-                    } else {
-                        val errorBody = response.errorBody()?.string()
-                        Toast.makeText(
-                            this@Login,
-                            "Credenciales incorrectas",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e("LOGIN", "Error: ${response.code()} - $errorBody")
+                            Toast.makeText(this@Login, errorMessage, Toast.LENGTH_SHORT).show()
+                            Log.e("LOGIN", "⚠️ Error de respuesta: ${response.code()} - ${response.errorBody()?.string()}")
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this@Login, "Error inesperado: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                        Log.e("LOGIN", "💥 Excepción inesperada al procesar login: ${e.message}", e)
                     }
                 }
 
@@ -179,12 +211,10 @@ class Login : AppCompatActivity() {
                     btnLogin.isEnabled = true
                     progressBar.visibility = View.GONE
                     btnLogin.text = "Ingresar"
-                    Toast.makeText(
-                        this@Login,
-                        "Error de conexión: ${t.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Log.e("LOGIN", "Fallo conexión", t)
+
+                    val msg = t.message ?: "No se pudo conectar con el servidor"
+                    Toast.makeText(this@Login, "Error de conexión: $msg", Toast.LENGTH_SHORT).show()
+                    Log.e("LOGIN", "Fallo conexión: $msg", t)
                 }
             })
     }
