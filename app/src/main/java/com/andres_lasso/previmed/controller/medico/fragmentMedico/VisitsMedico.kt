@@ -45,8 +45,6 @@ class VisitsMedico : Fragment() {
         lifecycleScope.launch {
             try {
                 val response = RetrofitClient.visitasApi.getVisitasPorMedico(idMedico)
-                Log.d("VisitsMedico", "📡 Código: ${response.code()} - Mensaje: ${response.message()}")
-
                 if (response.isSuccessful) {
                     val visitas = response.body()?.msj?.filter { it.estado == true } ?: emptyList()
 
@@ -57,25 +55,19 @@ class VisitsMedico : Fragment() {
 
                     val visitasCompletas = mutableListOf<Visita>()
 
-                    // 🔍 Cargar datos de paciente si no tiene usuario
                     for (visita in visitas) {
                         if (visita.paciente?.usuario == null && visita.pacienteId != null) {
                             val paciente = obtenerPacientePorId(visita.pacienteId)
-                            if (paciente != null) {
-                                visitasCompletas.add(visita.copy(paciente = paciente))
-                            } else {
-                                visitasCompletas.add(visita)
-                            }
-                        } else {
-                            visitasCompletas.add(visita)
-                        }
+                            if (paciente != null) visitasCompletas.add(visita.copy(paciente = paciente))
+                            else visitasCompletas.add(visita)
+                        } else visitasCompletas.add(visita)
                     }
 
-                    Log.d("VisitsMedico", "✅ Visitas activas: ${visitasCompletas.size}")
                     binding.recyclerVisitas.adapter = VisitasPendientesAdapter(
-                        visitasCompletas,
+                        visitasCompletas.toMutableList(),
                         onVerClick = { verVisita(it) },
-                        onCancelarClick = { cancelarVisita(it) }
+                        onCancelarClick = { cancelarVisita(it) },
+                        onActualizarLista = { obtenerVisitasPendientes(idMedico) }
                     )
 
                 } else {
@@ -83,8 +75,7 @@ class VisitsMedico : Fragment() {
                 }
 
             } catch (e: Exception) {
-                Log.e("VisitsMedico", "🚨 Error al obtener visitas: ${e.message}", e)
-                Toast.makeText(requireContext(), "Error al obtener visitas", Toast.LENGTH_SHORT).show()
+                Log.e("VisitsMedico", "🚨 Error al obtener visitas: ${e.message}")
             }
         }
     }
@@ -92,16 +83,9 @@ class VisitsMedico : Fragment() {
     private suspend fun obtenerPacientePorId(id: Int): Paciente? {
         return try {
             val response = RetrofitClient.pacienteApi.getPacienteById(id)
-            if (response.isSuccessful) {
-                val paciente = response.body()?.data
-                Log.d("VisitsMedico", "🧍 Paciente cargado: ${paciente?.usuario?.nombre} ${paciente?.usuario?.apellido}")
-                paciente
-            } else {
-                Log.e("VisitsMedico", "❌ No se pudo obtener paciente $id")
-                null
-            }
+            if (response.isSuccessful) response.body()?.data else null
         } catch (e: Exception) {
-            Log.e("VisitsMedico", "🚨 Error al obtener paciente $id: ${e.message}")
+            Log.e("VisitsMedico", "🚨 Error al obtener paciente: ${e.message}")
             null
         }
     }
@@ -124,7 +108,6 @@ class VisitsMedico : Fragment() {
         """.trimIndent()
 
         Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
-        Log.d("VisitsMedico", "🩺 Detalles visita seleccionada:\n$msg")
     }
 
     private fun cancelarVisita(visita: Visita) {
@@ -136,8 +119,7 @@ class VisitsMedico : Fragment() {
                 val idMedico = visita.medicoId ?: PreferenceHelper.getIdMedico(requireContext()) ?: return@launch
                 obtenerVisitasPendientes(idMedico)
             } catch (e: Exception) {
-                Log.e("VisitsMedico", "🚨 Error cancelando visita: ${e.message}", e)
-                Toast.makeText(requireContext(), "Error al cancelar visita", Toast.LENGTH_SHORT).show()
+                Log.e("VisitsMedico", "🚨 Error cancelando visita: ${e.message}")
             }
         }
     }

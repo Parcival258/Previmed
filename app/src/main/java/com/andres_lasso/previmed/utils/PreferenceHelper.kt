@@ -13,6 +13,7 @@ object PreferenceHelper {
     private const val TELEFONO_KEY = "telefono"
     private const val ID_MEDICO_KEY = "id_medico"
     private const val USUARIO_ID_KEY = "usuario_id"
+    private const val VISITA_ACTIVA_KEY = "visita_activa"
 
     private fun prefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -75,6 +76,18 @@ object PreferenceHelper {
     fun getTelefono(context: Context): String? = prefs(context).getString(TELEFONO_KEY, null)
     fun clearTelefono(context: Context) = prefs(context).edit().remove(TELEFONO_KEY).apply()
 
+    // 🟡 VISITA ACTIVA
+    fun setVisitaActiva(context: Context, activa: Boolean) {
+        prefs(context).edit().putBoolean(VISITA_ACTIVA_KEY, activa).apply()
+    }
+
+    fun isVisitaActiva(context: Context): Boolean {
+        return prefs(context).getBoolean(VISITA_ACTIVA_KEY, false)
+    }
+
+    fun clearVisitaActiva(context: Context) {
+        prefs(context).edit().remove(VISITA_ACTIVA_KEY).apply()
+    }
     // BORRAR TODO
     fun clearSession(context: Context) {
         prefs(context).edit().clear().apply()

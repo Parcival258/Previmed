@@ -19,9 +19,13 @@ interface MedicoApi {
 
     @PUT("medicos/{id}")
     suspend fun actualizarMedico(
-        @Path("id") id: Int,
+        @Path("id") idMedico: Int,
         @Body body: MedicoUpdateRequest
     ): Response<ApiResponse<MedicoResponse>>
+
+
+
+
 
 
 }

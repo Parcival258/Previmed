@@ -2,6 +2,9 @@ package com.andres_lasso.previmed.controller.medico.fragmentMedico
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -27,16 +30,12 @@ class HomeMedico : Fragment() {
 
     private var _binding: FragmentHomeMedicoBinding? = null
     private val binding get() = _binding!!
-
     private var medicoActual: Medico? = null
     private val handler = Handler(Looper.getMainLooper())
-    private val refreshInterval = 5000L // 🔁 cada 5 segundos
+    private val refreshInterval = 5000L
+    private lateinit var estadoReceiver: BroadcastReceiver
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeMedicoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -47,15 +46,33 @@ class HomeMedico : Fragment() {
         val idMedico = PreferenceHelper.getIdMedico(requireContext())
         val usuarioId = PreferenceHelper.getUsuarioId(requireContext())
 
-        if (idMedico != null && idMedico != -1) {
+        if (idMedico != -1) {
             obtenerYRenderPorId(idMedico)
             startAutoRefresh(idMedico)
         } else if (!usuarioId.isNullOrBlank()) {
             obtenerYRenderPorUsuario(usuarioId)
         }
+
+        // 🔄 Escuchar broadcast cuando se inicia o finaliza una visita
+        estadoReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: android.content.Intent?) {
+                if (PreferenceHelper.isVisitaActiva(requireContext())) {
+                    actualizarBotonesVisualesAnimado(true, false)
+                } else {
+                    actualizarBotonesVisualesAnimado(true, true)
+                }
+            }
+        }
+        requireContext().registerReceiver(estadoReceiver, IntentFilter("ACTUALIZAR_ESTADO_MEDICO"))
     }
 
-    /** ==================== 🔄 AUTO REFRESCO ==================== **/
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacksAndMessages(null)
+        requireContext().unregisterReceiver(estadoReceiver)
+        _binding = null
+    }
+
     private fun startAutoRefresh(idMedico: Int?) {
         if (idMedico == null || idMedico == -1) return
         handler.postDelayed(object : Runnable {
@@ -66,42 +83,27 @@ class HomeMedico : Fragment() {
                         if (response.isSuccessful) {
                             renderResponse(response)
                         }
-                    } catch (_: Exception) {
-                    }
+                    } catch (_: Exception) { }
                 }
                 handler.postDelayed(this, refreshInterval)
             }
         }, refreshInterval)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        handler.removeCallbacksAndMessages(null)
-        _binding = null
-    }
-
-    /** ==================== 🔹 OBTENER DATOS ==================== **/
     private fun obtenerYRenderPorId(idMedico: Int) {
         lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.medicoApi.obtenerMedicoPorId(idMedico)
-                renderResponse(response)
-            } catch (_: Exception) {
-            }
+            val response = RetrofitClient.medicoApi.obtenerMedicoPorId(idMedico)
+            renderResponse(response)
         }
     }
 
     private fun obtenerYRenderPorUsuario(usuarioId: String) {
         lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.medicoApi.obtenerMedicoPorUsuario(usuarioId)
-                renderResponse(response)
-            } catch (_: Exception) {
-            }
+            val response = RetrofitClient.medicoApi.obtenerMedicoPorUsuario(usuarioId)
+            renderResponse(response)
         }
     }
 
-    /** ==================== 🔹 MOSTRAR DATOS ==================== **/
     private fun renderResponse(response: Response<MedicoResponse>) {
         if (!response.isSuccessful) return
         val medico = response.body()?.medicoOrNull ?: return
@@ -114,150 +116,72 @@ class HomeMedico : Fragment() {
             Acerca de:
             Recuerda que nuestros pacientes son muy importantes.
             Brinda siempre una atención de calidad.
-            
-            Documento: ${usuario?.numero_documento ?: "No disponible"}
-            Email: ${usuario?.email ?: "Sin correo registrado"}
         """.trimIndent()
 
-        actualizarBotonesVisualesAnimado(medico.disponibilidad ?: false, medico.estado ?: false)
+        if (PreferenceHelper.isVisitaActiva(requireContext())) {
+            actualizarBotonesVisualesAnimado(true, false)
+        } else {
+            actualizarBotonesVisualesAnimado(medico.disponibilidad ?: false, medico.estado ?: false)
+        }
 
-        Glide.with(requireContext())
-            .load(R.drawable.doctor)
-            .into(binding.imgDoctor)
-
+        Glide.with(requireContext()).load(R.drawable.doctor).into(binding.imgDoctor)
         configurarBotones()
     }
 
-    /** ==================== 🔹 CONFIGURAR BOTONES ==================== **/
     private fun configurarBotones() {
         val medico = medicoActual ?: return
-
-        // 🔘 Botón de disponibilidad (Disponible / No disponible)
         binding.btnEstado.setOnClickListener {
             lifecycleScope.launch {
                 val nuevaDisponibilidad = !(medico.disponibilidad ?: false)
-                var nuevoEstado = medico.estado ?: false
-
-                // 🔁 Reglas personalizadas
-                if (!nuevaDisponibilidad) {
-                    // Si pasa a "No disponible" → también pasa a "Inactivo"
-                    nuevoEstado = false
-                } else {
-                    // Si pasa a "Disponible" → también pasa a "Activo"
-                    nuevoEstado = true
-                }
-
+                val nuevoEstado = nuevaDisponibilidad
                 medico.disponibilidad = nuevaDisponibilidad
                 medico.estado = nuevoEstado
-
-                actualizarBotonesVisualesAnimado(nuevaDisponibilidad, nuevoEstado)
-                actualizarBackend(medico.id_medico, nuevaDisponibilidad, nuevoEstado)
-            }
-        }
-
-        // 🔘 Botón de estado (Activo / Inactivo)
-        binding.btnActivo.setOnClickListener {
-            lifecycleScope.launch {
-                var nuevoEstado = !(medico.estado ?: false)
-                var nuevaDisponibilidad = medico.disponibilidad ?: false
-
-                // 🔁 Reglas personalizadas
-                if (nuevoEstado) {
-                    // Si pasa a "Activo" → también pasa a "Disponible"
-                    nuevaDisponibilidad = true
-                } else {
-                    // Si pasa a "Inactivo" → puede seguir disponible (ocupado)
-                    // No se cambia la disponibilidad
-                }
-
-                medico.estado = nuevoEstado
-                medico.disponibilidad = nuevaDisponibilidad
-
                 actualizarBotonesVisualesAnimado(nuevaDisponibilidad, nuevoEstado)
                 actualizarBackend(medico.id_medico, nuevaDisponibilidad, nuevoEstado)
             }
         }
     }
 
-    /** ==================== 🔹 ACTUALIZAR BACKEND ==================== **/
     private suspend fun actualizarBackend(idMedico: Int?, disponibilidad: Boolean, estado: Boolean) {
         if (idMedico == null) return
         try {
-            val body = MedicoUpdateRequest(
-                disponibilidad = disponibilidad,
-                estado = estado
-            )
-
+            val body = MedicoUpdateRequest(disponibilidad = disponibilidad, estado = estado)
             val response = RetrofitClient.medicoApi.actualizarMedico(idMedico, body)
-
             if (response.isSuccessful) {
                 val medicoSrv = response.body()?.data?.medicoOrNull
-                Toast.makeText(requireContext(), "Estado actualizado correctamente", Toast.LENGTH_SHORT).show()
-
-                // 🔄 Refresca UI inmediatamente con lo que devolvió el backend
                 medicoSrv?.let {
                     medicoActual = it
                     actualizarBotonesVisualesAnimado(it.disponibilidad ?: false, it.estado ?: false)
                 }
-            } else {
-                Toast.makeText(requireContext(), "Error al actualizar estado", Toast.LENGTH_SHORT).show()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(requireContext(), "Error de conexión", Toast.LENGTH_SHORT).show()
-        }
+        } catch (_: Exception) { }
     }
 
-
-
-
-
-    /** ==================== 🔹 ANIMACIÓN DE COLOR ==================== **/
     private fun animarColor(vista: View, colorInicial: Int, colorFinal: Int) {
         val anim = ValueAnimator.ofObject(ArgbEvaluator(), colorInicial, colorFinal)
-        anim.duration = 400 // duración suave
-        anim.addUpdateListener { valueAnimator ->
-            val colorActual = valueAnimator.animatedValue as Int
-            vista.setBackgroundColor(colorActual)
-        }
+        anim.duration = 400
+        anim.addUpdateListener { vista.setBackgroundColor(it.animatedValue as Int) }
         anim.start()
     }
 
-    /** ==================== 🔹 VISUAL SEGÚN COMBINACIÓN + ANIMACIÓN ==================== **/
     private fun actualizarBotonesVisualesAnimado(disponible: Boolean, activo: Boolean) {
         val ocupado = disponible && !activo
-
-        val colorActualEstado =
-            (binding.btnEstado.background as? android.graphics.drawable.ColorDrawable)?.color
-                ?: ContextCompat.getColor(requireContext(), R.color.rojo_estado)
-        val colorActualActivo =
-            (binding.btnActivo.background as? android.graphics.drawable.ColorDrawable)?.color
-                ?: ContextCompat.getColor(requireContext(), R.color.rojo_estado)
-
-        when {
-            ocupado -> {
-                binding.btnEstado.text = "Ocupado ⏳"
-                binding.btnActivo.text = "Inactivo 🔴"
-                val nuevoColor = ContextCompat.getColor(requireContext(), R.color.amarillo_estado)
-                animarColor(binding.btnEstado, colorActualEstado, nuevoColor)
-                animarColor(binding.btnActivo, colorActualActivo, nuevoColor)
-            }
-
-            disponible && activo -> {
-                binding.btnEstado.text = "Disponible ✅"
-                binding.btnActivo.text = "Activo 🟢"
-                val nuevoColor = ContextCompat.getColor(requireContext(), R.color.verde_estado)
-                animarColor(binding.btnEstado, colorActualEstado, nuevoColor)
-                animarColor(binding.btnActivo, colorActualActivo, nuevoColor)
-            }
-
-            else -> {
-                binding.btnEstado.text = "No disponible ❌"
-                binding.btnActivo.text = "Inactivo 🔴"
-                val nuevoColor = ContextCompat.getColor(requireContext(), R.color.rojo_estado)
-                animarColor(binding.btnEstado, colorActualEstado, nuevoColor)
-                animarColor(binding.btnActivo, colorActualActivo, nuevoColor)
-            }
+        val color = ContextCompat.getColor(requireContext(), when {
+            ocupado -> R.color.amarillo_estado
+            disponible && activo -> R.color.verde_estado
+            else -> R.color.rojo_estado
+        })
+        binding.btnEstado.text = when {
+            ocupado -> "Ocupado ⏳"
+            disponible && activo -> "Disponible "
+            else -> "No disponible "
         }
+        binding.btnActivo.text = when {
+            ocupado -> "Inactivo "
+            disponible && activo -> "Activo "
+            else -> "Inactivo "
+        }
+        animarColor(binding.btnEstado, R.color.white, color)
+        animarColor(binding.btnActivo, R.color.white, color)
     }
 }

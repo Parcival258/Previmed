@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- ENCABEZADO -->
+        <!-- 🔹 ENCABEZADO PRINCIPAL -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,12 +22,14 @@
             android:gravity="center_vertical"
             android:padding="4dp">
 
+            <!-- 🧍 Datos principales -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
+                <!-- Nombre completo del paciente -->
                 <TextView
                     android:id="@+id/txtPacienteNombre"
                     android:layout_width="wrap_content"
@@ -36,32 +39,57 @@
                     android:textSize="16sp"
                     android:textColor="@android:color/black" />
 
+                <!-- Dirección -->
                 <TextView
                     android:id="@+id/txtDireccion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dirección"
+                    android:text="📍 Dirección"
                     android:textSize="14sp" />
 
+                <!-- Fecha -->
                 <TextView
                     android:id="@+id/txtFecha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fecha"
+                    android:text="🗓 Fecha"
                     android:textSize="14sp" />
             </LinearLayout>
 
-            
+            <!-- 👁️ Botón ver detalles -->
+            <ImageView
+                android:id="@+id/btnVer"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_visibility"
+                android:contentDescription="Ver detalles"
+                android:padding="4dp"
+                android:layout_marginEnd="8dp"
+                app:tint="@color/AZUL_GENERAL" />
 
+            <!-- ▶️ / ⏹️ Botón iniciar o finalizar -->
+            <ImageView
+                android:id="@+id/btnIniciarFinalizar"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_play_arrow"
+                android:contentDescription="Iniciar o finalizar visita"
+                android:padding="4dp"
+                android:layout_marginEnd="8dp"
+                app:tint="@color/green" />
+
+            <!-- ❌ Botón cancelar -->
             <ImageView
                 android:id="@+id/btnCancelar"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:src="@drawable/drop"
-                android:contentDescription="Cancelar visita" />
+                android:src="@drawable/ic_cancel"
+                android:contentDescription="Cancelar visita"
+                android:padding="4dp"
+                app:tint="@color/red" />
         </LinearLayout>
 
-        <!-- 🔽 SECCIÓN DE DETALLES (INICIALMENTE OCULTA) -->
+        <!-- 🔽 DETALLES DE LA VISITA -->
         <LinearLayout
             android:id="@+id/cardDetalles"
             android:layout_width="match_parent"
@@ -69,28 +97,39 @@
             android:orientation="vertical"
             android:visibility="gone"
             android:paddingTop="8dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp">
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
 
+            <!-- Barrio -->
             <TextView
                 android:id="@+id/txtBarrio"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="🏘 Barrio: ---"
+                android:text="🏘 Barrio:"
                 android:textSize="14sp" />
 
+            <!-- Teléfono -->
             <TextView
                 android:id="@+id/txtTelefono"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="☎️ Teléfono: ---"
+                android:text="☎️ Teléfono:"
                 android:textSize="14sp" />
 
+            <!-- Descripción -->
             <TextView
                 android:id="@+id/txtDescripcion"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="🧾 Descripción: ---"
+                android:text="🧾 Descripción:"
+                android:textSize="14sp" />
+
+            <!-- Estado -->
+            <TextView
+                android:id="@+id/txtEstado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="📋 Estado:"
                 android:textSize="14sp" />
         </LinearLayout>
 

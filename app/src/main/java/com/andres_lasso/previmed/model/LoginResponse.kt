@@ -4,14 +4,21 @@ import com.google.gson.annotations.SerializedName
 
 
 data class LoginResponse(
+    // Mensaje principal del backend
     @SerializedName("message")
-    val message: String,
+    val message: String? = null,
 
-    @SerializedName("data")
-    val data: UserData,
+    // A veces el backend usa "msg" en lugar de "message"
+    @SerializedName("msg")
+    val msg: String? = null,
 
+    // Token JWT (solo llega cuando el login es exitoso)
     @SerializedName("jwt")
-    val jwt: String
+    val jwt: String? = null,
+
+    // Información del usuario (solo llega en login exitoso)
+    @SerializedName("data")
+    val data: UserData? = null
 )
 
 data class UserData(
