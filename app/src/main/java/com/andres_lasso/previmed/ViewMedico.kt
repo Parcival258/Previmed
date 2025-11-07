@@ -58,13 +58,13 @@ class ViewMedico : AppCompatActivity() {
     }
 
     private fun resetAllNavItems() {
-        val originalColor = ContextCompat.getColor(this, R.color.AZUL_GENERAL)
+        val inactiveColor = ContextCompat.getColor(this, android.R.color.white) // BLANCO
 
         navItems.forEach { navItem ->
             navItem.apply {
                 background.visibility = View.INVISIBLE
-                icon.setColorFilter(originalColor)
-                text.setTextColor(originalColor)
+                icon.setColorFilter(inactiveColor)
+                text.setTextColor(inactiveColor)
                 text.setTypeface(null, android.graphics.Typeface.NORMAL)
             }
         }
@@ -74,7 +74,7 @@ class ViewMedico : AppCompatActivity() {
         navItems[position].apply {
             background.visibility = View.VISIBLE
             icon.setColorFilter(ContextCompat.getColor(this@ViewMedico, android.R.color.white))
-            text.setTextColor(ContextCompat.getColor(this@ViewMedico, android.R.color.black))
+            text.setTextColor(ContextCompat.getColor(this@ViewMedico, android.R.color.white))
             text.setTypeface(null, android.graphics.Typeface.BOLD)
         }
     }

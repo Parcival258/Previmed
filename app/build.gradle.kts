@@ -59,11 +59,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     //dependecia para animaciones
-    implementation ("com.airbnb.android:lottie:6.6.6")
+    implementation("com.airbnb.android:lottie:6.6.6")
     //material design
-    implementation ("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.11.0")
     //androidx
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -76,10 +76,15 @@ dependencies {
     //para notificaciones
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.core:core:1.12.0")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     // Para usar FileProvider
     implementation("androidx.appcompat:appcompat:1.7.0")
 
     // PDF con iText7
     implementation("com.itextpdf:itext7-core:7.2.5")
+
+        implementation ("com.google.android.material:material:1.9.0")
+        implementation ("androidx.appcompat:appcompat:1.6.1")
+
 }

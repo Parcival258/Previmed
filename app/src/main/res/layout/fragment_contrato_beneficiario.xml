@@ -2,49 +2,61 @@
 <!-- fragment_contrato_beneficiario.xml -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
-    android:paddingBottom="80dp">
+    android:background="#F9FAFB"
+    android:padding="16dp">
 
+    <!-- Un único hijo directo -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="ExtraText">
 
-        <!-- Encabezado mejorado -->
+        <!-- Encabezado con drawable (gradient) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/esquinas_redondeadas"
-            android:padding="20dp"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:padding="22dp"
+            android:gravity="center"
+            android:background="@drawable/bg_header_contrato">
 
             <TextView
                 android:id="@+id/txtTituloContrato"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contrato"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
+                android:text="Contrato del Beneficiario"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Detalles del plan contratado"
+                android:textColor="#E6F0FF"
+                android:textSize="13sp"
+                android:layout_marginTop="4dp" />
         </LinearLayout>
 
-        <!-- Contenedor con padding -->
+        <!-- Contenedor principal -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_marginTop="14dp">
 
-            <!-- Card: Número de contrato -->
+            <!-- Número de contrato -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -53,31 +65,32 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Número de contrato:"
-                        android:textColor="#999"
-                        android:textSize="12sp"
+                        android:text="Número de Contrato"
+                        android:textColor="#1E40AF"
                         android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textSize="13sp"
+                        android:layout_marginBottom="6dp" />
 
                     <TextView
                         android:id="@+id/txtNumeroContrato"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="#333"
+                        android:text="---"
+                        android:textColor="#111111"
                         android:textSize="16sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Fechas -->
+            <!-- Fechas -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -86,49 +99,55 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fechas del Contrato"
+                        android:textColor="#1E40AF"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Fecha de inicio:"
-                        android:textColor="#999"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textColor="#6B7280"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvFechaInicio"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="#333"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="12dp" />
+                        android:text="--/--/----"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="10dp" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Fecha de fin:"
-                        android:textColor="#999"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textColor="#6B7280"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvFechaFin"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="#333"
-                        android:textSize="16sp" />
+                        android:text="--/--/----"
+                        android:textColor="#111111"
+                        android:textSize="15sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Plan y Precio -->
+            <!-- Plan y precio -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -137,48 +156,56 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Detalles del Plan"
+                        android:textColor="#1E40AF"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Plan:"
-                        android:textColor="#999"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textColor="#6B7280"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/txtPlan"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="#333"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="12dp" />
+                        android:text="Nombre del plan"
+                        android:textColor="#111111"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="8dp" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Precio del plan:"
-                        android:textColor="#999"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:text="Precio:"
+                        android:textColor="#6B7280"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvPrecioPlan"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="#333"
-                        android:textSize="16sp" />
+                        android:text="$0.00"
+                        android:textColor="#059669"
+                        android:textStyle="bold"
+                        android:textSize="15sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Beneficiarios -->
+            <!-- Beneficiarios -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -187,44 +214,50 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Beneficiarios:"
-                        android:textColor="#999"
-                        android:textSize="12sp"
+                        android:text="Beneficiarios"
+                        android:textColor="#1E40AF"
                         android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:textSize="13sp"
+                        android:layout_marginBottom="6dp" />
 
                     <TextView
                         android:id="@+id/txtBeneficios"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="#333"
-                        android:textSize="16sp" />
+                        android:text="Lista de beneficiarios..."
+                        android:textColor="#111111"
+                        android:textSize="15sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Loading -->
+            <!-- Texto de carga -->
             <TextView
                 android:id="@+id/txtCargando"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Cargando información..."
                 android:textAlignment="center"
-                android:textColor="#666"
-                android:paddingTop="16dp" />
+                android:textColor="#6B7280"
+                android:textSize="14sp"
+                android:paddingTop="12dp" />
         </LinearLayout>
+
+        <!-- Botón (usa app:icon y app:iconGravity correctamente) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGenerarPDF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="36dp"
             android:text="Descargar contrato"
-            android:icon="@drawable/ic_download"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            android:backgroundTint="@color/AZUL_GENERAL"
-            android:textColor="@android:color/white"/>
-
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:padding="12dp"
+            app:icon="@drawable/ic_download"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp"
+         app:backgroundTint="#1E40AF" />
     </LinearLayout>
 </ScrollView>
