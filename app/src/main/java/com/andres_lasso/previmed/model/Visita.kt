@@ -33,3 +33,8 @@ data class VisitasRequest(
     @SerializedName("medico_id") val medicoId: Int,
     @SerializedName("barrio_id") val barrioId: Int
 )
+
+//MODELO PARA ACTUALIZAR VISITA
+data class VisitaUpdateRequest(
+    val estado: Boolean
+)

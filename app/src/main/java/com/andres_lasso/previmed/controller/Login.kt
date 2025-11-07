@@ -3,8 +3,10 @@ package com.andres_lasso.previmed.controller
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -29,6 +31,9 @@ class Login : AppCompatActivity() {
     private lateinit var ctdocumento: EditText
     private lateinit var ctpassword: EditText
     private lateinit var btnLogin: Button
+    private lateinit var progressBar: ProgressBar
+
+    private var isLoggingIn = false
 
     // 🔤 Normaliza el rol eliminando tildes y convirtiendo a minúsculas
     private fun normalizeRole(raw: String?): String {
@@ -70,6 +75,7 @@ class Login : AppCompatActivity() {
         ctdocumento = findViewById(R.id.ctdocumento)
         ctpassword = findViewById(R.id.ctpassword)
         btnLogin = findViewById(R.id.loginButton)
+        progressBar = findViewById(R.id.progressBar)
 
         Log.d("LOGIN", "🚀 LoginActivity creado")
 
@@ -88,6 +94,8 @@ class Login : AppCompatActivity() {
 
         // 🟢 Acción del botón de login
         btnLogin.setOnClickListener {
+            if (isLoggingIn) return@setOnClickListener  // ⛔ Evita clics múltiples
+
             val documento = ctdocumento.text.toString().trim()
             val password = ctpassword.text.toString().trim()
 
@@ -97,71 +105,88 @@ class Login : AppCompatActivity() {
             }
 
             val request = LoginRequest(numeroDocumento = documento, password = password)
+            iniciarSesion(request)
+        }
+    }
 
-            RetrofitClient.loginApi.loginUser(request)
-                .enqueue(object : Callback<LoginResponse> {
+    private fun iniciarSesion(request: LoginRequest) {
+        isLoggingIn = true
+        btnLogin.isEnabled = false
+        progressBar.visibility = View.VISIBLE
+        btnLogin.text = "Iniciando sesión..."
 
-                    override fun onResponse(
-                        call: Call<LoginResponse>,
-                        response: Response<LoginResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            val body = response.body()
+        RetrofitClient.loginApi.loginUser(request)
+            .enqueue(object : Callback<LoginResponse> {
 
-                            if (body != null && body.jwt.isNotEmpty()) {
-                                val roleNormalized = normalizeRole(body.data.rol.nombreRol)
-                                val usuarioId = body.data.id
+                override fun onResponse(
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
+                ) {
+                    isLoggingIn = false
+                    btnLogin.isEnabled = true
+                    progressBar.visibility = View.GONE
+                    btnLogin.text = "Ingresar"
 
-                                PreferenceHelper.saveToken(this@Login, body.jwt)
-                                PreferenceHelper.saveRole(this@Login, roleNormalized)
+                    if (response.isSuccessful) {
+                        val body = response.body()
 
-                                Log.d(
-                                    "LOGIN",
-                                    "✅ Login exitoso - UUID: $usuarioId - Rol: $roleNormalized"
-                                )
+                        if (body != null && body.jwt.isNotEmpty()) {
+                            val roleNormalized = normalizeRole(body.data.rol.nombreRol)
+                            val usuarioId = body.data.id
 
-                                when (roleNormalized) {
-                                    "paciente" -> obtenerIdPaciente(usuarioId, roleNormalized)
-                                    "medico" -> obtenerIdMedico(usuarioId, roleNormalized)
-                                    else -> {
-                                        Toast.makeText(
-                                            this@Login,
-                                            body.message,
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        goToRoleActivity(roleNormalized)
-                                    }
+                            PreferenceHelper.saveToken(this@Login, body.jwt)
+                            PreferenceHelper.saveRole(this@Login, roleNormalized)
+
+                            Log.d(
+                                "LOGIN",
+                                "✅ Login exitoso - UUID: $usuarioId - Rol: $roleNormalized"
+                            )
+
+                            when (roleNormalized) {
+                                "paciente" -> obtenerIdPaciente(usuarioId, roleNormalized)
+                                "medico" -> obtenerIdMedico(usuarioId, roleNormalized)
+                                else -> {
+                                    Toast.makeText(
+                                        this@Login,
+                                        body.message,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    goToRoleActivity(roleNormalized)
                                 }
-                            } else {
-                                Toast.makeText(
-                                    this@Login,
-                                    "Error: no se recibió token",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                Log.e("LOGIN", "Respuesta sin JWT")
                             }
-
                         } else {
-                            val errorBody = response.errorBody()?.string()
                             Toast.makeText(
                                 this@Login,
-                                "Credenciales incorrectas",
+                                "Error: no se recibió token",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            Log.e("LOGIN", "Error: ${response.code()} - $errorBody")
+                            Log.e("LOGIN", "Respuesta sin JWT")
                         }
-                    }
 
-                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    } else {
+                        val errorBody = response.errorBody()?.string()
                         Toast.makeText(
                             this@Login,
-                            "Error de conexión: ${t.message}",
+                            "Credenciales incorrectas",
                             Toast.LENGTH_SHORT
                         ).show()
-                        Log.e("LOGIN", "Fallo conexión", t)
+                        Log.e("LOGIN", "Error: ${response.code()} - $errorBody")
                     }
-                })
-        }
+                }
+
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    isLoggingIn = false
+                    btnLogin.isEnabled = true
+                    progressBar.visibility = View.GONE
+                    btnLogin.text = "Ingresar"
+                    Toast.makeText(
+                        this@Login,
+                        "Error de conexión: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e("LOGIN", "Fallo conexión", t)
+                }
+            })
     }
 
     // 🟢 MÉDICO → obtener id_medico con el usuario_id

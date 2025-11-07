@@ -30,6 +30,6 @@ data class MedicoResponse(
 }
 
 data class MedicoUpdateRequest(
-    val disponibilidad: Boolean?,
-    val estado: Boolean?
+    val disponibilidad: Boolean,
+    val estado: Boolean
 )

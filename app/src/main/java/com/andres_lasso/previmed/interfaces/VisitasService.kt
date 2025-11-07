@@ -6,6 +6,7 @@ import com.andres_lasso.previmed.model.MedicoListWrapper
 import com.andres_lasso.previmed.model.MedicoResponse
 
 import com.andres_lasso.previmed.model.VisitaResponse
+import com.andres_lasso.previmed.model.VisitaUpdateRequest
 import com.andres_lasso.previmed.model.VisitasRequest
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,6 +14,7 @@ import retrofit2.http.Path
 import retrofit2.http.POST
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.PUT
 
 interface VisitaService {
     @GET("visitas/paciente/{id}")
@@ -36,5 +38,12 @@ interface VisitaService {
     // 🔹 Obtener visitas de un médico
     @GET("visitas/medico/{id}")
     suspend fun getVisitasPorMedico(@Path("id") idMedico: Int): Response<VisitaResponse>
+
+    // Actualizar el estado de una visita (Iniciar/Finalizar)
+    @PUT("visitas/{id}")
+    suspend fun actualizarVisita(
+        @Path("id") idVisita: Int,
+        @Body body: VisitaUpdateRequest
+    ): Response<Any>
 
 }
