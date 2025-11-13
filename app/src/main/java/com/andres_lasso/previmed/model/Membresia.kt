@@ -2,7 +2,7 @@ package com.andres_lasso.previmed.model
 
 import com.google.gson.annotations.SerializedName
 
-// ✅ MODELO para crear una membresía (request al backend)
+// ✅ MODELO para crear una membresía (Request al backend)
 data class MembresiaRequest(
     @SerializedName("paciente_id") val pacienteId: Int?,
     @SerializedName("forma_pago_id") val formaPagoId: Int?,
@@ -22,6 +22,7 @@ data class MembresiaResponse(
     val data: Membresia?
 )
 
+// ✅ MODELO principal de Membresía
 data class Membresia(
     @SerializedName("idMembresia") val idMembresia: Int?,
     @SerializedName("firma") val firma: String?,
@@ -34,10 +35,23 @@ data class Membresia(
     @SerializedName("membresiaPaciente") val membresiaPaciente: List<MembresiaPaciente>?
 )
 
+// ✅ RELACIÓN entre membresía y paciente (sin recursión)
 data class MembresiaPaciente(
     @SerializedName("idMembresiaXPaciente") val idMembresiaXPaciente: Int?,
     @SerializedName("pacienteId") val pacienteId: Int?,
     @SerializedName("membresiaId") val membresiaId: Int?,
-    @SerializedName("paciente") val paciente: Paciente?
+    @SerializedName("paciente") val paciente: Paciente?, // referencia inversa hacia el paciente
+    @SerializedName("membresia") val membresia: MembresiaSimple? // versión simplificada de membresía
 )
 
+// ✅ MODELO simplificado para evitar recursión infinita
+data class MembresiaSimple(
+    @SerializedName("idMembresia") val idMembresia: Int?,
+    @SerializedName("firma") val firma: String?,
+    @SerializedName("formaPago") val formaPago: String?,
+    @SerializedName("numeroContrato") val numeroContrato: String?,
+    @SerializedName("fechaInicio") val fechaInicio: String?,
+    @SerializedName("fechaFin") val fechaFin: String?,
+    @SerializedName("planId") val planId: Int?,
+    @SerializedName("estado") val estado: Boolean?
+)

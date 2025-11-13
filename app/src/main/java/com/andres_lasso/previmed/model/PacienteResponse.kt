@@ -29,7 +29,7 @@ data class PacienteCreadoData(
 data class PacienteData(
     @SerializedName(value = "idPaciente", alternate = ["id_paciente"])
     val idPaciente: Int?,
-    @SerializedName("direccion_cobro")
+    @SerializedName("direccionCobro")
     val direccionCobro: String?,
     @SerializedName("ocupacion")
     val ocupacion: String?,
@@ -37,15 +37,16 @@ data class PacienteData(
     val activo: Boolean?,
     @SerializedName("beneficiario")
     val beneficiario: Boolean?,
-    @SerializedName("paciente_id")
+    @SerializedName("pacienteId")
     val pacienteId: Int?,
-    @SerializedName("usuario_id")
+    @SerializedName("usuarioId")
     val usuarioId: String?,
     @SerializedName("usuario")
     val usuario: Usuario?,
-    @SerializedName("membresia_paciente")
+    @SerializedName("membresiaPaciente") // 👈 CORREGIDO AQUÍ
     val membresiaPaciente: List<MembresiaPaciente>? = emptyList()
 )
+
 data class PacienteResponse(
     @SerializedName("message") val message: String?,
     @SerializedName("data") val data: Paciente?

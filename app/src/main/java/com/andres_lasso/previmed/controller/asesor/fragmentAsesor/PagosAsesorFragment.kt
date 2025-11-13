@@ -10,10 +10,10 @@ import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
-import com.andres_lasso.previmed.controller.asesor.PagosAdd
 import com.andres_lasso.previmed.controller.asesor.recycler.PagosProvider
 import com.andres_lasso.previmed.controller.asesor.recycler.adapter.PagosAdapter
 import com.andres_lasso.previmed.databinding.FragmentPagosAsesorBinding
+import com.andres_lasso.previmed.view.pagos.PagosAdd
 
 class PagosAsesorFragment : Fragment() {
     private var _binding:FragmentPagosAsesorBinding? = null

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Permite acceder a getExternalFilesDir() -->
+    <!-- Permite acceder a imágenes guardadas temporalmente por la cámara -->
+    <external-cache-path
+        name="camera_images"
+        path="." />
+
+    <!-- Permite acceder a archivos en la carpeta de archivos externos de la app -->
     <external-files-path
         name="external_files"
         path="." />
