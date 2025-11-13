@@ -69,24 +69,22 @@
             android:clipToPadding="false"
             android:paddingBottom="8dp" />
 
-        <!-- ➕ Botón flotante -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:padding="16dp">
-
-            <Button
-                android:id="@+id/btn_ir_pagos_add"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:backgroundTint="@color/AZUL_GENERAL"
-                android:text="+"
-                android:textColor="@color/white"
-                android:textSize="30sp"
-                android:elevation="6dp" />
-        </LinearLayout>
-
     </LinearLayout>
+
+    <!-- ➕ Botón flotante (idéntico al de PacientesView) -->
+    <Button
+        android:id="@+id/btn_ir_pagos_add"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:text="+"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:backgroundTint="#457B9D"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="80dp"
+        android:elevation="8dp"
+        android:shape="oval"
+        android:stateListAnimator="@null" />
 
 </FrameLayout>

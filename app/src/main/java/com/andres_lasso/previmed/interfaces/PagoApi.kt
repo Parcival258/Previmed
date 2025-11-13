@@ -12,12 +12,16 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 
 interface PagoApi {
+
+    // ✅ Obtener todos los pagos
     @GET("registros-pago")
     suspend fun getAllPagos(): Response<List<PagoModel>>
 
+    // ✅ Crear pago SIN foto (JSON puro)
     @POST("registro-pago")
     suspend fun createPago(@Body pago: PagoRequest): Response<PagoModel>
 
+    // ✅ Crear pago CON foto (multipart/form-data)
     @Multipart
     @POST("registro-pago")
     suspend fun createPagoConFoto(
@@ -27,7 +31,9 @@ interface PagoApi {
         @Part("fecha_pago") fechaPago: RequestBody,
         @Part("membresia_id") membresiaId: RequestBody,
         @Part("forma_pago_id") formaPagoId: RequestBody,
-        @Part foto: MultipartBody.Part?
+        @Part("numero_recibo") numeroRecibo: RequestBody?,  // 🆕 Nuevo
+        @Part("cobrador_id") cobradorId: RequestBody?,      // 🆕 Nuevo
+        @Part("estado") estado: RequestBody?,               // 🆕 Nuevo
+        @Part foto: MultipartBody.Part?                     // Foto opcional
     ): Response<PagoModel>
-
 }

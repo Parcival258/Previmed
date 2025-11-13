@@ -4,10 +4,13 @@
 
     <!-- 🌐 Permisos -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 📷 La cámara no es obligatoria -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <!-- 🖼️ Permiso moderno para acceder a imágenes (reemplaza READ/WRITE_EXTERNAL_STORAGE) -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- 🔔 Permiso para notificaciones (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -29,7 +32,7 @@
         <activity android:name=".controller.asesor.PacienteVer" />
         <activity android:name=".controller.asesor.PlanesView" />
         <activity android:name=".controller.asesor.AsociarBeneficiario" />
-        <activity android:name=".controller.asesor.PagosAdd" />
+        <activity android:name=".view.pagos.PagosAdd" />
         <activity android:name=".controller.asesor.PagosView" />
         <activity android:name=".controller.asesor.RegistrarPagoActivity" />
 
@@ -45,12 +48,11 @@
 
         <!-- 🔑 Otras actividades -->
         <activity android:name=".controller.asesor.ViewAsesor" />
-        <activity android:name=".ViewMedico" />
-        <activity android:name=".Menu" />
+        <!-- ❌ Eliminado el error de .Menu (no existe esa clase) -->
         <activity android:name=".controller.Login" />
         <activity android:name=".RegistroUsuario" />
 
-        <!-- 🚀 Actividad principal (la que inicia la app) -->
+        <!-- 🚀 Actividad principal -->
         <activity
             android:name=".controller.MainActivity"
             android:exported="true">
@@ -59,6 +61,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 📁 FileProvider (para guardar fotos y archivos) -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -69,6 +73,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-</application>
+    </application>
 
 </manifest>
