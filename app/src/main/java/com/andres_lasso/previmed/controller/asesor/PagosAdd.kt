@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.andres_lasso.previmed.databinding.ActivityPagosAddBinding
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.*
+import com.andres_lasso.previmed.utils.PreferenceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +23,11 @@ class PagosAdd : AppCompatActivity() {
     private var listaFormasPago = listOf<FormaPago>()
     private var membresiaIdSeleccionada: Int = -1
     private var formaPagoIdSeleccionada: Int = -1
-    private val cobradorId = "65e38e38-24a3-45db-a257-caf42c2adc4c" // ID fijo de cobrador
+
+    // 🔥 Tomamos el ID del asesor logueado desde PreferenceHelper
+    private val asesorId: String by lazy {
+        PreferenceHelper.getIdAsesor(this) ?: ""
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +84,10 @@ class PagosAdd : AppCompatActivity() {
             binding.etNumeroRecibo.text.isNullOrBlank() -> {
                 Toast.makeText(this, "Ingresa el número de recibo", Toast.LENGTH_SHORT).show(); false
             }
+            asesorId.isEmpty() -> {
+                Toast.makeText(this, "Error: No se encontró el ID del asesor", Toast.LENGTH_LONG).show()
+                false
+            }
             else -> true
         }
     }
@@ -102,7 +111,6 @@ class PagosAdd : AppCompatActivity() {
                         override fun onItemSelected(
                             parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long
                         ) {
-                            // Seleccionamos la membresía del primer elemento de la lista de membresias del paciente
                             membresiaIdSeleccionada =
                                 listaTitulares[position].membresiaPaciente?.firstOrNull()?.membresiaId ?: -1
                         }
@@ -149,6 +157,7 @@ class PagosAdd : AppCompatActivity() {
     }
 
     private fun registrarPago() {
+
         val monto = binding.etMonto.text.toString().toDouble()
         val fechaInicio = binding.etFechaInicio.text.toString()
         val fechaFin = binding.etFechaFin.text.toString()
@@ -162,7 +171,10 @@ class PagosAdd : AppCompatActivity() {
             fecha_pago = fechaPago,
             membresia_id = membresiaIdSeleccionada,
             forma_pago_id = formaPagoIdSeleccionada,
-            cobrador_id = cobradorId,
+
+            // 🔥 Cambio importante → ahora enviamos el asesor real
+            cobrador_id = asesorId,
+
             numero_recibo = numeroRecibo,
             estado = "Pendiente",
             foto = null

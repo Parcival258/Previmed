@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.PagoRequest
+import com.andres_lasso.previmed.utils.PreferenceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,7 +29,6 @@ class RegistrarPagoActivity : AppCompatActivity() {
 
     private var membresiaId: Int = -1
     private var formaPagoId: Int = -1
-    private val cobradorId = "65e38e38-24a3-45db-a257-caf42c2adc4c" // ID fijo de cobrador
 
     private val TAG = "RegistrarPago"
 
@@ -121,6 +121,15 @@ class RegistrarPagoActivity : AppCompatActivity() {
     }
 
     private fun registrarPago() {
+
+        // ⭐ AQUÍ TOMAMOS EL ID REAL DEL ASESOR
+        val idAsesor = PreferenceHelper.getIdAsesor(this)
+
+        if (idAsesor.isNullOrBlank()) {
+            Toast.makeText(this, "Error: no se encontró el ID del asesor", Toast.LENGTH_LONG).show()
+            return
+        }
+
         val monto = etMonto.text.toString().toDouble()
         val fechaInicio = etFechaInicio.text.toString()
         val fechaFin = etFechaFin.text.toString()
@@ -133,9 +142,9 @@ class RegistrarPagoActivity : AppCompatActivity() {
             fecha_pago = fechaPago,
             membresia_id = membresiaId,
             forma_pago_id = formaPagoId,
-            cobrador_id = null,     // 🔥 YA NO SE ENVÍA ID DE COBRADOR
-            numero_recibo = null,   // 🔥 COMO PagosAdd: no generamos recibo aquí
-            estado = "Pendiente",   // 🔥 SIEMPRE pendiente como pediste
+            cobrador_id = idAsesor,      // ⭐ SE ENVÍA EL ID DEL ASESOR CORRECTO
+            numero_recibo = null,
+            estado = "Pendiente",
             foto = null
         )
 
@@ -177,7 +186,6 @@ class RegistrarPagoActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun limpiarCampos() {
         etMonto.text.clear()
