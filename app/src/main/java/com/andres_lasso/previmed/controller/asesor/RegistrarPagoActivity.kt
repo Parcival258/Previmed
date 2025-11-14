@@ -1,8 +1,6 @@
 package com.andres_lasso.previmed.controller.asesor
 
 import android.app.DatePickerDialog
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -29,7 +27,8 @@ class RegistrarPagoActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
 
     private var membresiaId: Int = -1
-    private var formaPagoId: Int = 0
+    private var formaPagoId: Int = -1
+    private val cobradorId = "65e38e38-24a3-45db-a257-caf42c2adc4c" // ID fijo de cobrador
 
     private val TAG = "RegistrarPago"
 
@@ -45,7 +44,9 @@ class RegistrarPagoActivity : AppCompatActivity() {
             if (validarCampos()) registrarPago()
         }
 
-        btnNuevoPago.setOnClickListener { limpiarCampos() }
+        btnNuevoPago.setOnClickListener {
+            limpiarCampos()
+        }
     }
 
     private fun initViews() {
@@ -62,13 +63,13 @@ class RegistrarPagoActivity : AppCompatActivity() {
 
     private fun recibirDatosIntent() {
         membresiaId = intent.getIntExtra("MEMBRESIA_ID", -1)
-        formaPagoId = intent.getIntExtra("FORMA_PAGO_ID", 0)
+        formaPagoId = intent.getIntExtra("FORMA_PAGO_ID", -1)
         val formaPagoTexto = intent.getStringExtra("FORMA_PAGO") ?: "Desconocido"
 
-        tvMembresia.text = "🪪 Membresía N° $membresiaId"
+        tvMembresia.text = "🪪 Membresía ID: $membresiaId"
         tvFormaPago.text = "💳 Forma de pago: $formaPagoTexto"
 
-        Log.d(TAG, "📥 Datos recibidos -> MEMBRESIA_ID=$membresiaId, FORMA_PAGO_ID=$formaPagoId, FORMA_PAGO=$formaPagoTexto")
+        Log.d(TAG, "Datos recibidos -> MEMBRESIA_ID=$membresiaId, FORMA_PAGO_ID=$formaPagoId")
     }
 
     private fun setupDatePickers() {
@@ -84,7 +85,6 @@ class RegistrarPagoActivity : AppCompatActivity() {
                 c.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
-
         etFechaInicio.setOnClickListener { listener(etFechaInicio) }
         etFechaFin.setOnClickListener { listener(etFechaFin) }
         etFechaPago.setOnClickListener { listener(etFechaPago) }
@@ -92,31 +92,32 @@ class RegistrarPagoActivity : AppCompatActivity() {
 
     private fun validarCampos(): Boolean {
         return when {
+            membresiaId == -1 -> {
+                Toast.makeText(this, "Selecciona un titular válido", Toast.LENGTH_SHORT).show()
+                false
+            }
+            formaPagoId == -1 -> {
+                Toast.makeText(this, "Selecciona una forma de pago válida", Toast.LENGTH_SHORT).show()
+                false
+            }
             etMonto.text.isNullOrBlank() -> {
-                Toast.makeText(this, "💰 El monto es obligatorio", Toast.LENGTH_SHORT).show(); false
+                Toast.makeText(this, "Ingresa el monto", Toast.LENGTH_SHORT).show()
+                false
             }
             etFechaInicio.text.isNullOrBlank() -> {
-                Toast.makeText(this, "📅 Selecciona la fecha de inicio", Toast.LENGTH_SHORT).show(); false
+                Toast.makeText(this, "Selecciona la fecha de inicio", Toast.LENGTH_SHORT).show()
+                false
             }
             etFechaFin.text.isNullOrBlank() -> {
-                Toast.makeText(this, "📅 Selecciona la fecha de fin", Toast.LENGTH_SHORT).show(); false
+                Toast.makeText(this, "Selecciona la fecha de fin", Toast.LENGTH_SHORT).show()
+                false
             }
             etFechaPago.text.isNullOrBlank() -> {
-                Toast.makeText(this, "📅 Selecciona la fecha de pago", Toast.LENGTH_SHORT).show(); false
-            }
-            membresiaId == -1 -> {
-                Toast.makeText(this, "❗ Falta el ID de membresía", Toast.LENGTH_SHORT).show(); false
+                Toast.makeText(this, "Selecciona la fecha de pago", Toast.LENGTH_SHORT).show()
+                false
             }
             else -> true
         }
-    }
-
-    private fun limpiarCampos() {
-        etMonto.text.clear()
-        etFechaInicio.text.clear()
-        etFechaFin.text.clear()
-        etFechaPago.text.clear()
-        Log.d(TAG, "🧹 Campos limpiados")
     }
 
     private fun registrarPago() {
@@ -125,68 +126,76 @@ class RegistrarPagoActivity : AppCompatActivity() {
         val fechaFin = etFechaFin.text.toString()
         val fechaPago = etFechaPago.text.toString()
 
-        Log.d(TAG, "🚀 Enviando pago sin foto:")
-        Log.d(TAG, "   monto=$monto")
-        Log.d(TAG, "   fecha_inicio=$fechaInicio")
-        Log.d(TAG, "   fecha_fin=$fechaFin")
-        Log.d(TAG, "   fecha_pago=$fechaPago")
-        Log.d(TAG, "   membresia_id=$membresiaId")
-        Log.d(TAG, "   forma_pago_id=$formaPagoId")
+        val pagoRequest = PagoRequest(
+            monto = monto,
+            fecha_inicio = fechaInicio,
+            fecha_fin = fechaFin,
+            fecha_pago = fechaPago,
+            membresia_id = membresiaId,
+            forma_pago_id = formaPagoId,
+            cobrador_id = null,     // 🔥 YA NO SE ENVÍA ID DE COBRADOR
+            numero_recibo = null,   // 🔥 COMO PagosAdd: no generamos recibo aquí
+            estado = "Pendiente",   // 🔥 SIEMPRE pendiente como pediste
+            foto = null
+        )
 
         progressBar.visibility = View.VISIBLE
         btnRegistrarPago.isEnabled = false
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val pago = PagoRequest(
-                    monto = monto,
-                    fecha_inicio = fechaInicio,
-                    fecha_fin = fechaFin,
-                    fecha_pago = fechaPago,
-                    membresia_id = membresiaId,
-                    forma_pago_id = formaPagoId,
-                    foto = null
-                )
-
-                val response = RetrofitClient.pagoApi.createPago(pago)
-
+                val response = RetrofitClient.pagoApi.createPago(pagoRequest)
                 runOnUiThread {
                     progressBar.visibility = View.GONE
                     btnRegistrarPago.isEnabled = true
 
                     if (response.isSuccessful) {
-                        Log.i(TAG, "✅ Pago registrado correctamente: ${response.body()}")
-                        Toast.makeText(this@RegistrarPagoActivity, "✅ Pago registrado correctamente", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@RegistrarPagoActivity,
+                            "Pago registrado correctamente",
+                            Toast.LENGTH_LONG
+                        ).show()
                         limpiarCampos()
                     } else {
-                        val errorBody = response.errorBody()?.string()
-                        Log.e(TAG, "❌ Error al registrar pago (${response.code()}): $errorBody")
-                        Toast.makeText(this@RegistrarPagoActivity, "❌ Error al registrar pago (${response.code()})", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@RegistrarPagoActivity,
+                            "Error al registrar pago: ${response.code()}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
-
             } catch (e: Exception) {
                 runOnUiThread {
                     progressBar.visibility = View.GONE
                     btnRegistrarPago.isEnabled = true
-                    Log.e(TAG, "⚠️ Excepción: ${e.message}", e)
-                    Toast.makeText(this@RegistrarPagoActivity, "⚠️ Error de conexión o excepción inesperada", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@RegistrarPagoActivity,
+                        "Excepción: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
     }
 
+
+    private fun limpiarCampos() {
+        etMonto.text.clear()
+        etFechaInicio.text.clear()
+        etFechaFin.text.clear()
+        etFechaPago.text.clear()
+        membresiaId = -1
+        formaPagoId = -1
+        tvMembresia.text = "Membresía ID: -"
+        tvFormaPago.text = "Forma de pago: -"
+    }
+
     companion object {
-        fun openRegistrarPago(
-            context: Context,
-            membresiaId: Int,
-            formaPagoId: Int,
-            formaPago: String? = null
-        ) {
-            val intent = Intent(context, RegistrarPagoActivity::class.java).apply {
+        fun abrir(context: android.content.Context, membresiaId: Int, formaPagoId: Int, formaPagoTexto: String?) {
+            val intent = android.content.Intent(context, RegistrarPagoActivity::class.java).apply {
                 putExtra("MEMBRESIA_ID", membresiaId)
                 putExtra("FORMA_PAGO_ID", formaPagoId)
-                putExtra("FORMA_PAGO", formaPago)
+                putExtra("FORMA_PAGO", formaPagoTexto)
             }
             context.startActivity(intent)
         }
