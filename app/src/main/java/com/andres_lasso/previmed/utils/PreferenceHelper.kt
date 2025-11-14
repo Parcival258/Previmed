@@ -19,6 +19,7 @@ object PreferenceHelper {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
+    // TOKEN
     fun saveToken(context: Context, token: String) {
         prefs(context).edit().putString(TOKEN_KEY, token).apply()
     }
@@ -26,14 +27,17 @@ object PreferenceHelper {
     fun hasToken(context: Context): Boolean = !getToken(context).isNullOrBlank()
     fun clearToken(context: Context) { prefs(context).edit().remove(TOKEN_KEY).apply() }
 
+    // ROLE
     private fun normalizeRole(role: String?): String {
         if (role.isNullOrBlank()) return ""
         val normalized = Normalizer.normalize(role, Normalizer.Form.NFD)
         return normalized.replace("\\p{Mn}+".toRegex(), "").lowercase()
     }
+
     fun saveRole(context: Context, role: String) {
         prefs(context).edit().putString(ROLE_KEY, normalizeRole(role)).apply()
     }
+
     fun getRole(context: Context): String? = normalizeRole(prefs(context).getString(ROLE_KEY, null))
     fun clearRole(context: Context) { prefs(context).edit().remove(ROLE_KEY).apply() }
 
@@ -50,6 +54,7 @@ object PreferenceHelper {
         prefs(context).edit().remove(ID_MEDICO_KEY).apply()
     }
 
+    // USUARIO
     fun saveUsuarioId(context: Context, usuarioId: String) {
         prefs(context).edit().putString(USUARIO_ID_KEY, usuarioId).apply()
     }
@@ -61,7 +66,8 @@ object PreferenceHelper {
     fun clearUsuarioId(context: Context) {
         prefs(context).edit().remove(USUARIO_ID_KEY).apply()
     }
-    //PACIENTE
+
+    // PACIENTE
     fun saveIdPaciente(context: Context, idPaciente: String) {
         prefs(context).edit().putString(ID_PACIENTE_KEY, idPaciente).apply()
     }
@@ -72,11 +78,13 @@ object PreferenceHelper {
 
     fun clearIdPaciente(context: Context) { prefs(context).edit().remove(ID_PACIENTE_KEY).apply() }
 
-    fun saveTelefono(context: Context, telefono: String) = prefs(context).edit().putString(TELEFONO_KEY, telefono).apply()
+    fun saveTelefono(context: Context, telefono: String) =
+        prefs(context).edit().putString(TELEFONO_KEY, telefono).apply()
+
     fun getTelefono(context: Context): String? = prefs(context).getString(TELEFONO_KEY, null)
     fun clearTelefono(context: Context) = prefs(context).edit().remove(TELEFONO_KEY).apply()
 
-    // 🟡 VISITA ACTIVA
+    // VISITA ACTIVA
     fun setVisitaActiva(context: Context, activa: Boolean) {
         prefs(context).edit().putBoolean(VISITA_ACTIVA_KEY, activa).apply()
     }
@@ -88,6 +96,22 @@ object PreferenceHelper {
     fun clearVisitaActiva(context: Context) {
         prefs(context).edit().remove(VISITA_ACTIVA_KEY).apply()
     }
+
+    // 🟢 ASESOR (NUEVO)
+    private const val ID_ASESOR_KEY = "id_asesor"
+
+    fun saveIdAsesor(context: Context, idAsesor: String) {
+        prefs(context).edit().putString(ID_ASESOR_KEY, idAsesor).apply()
+    }
+
+    fun getIdAsesor(context: Context): String? {
+        return prefs(context).getString(ID_ASESOR_KEY, null)
+    }
+
+    fun clearIdAsesor(context: Context) {
+        prefs(context).edit().remove(ID_ASESOR_KEY).apply()
+    }
+
     // BORRAR TODO
     fun clearSession(context: Context) {
         prefs(context).edit().clear().apply()
