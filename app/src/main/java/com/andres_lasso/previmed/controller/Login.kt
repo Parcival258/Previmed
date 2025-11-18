@@ -9,6 +9,10 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.AuthenticationResult
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.ViewMedico
@@ -31,7 +35,11 @@ class Login : AppCompatActivity() {
     private lateinit var ctdocumento: EditText
     private lateinit var ctpassword: EditText
     private lateinit var btnLogin: Button
+    private lateinit var btnBiometric: Button
     private lateinit var progressBar: ProgressBar
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private var isBiometricInProgress = false
 
     private var isLoggingIn = false
 
@@ -56,7 +64,7 @@ class Login : AppCompatActivity() {
             startActivity(intent)
             finish()
         } else {
-            PreferenceHelper.clearSession(this)
+            PreferenceHelper.clearSessionButKeepBiometric(this)
             Toast.makeText(
                 this,
                 "Rol no reconocido. Contacte al administrador.",
@@ -73,9 +81,13 @@ class Login : AppCompatActivity() {
         ctdocumento = findViewById(R.id.ctdocumento)
         ctpassword = findViewById(R.id.ctpassword)
         btnLogin = findViewById(R.id.loginButton)
+        btnBiometric = findViewById(R.id.btnBiometric)
         progressBar = findViewById(R.id.progressBar)
 
         Log.d("LOGIN", "🚀 LoginActivity creado")
+
+        // Configurar autenticación biométrica
+        setupBiometric()
 
         if (PreferenceHelper.hasToken(this)) {
             val savedRole = PreferenceHelper.getRole(this)
@@ -85,9 +97,17 @@ class Login : AppCompatActivity() {
                 goToRoleActivity(normalizeRole(savedRole))
                 return
             } else {
-                PreferenceHelper.clearSession(this)
+                PreferenceHelper.clearSessionButKeepBiometric(this)
             }
         }
+
+        // Debug: Ver si hay datos biométricos guardados
+        val docGuardado = PreferenceHelper.getDocumento(this)
+        val passGuardada = PreferenceHelper.getPassword(this)
+        Log.d("LOGIN", "📱 Datos biométricos al abrir: documento=$docGuardado, password=${if (passGuardada != null) "***" else "null"}")
+
+        // Configurar botón biométrico
+        configurarBotonBiometrico()
 
         btnLogin.setOnClickListener {
             if (isLoggingIn) return@setOnClickListener
@@ -105,9 +125,129 @@ class Login : AppCompatActivity() {
         }
     }
 
+    private fun configurarBotonBiometrico() {
+        val tieneDatos = PreferenceHelper.hasBiometricData(this)
+        val disponible = isBiometricAvailable()
+
+        when {
+            tieneDatos && disponible -> {
+                btnBiometric.visibility = View.VISIBLE
+                btnBiometric.isEnabled = true
+                btnBiometric.alpha = 1f
+                Log.d("BIOMETRIC", "✅ Botón biométrico DISPONIBLE")
+            }
+            tieneDatos && !disponible -> {
+                btnBiometric.visibility = View.VISIBLE
+                btnBiometric.isEnabled = false
+                btnBiometric.alpha = 0.5f
+                btnBiometric.text = "Biometría no disponible"
+            }
+            else -> {
+                btnBiometric.visibility = View.GONE
+                Log.d("BIOMETRIC", "❌ No hay datos biométricos guardados")
+            }
+        }
+
+        btnBiometric.setOnClickListener {
+            if (!isBiometricInProgress && PreferenceHelper.hasBiometricData(this)) {
+                isBiometricInProgress = true
+                btnBiometric.isEnabled = false
+                mostrarBiometricPrompt()
+            }
+        }
+    }
+
+    private fun setupBiometric() {
+        val executor = ContextCompat.getMainExecutor(this)
+
+        biometricPrompt = BiometricPrompt(
+            this,
+            executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationSucceeded(result: AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    Log.d("BIOMETRIC", "✅ Autenticación biométrica exitosa")
+                    isBiometricInProgress = false
+                    procesarLoginBiometrico()
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    isBiometricInProgress = false
+                    btnBiometric.isEnabled = true
+
+                    if (errorCode != BiometricPrompt.ERROR_USER_CANCELED) {
+                        Log.e("BIOMETRIC", "Error: $errString")
+                        Toast.makeText(
+                            this@Login,
+                            "Error: $errString",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    isBiometricInProgress = false
+                    btnBiometric.isEnabled = true
+                    Toast.makeText(
+                        this@Login,
+                        "Intenta de nuevo",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Autenticación Biométrica")
+            .setSubtitle("Usa tu huella digital o reconocimiento facial")
+            .setDescription("Acerca tu dedo al sensor")
+            .setNegativeButtonText("Cancelar")
+            .build()
+    }
+
+    private fun isBiometricAvailable(): Boolean {
+        val biometricManager = BiometricManager.from(this)
+        return biometricManager.canAuthenticate(
+            BiometricManager.Authenticators.BIOMETRIC_STRONG or
+                    BiometricManager.Authenticators.BIOMETRIC_WEAK
+        ) == BiometricManager.BIOMETRIC_SUCCESS
+    }
+
+    private fun mostrarBiometricPrompt() {
+        biometricPrompt.authenticate(promptInfo)
+    }
+
+    private fun procesarLoginBiometrico() {
+        val documento = PreferenceHelper.getDocumento(this)
+        val password = PreferenceHelper.getPassword(this)
+
+        if (documento.isNullOrBlank() || password.isNullOrBlank()) {
+            Toast.makeText(this, "Error: Datos biométricos inválidos", Toast.LENGTH_SHORT).show()
+            PreferenceHelper.clearDocumento(this)
+            PreferenceHelper.clearPassword(this)
+            configurarBotonBiometrico()
+            return
+        }
+
+        Log.d("BIOMETRIC", "🔓 Iniciando sesión con documento: $documento")
+
+        // Llenar campos automáticamente
+        ctdocumento.setText(documento)
+        ctpassword.setText(password)
+
+        // Pequeña pausa visual
+        ctdocumento.postDelayed({
+            val request = LoginRequest(numeroDocumento = documento, password = password)
+            iniciarSesion(request)
+        }, 300)
+    }
+
     private fun iniciarSesion(request: LoginRequest) {
         isLoggingIn = true
         btnLogin.isEnabled = false
+        btnBiometric.isEnabled = false
         progressBar.visibility = View.VISIBLE
         btnLogin.text = "Iniciando sesión..."
 
@@ -120,6 +260,7 @@ class Login : AppCompatActivity() {
                 ) {
                     isLoggingIn = false
                     btnLogin.isEnabled = true
+                    btnBiometric.isEnabled = true
                     progressBar.visibility = View.GONE
                     btnLogin.text = "Ingresar"
 
@@ -138,16 +279,18 @@ class Login : AppCompatActivity() {
                             }
 
                             val roleNormalized = normalizeRole(body.data.rol?.nombreRol)
-                            val usuarioId = body.data.id   // UUID del asesor/paciente/médico
+                            val usuarioId = body.data.id
 
                             // ✔ Guardamos token y rol
                             PreferenceHelper.saveToken(this@Login, body.jwt)
                             PreferenceHelper.saveRole(this@Login, roleNormalized)
                             PreferenceHelper.saveIdAsesor(this@Login, usuarioId)
-
-
-                            // ⭐ ***AQUÍ ESTÁ EL CAMBIO IMPORTANTE***
                             PreferenceHelper.saveUsuarioId(this@Login, usuarioId)
+
+                            // 🔒 Guardar credenciales para login biométrico
+                            Log.d("LOGIN", "💾 Guardando credenciales: documento=${request.numeroDocumento}")
+                            PreferenceHelper.saveDocumento(this@Login, request.numeroDocumento)
+                            PreferenceHelper.savePassword(this@Login, request.password)
 
                             Log.d("LOGIN", "✅ Login exitoso - UUID: $usuarioId - Rol: $roleNormalized")
 
@@ -172,8 +315,10 @@ class Login : AppCompatActivity() {
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     isLoggingIn = false
                     btnLogin.isEnabled = true
+                    btnBiometric.isEnabled = true
                     progressBar.visibility = View.GONE
                     btnLogin.text = "Ingresar"
+                    isBiometricInProgress = false
 
                     Toast.makeText(this@Login, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
                 }

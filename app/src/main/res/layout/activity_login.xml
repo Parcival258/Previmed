@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Logo -->
             <ImageView
                 android:layout_width="147dp"
                 android:layout_height="150dp"
@@ -27,6 +28,7 @@
                 android:src="@drawable/logo"
                 android:contentDescription="@string/app_name" />
 
+            <!-- Título -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,6 +38,7 @@
                 android:textSize="38sp"
                 android:textStyle="bold" />
 
+            <!-- Subtítulo -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,6 +47,7 @@
                 android:textColor="#707070"
                 android:textSize="20sp" />
 
+            <!-- Campo Documento -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailLayout"
                 android:layout_width="match_parent"
@@ -62,6 +66,7 @@
                     android:textColorHint="#B0B0B0" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Campo Contraseña -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordLayout"
                 android:layout_width="match_parent"
@@ -81,15 +86,80 @@
                     android:textColorHint="#B0B0B0" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Botón Login Principal -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginBottom="24dp"
                 android:background="@drawable/btn_degradado"
                 android:text="Ingresar"
                 android:textStyle="bold"
+                android:textSize="16sp"
                 android:textColor="@android:color/white" />
+
+            <!-- Divisor con estilo mejorado -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginVertical="16dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="#E0E0E0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="O"
+                    android:textColor="#B0B0B0"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="#E0E0E0" />
+            </LinearLayout>
+
+            <!-- Botón Biométrico Mejorado -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBiometric"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="16dp"
+                android:text="Login Biometrico"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:icon="@drawable/ic_fingerprint"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:cornerRadius="12dp"
+                app:backgroundTint="#20C997"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                app:elevation="4dp"
+                app:rippleColor="#1aa179" />
+
+            <!-- Texto informativo biometría -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="💡 Tip: Guarda tus datos en el primer inicio de sesión para usar huella después"
+                android:textSize="12sp"
+                android:textColor="#999999"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:textStyle="italic" />
+
         </LinearLayout>
     </ScrollView>
 

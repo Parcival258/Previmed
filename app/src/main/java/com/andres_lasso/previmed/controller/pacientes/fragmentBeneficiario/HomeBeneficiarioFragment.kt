@@ -132,7 +132,7 @@ class HomeBeneficiarioFragment : Fragment() {
 
         binding.btnLogout.setOnClickListener {
             try {
-                PreferenceHelper.clearSession(requireContext())
+                PreferenceHelper.clearSessionButKeepBiometric(requireContext())
                 val intent = Intent(requireContext(), Login::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)

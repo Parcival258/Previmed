@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.andres_lasso.previmed.controller.medico.fragmentMedico.HistotyMedico
-import com.andres_lasso.previmed.controller.medico.fragmentMedico.HomeMedicoFragment
+import com.andres_lasso.previmed.controller.medico.fragmentMedico.HomeFragment
 import com.andres_lasso.previmed.controller.medico.fragmentMedico.VisitsMedico
 import com.andres_lasso.previmed.databinding.ActivityViewMedicoBinding
 
@@ -17,7 +17,7 @@ class ViewMedico : AppCompatActivity() {
 
     // Fragments que manejará el médico
     private val fragments = listOf(
-        HomeMedicoFragment(),
+        HomeFragment(),
         VisitsMedico(),
         HistotyMedico()
     )
