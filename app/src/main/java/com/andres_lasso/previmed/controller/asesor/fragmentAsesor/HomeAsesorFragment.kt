@@ -62,7 +62,7 @@ class HomeAsesorFragment : Fragment() {
 
         // 🔹 Cerrar sesión
         binding.btnLogout.setOnClickListener {
-            PreferenceHelper.clearSession(requireContext())
+            PreferenceHelper.clearSessionButKeepBiometric(requireContext())
 
             val intent = Intent(requireContext(), Login::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

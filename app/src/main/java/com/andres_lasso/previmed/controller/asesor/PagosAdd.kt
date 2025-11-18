@@ -4,6 +4,9 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import com.andres_lasso.previmed.databinding.ActivityPagosAddBinding
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.*
@@ -24,6 +27,11 @@ class PagosAdd : AppCompatActivity() {
     private var membresiaIdSeleccionada: Int = -1
     private var formaPagoIdSeleccionada: Int = -1
 
+    // 🔒 Variables para biometría
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private var isBiometricInProgress = false
+
     // 🔥 Tomamos el ID del asesor logueado desde PreferenceHelper
     private val asesorId: String by lazy {
         PreferenceHelper.getIdAsesor(this) ?: ""
@@ -34,12 +42,105 @@ class PagosAdd : AppCompatActivity() {
         binding = ActivityPagosAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 🔒 Configurar biometría
+        setupBiometric()
+
         cargarTitulares()
         cargarFormasPago()
         setupDatePickers()
 
         binding.btnGuardar.setOnClickListener {
-            if (validarCampos()) registrarPago()
+            if (validarCampos()) {
+                // 🔒 Primero verificar si la biometría está disponible
+                if (isBiometricAvailable()) {
+                    mostrarBiometricPrompt()
+                } else {
+                    // Si no hay biometría disponible, registrar directamente
+                    Toast.makeText(
+                        this,
+                        "Biometría no disponible, registrando pago...",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    registrarPago()
+                }
+            }
+        }
+    }
+
+    // 🔒 Configuración de la biometría
+    private fun setupBiometric() {
+        val executor = ContextCompat.getMainExecutor(this)
+
+        biometricPrompt = BiometricPrompt(
+            this,
+            executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    isBiometricInProgress = false
+
+                    Toast.makeText(
+                        this@PagosAdd,
+                        "Autenticación exitosa",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    // ✅ Autenticación exitosa → Registrar pago
+                    registrarPago()
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    isBiometricInProgress = false
+
+                    if (errorCode != BiometricPrompt.ERROR_USER_CANCELED) {
+                        Toast.makeText(
+                            this@PagosAdd,
+                            "Error de autenticación: $errString",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            this@PagosAdd,
+                            "Registro cancelado",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    Toast.makeText(
+                        this@PagosAdd,
+                        "Autenticación fallida. Intenta de nuevo",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Confirmar Registro de Pago")
+            .setSubtitle("Verifica tu identidad para registrar el pago")
+            .setDescription("Usa tu huella digital o reconocimiento facial")
+            .setNegativeButtonText("Cancelar")
+            .build()
+    }
+
+    // 🔒 Verificar si la biometría está disponible
+    private fun isBiometricAvailable(): Boolean {
+        val biometricManager = BiometricManager.from(this)
+        return biometricManager.canAuthenticate(
+            BiometricManager.Authenticators.BIOMETRIC_STRONG or
+                    BiometricManager.Authenticators.BIOMETRIC_WEAK
+        ) == BiometricManager.BIOMETRIC_SUCCESS
+    }
+
+    // 🔒 Mostrar el prompt biométrico
+    private fun mostrarBiometricPrompt() {
+        if (!isBiometricInProgress) {
+            isBiometricInProgress = true
+            biometricPrompt.authenticate(promptInfo)
         }
     }
 
@@ -171,21 +272,25 @@ class PagosAdd : AppCompatActivity() {
             fecha_pago = fechaPago,
             membresia_id = membresiaIdSeleccionada,
             forma_pago_id = formaPagoIdSeleccionada,
-
-            // 🔥 Cambio importante → ahora enviamos el asesor real
             cobrador_id = asesorId,
-
             numero_recibo = numeroRecibo,
             estado = "Pendiente",
             foto = null
         )
 
+        // Deshabilitar el botón mientras se procesa
+        binding.btnGuardar.isEnabled = false
+        binding.btnGuardar.text = "Registrando..."
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = RetrofitClient.pagoApi.createPago(pagoRequest)
                 runOnUiThread {
+                    binding.btnGuardar.isEnabled = true
+                    binding.btnGuardar.text = "Guardar"
+
                     if (response.isSuccessful) {
-                        Toast.makeText(this@PagosAdd, "Pago registrado correctamente", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@PagosAdd, "✅ Pago registrado correctamente", Toast.LENGTH_LONG).show()
                         limpiarCampos()
                     } else {
                         Toast.makeText(this@PagosAdd, "Error al registrar pago: ${response.code()}", Toast.LENGTH_LONG).show()
@@ -193,6 +298,8 @@ class PagosAdd : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 runOnUiThread {
+                    binding.btnGuardar.isEnabled = true
+                    binding.btnGuardar.text = "Guardar"
                     Toast.makeText(this@PagosAdd, "Excepción: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }

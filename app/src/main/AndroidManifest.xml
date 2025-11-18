@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- 🌐 Permisos -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 📷 La cámara no es obligatoria -->
@@ -44,7 +47,8 @@
         <!-- ⚕️ Actividades del médico -->
         <activity android:name=".controller.medico.HistorialVisitas" />
         <activity android:name=".controller.medico.VisitasPendientes" />
-        <activity android:name=".controller.medico.Visitas" />
+        <activity android:name=".controller.medico.Visitas"/>
+        <activity android:name=".ViewMedico"/>
 
         <!-- 🔑 Otras actividades -->
         <activity android:name=".controller.asesor.ViewAsesor" />
