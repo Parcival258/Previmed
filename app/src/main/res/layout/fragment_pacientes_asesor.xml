@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingTop="16dp"
-        android:paddingHorizontal="12dp">
+        android:paddingHorizontal="16dp">
 
         <!-- Título centrado -->
         <TextView
@@ -27,17 +28,38 @@
             android:gravity="center"
             android:paddingVertical="10dp" />
 
-        <!-- SearchView -->
-        <SearchView
-            android:id="@+id/btn_Buscar_Usu"
+        <!-- 🔍 Buscador estilo PAGOS (pegado tal cual) -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@color/white"
-            android:iconifiedByDefault="false"
-            android:queryHint="Buscar..."
-            android:elevation="4dp"
-            android:padding="4dp" />
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_search_box"
+            android:paddingHorizontal="16dp"
+            android:layout_marginVertical="12dp"
+            android:elevation="6dp"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@android:drawable/ic_menu_search"
+                android:contentDescription="Buscar"
+                app:tint="@color/AZUL_GENERAL" />
+
+            <EditText
+                android:id="@+id/btn_Buscar_Usu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Buscar pago..."
+                android:background="@android:color/transparent"
+                android:textColor="@color/black"
+                android:textColorHint="#9E9E9E"
+                android:paddingStart="10dp"
+                android:textSize="16sp"
+                android:imeOptions="actionSearch"
+                android:singleLine="true" />
+        </LinearLayout>
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
@@ -51,7 +73,7 @@
 
     </LinearLayout>
 
-    <!-- Botón flotante igual que el tuyo -->
+    <!-- Botón flotante -->
     <Button
         android:id="@+id/btn_agregarPacientess"
         android:layout_width="60dp"
@@ -66,6 +88,5 @@
         android:elevation="8dp"
         android:shape="oval"
         android:stateListAnimator="@null"/>
-
 
 </FrameLayout>
