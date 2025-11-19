@@ -36,6 +36,15 @@ class RegistrarPagoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_pago)
 
+        // ⭐ Hacer visible la barra de estado + iconos negros
+        window.statusBarColor = getColor(android.R.color.white)
+       // o si deseas un gris suave: getColor(R.color.gris_suave)
+
+        androidx.core.view.WindowInsetsControllerCompat(
+            window,
+            window.decorView
+        ).isAppearanceLightStatusBars = true
+
         initViews()
         setupDatePickers()
         recibirDatosIntent()

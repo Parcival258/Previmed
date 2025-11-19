@@ -6,9 +6,13 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.recycler.adapter.PlanesAdapter
 import com.andres_lasso.previmed.databinding.ActivityPlanesViewBinding
 import com.andres_lasso.previmed.interfaces.RetrofitClient
@@ -19,22 +23,40 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PlanesView : AppCompatActivity() {
+
     private lateinit var binding: ActivityPlanesViewBinding
     private val listaPlanes = mutableListOf<Plan>()
     private lateinit var adapter: PlanesAdapter
 
+    // Intervalo de refresco
+    private val pollingInterval = 5000L
+    private val pollingHandler = Handler(Looper.getMainLooper())
+    private val pollingRunnable = object : Runnable {
+        override fun run() {
+            cargarPlanes()
+            pollingHandler.postDelayed(this, pollingInterval)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 🔥 Configurar barra de estado visible y clara
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+
         binding = ActivityPlanesViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Evitar que el contenido tape los íconos de la barra superior
+        // Evitar superposición del contenido con la barra de estado
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val statusBarInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             view.setPadding(0, statusBarInsets.top, 0, 0)
             insets
         }
 
+        // Configurar RecyclerView
         adapter = PlanesAdapter(listaPlanes)
         binding.recyclerPlanesAsesor.layoutManager = LinearLayoutManager(this)
         binding.recyclerPlanesAsesor.adapter = adapter
@@ -47,12 +69,15 @@ class PlanesView : AppCompatActivity() {
             override fun onResponse(call: Call<PlanesResponse>, response: Response<PlanesResponse>) {
                 if (response.isSuccessful) {
                     val planes = response.body()?.planes?.filter { it.estado } ?: listOf()
+
                     listaPlanes.clear()
                     listaPlanes.addAll(planes)
                     adapter.notifyDataSetChanged()
+
                 } else {
                     Toast.makeText(this@PlanesView, "Error al cargar planes", Toast.LENGTH_SHORT).show()
                 }
+
                 Log.d("PlanesView", "Planes recibidos: ${listaPlanes.size}")
                 listaPlanes.forEach {
                     Log.d("PlanesView", "Plan: ${it.tipoPlan} - Precio: ${it.precio}")
@@ -68,15 +93,6 @@ class PlanesView : AppCompatActivity() {
     fun agregarNuevoPlan(plan: Plan) {
         listaPlanes.add(plan)
         adapter.agregarPlan(plan)
-    }
-
-    private val pollingInterval = 5000L
-    private val pollingHandler = Handler(Looper.getMainLooper())
-    private val pollingRunnable = object : Runnable {
-        override fun run() {
-            cargarPlanes()
-            pollingHandler.postDelayed(this, pollingInterval)
-        }
     }
 
     override fun onResume() {

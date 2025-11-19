@@ -53,16 +53,6 @@
             android:textSize="15sp"
             android:textColor="#555555" />
 
-        <ImageButton
-            android:id="@+id/BotonMirarPac"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="end"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/see"
-            android:contentDescription="Ver paciente"
-            android:padding="4dp"
-            android:scaleType="fitCenter" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

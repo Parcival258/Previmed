@@ -3,7 +3,10 @@ package com.andres_lasso.previmed.controller.asesor
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,12 +18,29 @@ import com.andres_lasso.previmed.interfaces.RetrofitClient
 import kotlinx.coroutines.launch
 
 class Barrios : AppCompatActivity() {
+
     private lateinit var adapter: BarriosAdapter
     private var listaOriginal = listOf<BarriosClass>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 🟦 Activa que el contenido use toda la pantalla
+        enableEdgeToEdge()
+
         setContentView(R.layout.activity_barrios)
+
+        // 🟦 Ajustar padding según barra de estado (FUNCIONA CON TU XML)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.rootBarrios)) { view, insets ->
+            val statusBarInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.setPadding(
+                view.paddingLeft,
+                statusBarInsets.top,   // 👈 Agregamos el padding de la barra de estado
+                view.paddingRight,
+                view.paddingBottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerbarriosAsesor)
         val searchInput = findViewById<EditText>(R.id.etBuscarBarrio)
@@ -29,19 +49,20 @@ class Barrios : AppCompatActivity() {
         adapter = BarriosAdapter(mutableListOf())
         recyclerView.adapter = adapter
 
+        // 🔍 Filtro de búsqueda
         searchInput.addTextChangedListener {
             val query = it.toString().lowercase().trim()
             filtrarLista(query)
         }
 
+        // 📡 Llamada API
         lifecycleScope.launch {
             try {
                 val response = RetrofitClient.visitasApi.getBarrios()
 
-                // 💡 Agrega estas líneas para ver la respuesta completa
-                println("🔥 Código de respuesta: ${response.code()}")
-                println("🔥 Cuerpo bruto: ${response.errorBody()?.string()}")
-                println("🔥 Cuerpo parsed (body): ${response.body()}")
+                println("🔥 Código: ${response.code()}")
+                println("🔥 Raw: ${response.errorBody()?.string()}")
+                println("🔥 Body: ${response.body()}")
 
                 if (response.isSuccessful && response.body() != null) {
                     val listarBarrios = response.body()!!.msj
@@ -65,7 +86,6 @@ class Barrios : AppCompatActivity() {
                 Toast.makeText(this@Barrios, "Error de conexión", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     private fun filtrarLista(query: String) {
@@ -78,4 +98,5 @@ class Barrios : AppCompatActivity() {
         }
         adapter.actualizarLista(filtrada)
     }
+
 }

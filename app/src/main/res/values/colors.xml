@@ -25,6 +25,8 @@
     <color name="fondo_app">#F5F7FB</color>
     <color name="negro_texto">#2B2B2B</color>
     <color name="gris_suave">#E0E0E0</color>
+    <color name="statusBarLiteGray">#000000</color>
+
 
 
 
