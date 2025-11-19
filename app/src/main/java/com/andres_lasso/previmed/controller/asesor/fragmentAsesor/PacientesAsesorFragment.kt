@@ -2,11 +2,13 @@ package com.andres_lasso.previmed.controller.asesor.fragmentAsesor
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.SearchView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,13 +50,15 @@ class PacientesAsesorFragment : Fragment() {
         }
         recyclerView.adapter = adapter
 
-        val searchView = view.findViewById<SearchView>(R.id.btn_Buscar_Usu)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filtrarLista(newText)
-                return true
+        // 🔍 CORRECCIÓN: ahora es EditText, NO SearchView
+        val searchInput = view.findViewById<EditText>(R.id.btn_Buscar_Usu)
+
+        searchInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filtrarLista(s?.toString())
             }
+            override fun afterTextChanged(s: Editable?) {}
         })
 
         cargarPacientes()
