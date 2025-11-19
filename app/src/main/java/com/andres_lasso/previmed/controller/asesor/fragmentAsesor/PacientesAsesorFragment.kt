@@ -2,11 +2,13 @@ package com.andres_lasso.previmed.controller.asesor.fragmentAsesor
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.SearchView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,34 +36,43 @@ class PacientesAsesorFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_pacientes_asesor, container, false)
 
+        // ➕ Botón agregar usuario
         val btnAgregarUsuario = view.findViewById<Button>(R.id.btn_agregarPacientess)
         btnAgregarUsuario.setOnClickListener {
             val intent = Intent(requireContext(), RegistroUsuario::class.java)
             startActivity(intent)
         }
 
+        // 📋 RecyclerView
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerPacientes)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         adapter = PacienteAseAdapter(listaFiltrada) { paciente ->
             val nombre = paciente.usuario?.nombre ?: "Desconocido"
             Toast.makeText(requireContext(), "Paciente: $nombre", Toast.LENGTH_SHORT).show()
         }
         recyclerView.adapter = adapter
 
-        val searchView = view.findViewById<SearchView>(R.id.btn_Buscar_Usu)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filtrarLista(newText)
-                return true
+        // 🔍 Barra de búsqueda (EditText)
+        val searchEditText = view.findViewById<EditText>(R.id.btn_Buscar_Usu)
+
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filtrarLista(s.toString())
             }
         })
 
+        // 🌐 Cargar datos desde API
         cargarPacientes()
 
         return view
     }
 
+    // 📡 Cargar pacientes desde la API
     private fun cargarPacientes() {
         RetrofitClient.pacienteApi.getPacientes()
             .enqueue(object : Callback<ApiResponse<List<PacienteData>>> {
@@ -95,20 +106,27 @@ class PacientesAsesorFragment : Fragment() {
             })
     }
 
+    // 🔍 Filtrar lista
     private fun filtrarLista(texto: String?) {
         listaFiltrada.clear()
+
         if (texto.isNullOrEmpty()) {
             listaFiltrada.addAll(listaCompleta)
         } else {
             val filtro = texto.lowercase()
+
             val filtrados = listaCompleta.filter { paciente ->
                 val usuario = paciente.usuario
-                val nombreCompleto = "${usuario?.nombre ?: ""} ${usuario?.apellido ?: ""}".lowercase()
+                val nombreCompleto =
+                    "${usuario?.nombre ?: ""} ${usuario?.apellido ?: ""}".lowercase()
                 val documento = usuario?.numeroDocumento?.lowercase() ?: ""
+
                 nombreCompleto.contains(filtro) || documento.contains(filtro)
             }
+
             listaFiltrada.addAll(filtrados)
         }
+
         adapter.notifyDataSetChanged()
     }
 }

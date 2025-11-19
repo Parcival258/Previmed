@@ -4,6 +4,9 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.andres_lasso.previmed.databinding.ActivityPagosAddBinding
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.*
@@ -24,7 +27,6 @@ class PagosAdd : AppCompatActivity() {
     private var membresiaIdSeleccionada: Int = -1
     private var formaPagoIdSeleccionada: Int = -1
 
-    // 🔥 Tomamos el ID del asesor logueado desde PreferenceHelper
     private val asesorId: String by lazy {
         PreferenceHelper.getIdAsesor(this) ?: ""
     }
@@ -34,6 +36,9 @@ class PagosAdd : AppCompatActivity() {
         binding = ActivityPagosAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 🔥 CONFIGURAR BARRA DE ESTADO — YA FUNCIONAL Y COMPLETA
+        configurarBarraEstado()
+
         cargarTitulares()
         cargarFormasPago()
         setupDatePickers()
@@ -42,6 +47,30 @@ class PagosAdd : AppCompatActivity() {
             if (validarCampos()) registrarPago()
         }
     }
+
+
+    // ------------------------------------------
+    // 🔥 FUNCIÓN QUE AGREGA LA BARRA DE ESTADO CORRECTAMENTE
+    // ------------------------------------------
+    private fun configurarBarraEstado() {
+        // Iconos de barra de estado oscuros
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            isAppearanceLightStatusBars = true
+        }
+
+        // Evitar que la vista se meta debajo de la barra de estado
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.setPadding(
+                view.paddingLeft,
+                statusBar.top,
+                view.paddingRight,
+                view.paddingBottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+    }
+
 
     private fun setupDatePickers() {
         val listener = { editText: EditText ->
@@ -56,6 +85,7 @@ class PagosAdd : AppCompatActivity() {
                 c.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
+
         binding.etFechaInicio.setOnClickListener { listener(binding.etFechaInicio) }
         binding.etFechaFin.setOnClickListener { listener(binding.etFechaFin) }
         binding.etFechaPago.setOnClickListener { listener(binding.etFechaPago) }
@@ -95,63 +125,104 @@ class PagosAdd : AppCompatActivity() {
     private fun cargarTitulares() {
         RetrofitClient.pacienteApi.getTitulares().enqueue(object :
             Callback<ApiResponse<List<PacienteData>>> {
+
             override fun onResponse(
                 call: Call<ApiResponse<List<PacienteData>>>,
                 response: Response<ApiResponse<List<PacienteData>>>
             ) {
                 if (response.isSuccessful) {
                     listaTitulares = response.body()?.data ?: emptyList()
-                    val nombres = listaTitulares.map { it.usuario?.nombre + " " + it.usuario?.apellido }
-                    val adapter = ArrayAdapter(this@PagosAdd, android.R.layout.simple_spinner_item, nombres)
+                    val nombres = listaTitulares.map {
+                        "${it.usuario?.nombre} ${it.usuario?.apellido}"
+                    }
+
+                    val adapter = ArrayAdapter(
+                        this@PagosAdd,
+                        android.R.layout.simple_spinner_item,
+                        nombres
+                    )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     binding.spinnerTitular.adapter = adapter
 
                     binding.spinnerTitular.onItemSelectedListener = object :
                         AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
-                            parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long
+                            parent: AdapterView<*>?, view: android.view.View?,
+                            position: Int, id: Long
                         ) {
                             membresiaIdSeleccionada =
-                                listaTitulares[position].membresiaPaciente?.firstOrNull()?.membresiaId ?: -1
+                                listaTitulares[position].membresiaPaciente?.firstOrNull()?.membresiaId
+                                    ?: -1
                         }
+
                         override fun onNothingSelected(parent: AdapterView<*>?) {}
                     }
                 } else {
-                    Toast.makeText(this@PagosAdd, "Error al cargar titulares", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@PagosAdd,
+                        "Error al cargar titulares",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
             override fun onFailure(call: Call<ApiResponse<List<PacienteData>>>, t: Throwable) {
-                Toast.makeText(this@PagosAdd, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@PagosAdd,
+                    "Error de conexión: ${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
     }
 
     private fun cargarFormasPago() {
-        RetrofitClient.formaPagoApi.getFormasPago().enqueue(object : Callback<List<FormaPago>> {
-            override fun onResponse(call: Call<List<FormaPago>>, response: Response<List<FormaPago>>) {
+        RetrofitClient.formaPagoApi.getFormasPago().enqueue(object :
+            Callback<List<FormaPago>> {
+
+            override fun onResponse(
+                call: Call<List<FormaPago>>,
+                response: Response<List<FormaPago>>
+            ) {
                 if (response.isSuccessful) {
                     listaFormasPago = response.body() ?: emptyList()
                     val nombres = listaFormasPago.map { it.tipoPago ?: "Sin nombre" }
-                    val adapter = ArrayAdapter(this@PagosAdd, android.R.layout.simple_spinner_item, nombres)
+
+                    val adapter = ArrayAdapter(
+                        this@PagosAdd,
+                        android.R.layout.simple_spinner_item,
+                        nombres
+                    )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     binding.spinnerFormaPago.adapter = adapter
 
-                    binding.spinnerFormaPago.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long
-                        ) {
-                            formaPagoIdSeleccionada = listaFormasPago[position].idFormaPago ?: -1
+                    binding.spinnerFormaPago.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?, view: android.view.View?,
+                                position: Int, id: Long
+                            ) {
+                                formaPagoIdSeleccionada =
+                                    listaFormasPago[position].idFormaPago ?: -1
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
                         }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {}
-                    }
                 } else {
-                    Toast.makeText(this@PagosAdd, "Error al cargar formas de pago", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@PagosAdd,
+                        "Error al cargar formas de pago",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
             override fun onFailure(call: Call<List<FormaPago>>, t: Throwable) {
-                Toast.makeText(this@PagosAdd, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@PagosAdd,
+                    "Error de conexión: ${t.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
     }
@@ -171,10 +242,7 @@ class PagosAdd : AppCompatActivity() {
             fecha_pago = fechaPago,
             membresia_id = membresiaIdSeleccionada,
             forma_pago_id = formaPagoIdSeleccionada,
-
-            // 🔥 Cambio importante → ahora enviamos el asesor real
             cobrador_id = asesorId,
-
             numero_recibo = numeroRecibo,
             estado = "Pendiente",
             foto = null
@@ -185,15 +253,27 @@ class PagosAdd : AppCompatActivity() {
                 val response = RetrofitClient.pagoApi.createPago(pagoRequest)
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@PagosAdd, "Pago registrado correctamente", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@PagosAdd,
+                            "Pago registrado correctamente",
+                            Toast.LENGTH_LONG
+                        ).show()
                         limpiarCampos()
                     } else {
-                        Toast.makeText(this@PagosAdd, "Error al registrar pago: ${response.code()}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@PagosAdd,
+                            "Error al registrar pago: ${response.code()}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             } catch (e: Exception) {
                 runOnUiThread {
-                    Toast.makeText(this@PagosAdd, "Excepción: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@PagosAdd,
+                        "Excepción: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
