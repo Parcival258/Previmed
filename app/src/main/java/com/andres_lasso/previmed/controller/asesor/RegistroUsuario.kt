@@ -34,12 +34,19 @@ class RegistroUsuario : AppCompatActivity() {
         binding = ActivityRegistroUsuarioBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // ⭐ StatusBar azul oscuro con iconos blancos (igual a tu barra de arriba)
+        window.statusBarColor = getColor(R.color.white)
+        androidx.core.view.WindowInsetsControllerCompat(
+            window,
+            window.decorView
+        ).isAppearanceLightStatusBars = false
+
         setupStaticSpinners()
         setupDatePicker(binding.etFechaNacimiento)
 
         loadEps()
         fetchPlanes()
-        loadFormasPago() // ✅ Cargar las formas de pago
+        loadFormasPago()
 
         binding.btnGuardar.setOnClickListener { registrarUsuario() }
 
@@ -47,6 +54,7 @@ class RegistroUsuario : AppCompatActivity() {
             toast("Primero guarda el usuario y paciente antes de continuar")
         }
     }
+
 
     private fun validarCamposBasicos(): Boolean {
         val nombre = binding.etNombre.text.toString().trim()

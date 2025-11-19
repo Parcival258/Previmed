@@ -11,5 +11,5 @@ class PacienteAseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     val doc: TextView = itemView.findViewById(R.id.textDoc)
     val direccion: TextView = itemView.findViewById(R.id.textDireccion)
     val plan: TextView = itemView.findViewById(R.id.textPlan)
-    val botonVer: ImageButton = itemView.findViewById(R.id.BotonMirarPac)
+
 }

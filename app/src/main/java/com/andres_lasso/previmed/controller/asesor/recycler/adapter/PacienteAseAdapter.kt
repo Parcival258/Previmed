@@ -37,7 +37,7 @@ class PacienteAseAdapter(
         // Usamos llamadas seguras y valores por defecto
         val nombre = usuario?.nombre ?: "Sin nombre"
         val apellido = usuario?.apellido ?: ""
-        val numeroDocumento = usuario?.numeroDocumento ?: "Sin documento"
+        val numeroDocumento = usuario?.numeroDocumento ?: ""
 
         val nombreCompleto = "$nombre $apellido".trim()
         holder.nombre.text = nombreCompleto

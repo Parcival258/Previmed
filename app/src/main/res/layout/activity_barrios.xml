@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fitsSystemWindows="true"> <!-- ✅ evita que se tape la barra de estado -->
+    tools:context=".controller.asesor.Barrios"
+    android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/rootBarrios"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="16dp"
         android:paddingHorizontal="16dp">
 
-        <!-- 🏷️ Título centrado estilo Planes Previmed -->
+        <!-- 🏷️ Título centrado -->
         <TextView
             android:id="@+id/tvTituloBarrios"
             android:layout_width="match_parent"
@@ -58,7 +58,6 @@
                 android:imeOptions="actionSearch"
                 android:singleLine="true" />
         </LinearLayout>
-
 
         <!-- 📋 Lista de barrios -->
         <androidx.recyclerview.widget.RecyclerView

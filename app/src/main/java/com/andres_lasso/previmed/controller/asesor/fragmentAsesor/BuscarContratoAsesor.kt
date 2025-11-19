@@ -5,10 +5,14 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
@@ -24,83 +28,57 @@ class BuscarContratoAsesor : AppCompatActivity() {
 
     private var listaOriginal: List<Membresia> = listOf()
     private lateinit var adapter: MembresiaAdapter
-    private var paginaActual = 1
-    private val pageSize = 20
-    private var cargando = false
-    private var finLista = false
 
     private val handler = Handler(Looper.getMainLooper())
-    private val pollingInterval = 5000L // 5 segundos
+    private val pollingInterval = 5000L
 
     private val pollingRunnable = object : Runnable {
         override fun run() {
-            paginaActual = 1
-            finLista = false
-            listaOriginal = listOf()
-            cargarMembresiasPaginadas(reset = true)
+            cargarMembresias()
             handler.postDelayed(this, pollingInterval)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 🔥 Configuración de la barra de estado (igual que PlanesView)
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+
         setContentView(R.layout.activity_buscar_contrato_asesor)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_personas)
-        val layoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManager
+        // Evitar que la barra de estado tape contenido
+        val root = findViewById<android.view.View>(R.id.rootLayoutBuscarContrato)
+        ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
+            val status = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.setPadding(0, status.top, 0, 0)
+            insets
+        }
 
-        // Inicializa el adaptador con el clic para mostrar detalles
+        // RecyclerView
+        val recycler = findViewById<RecyclerView>(R.id.recycler_personas)
+        recycler.layoutManager = LinearLayoutManager(this)
+
         adapter = MembresiaAdapter(emptyList()) { membresia ->
             val dialog = ContratoDetalleDialog(membresia)
             dialog.show(supportFragmentManager, "DetalleContrato")
         }
-        recyclerView.adapter = adapter
+        recycler.adapter = adapter
 
-        // Scroll infinito
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(rv, dx, dy)
-                val total = layoutManager.itemCount
-                val lastVisible = layoutManager.findLastVisibleItemPosition()
-                if (!cargando && !finLista && lastVisible + 5 >= total) {
-                    cargarMembresiasPaginadas()
-                }
-            }
-        })
-
-        // --- 🔍 NUEVA BARRA DE BÚSQUEDA ---
-        val etBuscarContrato = findViewById<EditText>(R.id.etBuscarContrato)
-        etBuscarContrato.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        // 🔍 Búsqueda
+        val etBuscar = findViewById<EditText>(R.id.etBuscarContrato)
+        etBuscar.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(s: Editable?) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val filtro = s?.toString()?.lowercase()?.trim() ?: ""
-                val resultado = listaOriginal.filter { membresia ->
-                    val nombres = membresia.membresiaPaciente?.mapNotNull { mp ->
-                        val u = mp.paciente?.usuario
-                        listOf(u?.nombre, u?.segundoNombre, u?.apellido, u?.segundoApellido)
-                            .filterNotNull().joinToString(" ")
-                    }?.joinToString(" ")?.lowercase() ?: ""
-
-                    val documentos = membresia.membresiaPaciente?.mapNotNull { mp ->
-                        mp.paciente?.usuario?.numeroDocumento
-                    }?.joinToString(" ")?.lowercase() ?: ""
-
-                    val nc = membresia.numeroContrato?.lowercase() ?: ""
-                    val fp = membresia.formaPago?.lowercase() ?: ""
-
-                    nombres.contains(filtro) ||
-                            documentos.contains(filtro) ||
-                            nc.contains(filtro) ||
-                            fp.contains(filtro)
-                }
-                adapter.actualizarLista(resultado)
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                filtrarLista(text.toString())
             }
         })
 
-        cargarMembresiasPaginadas()
+        // Cargar datos
+        cargarMembresias()
     }
 
     override fun onResume() {
@@ -113,10 +91,7 @@ class BuscarContratoAsesor : AppCompatActivity() {
         handler.removeCallbacks(pollingRunnable)
     }
 
-    private fun cargarMembresiasPaginadas(reset: Boolean = false) {
-        if (cargando || finLista) return
-        cargando = true
-
+    private fun cargarMembresias() {
         RetrofitClient.membresiaApi.listarMembresias()
             .enqueue(object : Callback<List<Membresia>> {
                 override fun onResponse(
@@ -124,41 +99,44 @@ class BuscarContratoAsesor : AppCompatActivity() {
                     response: Response<List<Membresia>>
                 ) {
                     if (response.isSuccessful && response.body() != null) {
-                        val membresias = response.body()!!
-                        Log.d("BuscarContratoAsesor", "Recibidas: ${membresias.size}")
-
-                        if (membresias.isEmpty()) {
-                            finLista = true
-                        } else {
-                            listaOriginal = if (paginaActual == 1 || reset) {
-                                membresias
-                            } else {
-                                listaOriginal + membresias.filter { nueva ->
-                                    listaOriginal.none { it.idMembresia == nueva.idMembresia }
-                                }
-                            }
-                            adapter.actualizarLista(listaOriginal)
-                            paginaActual++
-                        }
+                        listaOriginal = response.body()!!
+                        adapter.actualizarLista(listaOriginal)
                     } else {
-                        Toast.makeText(
-                            this@BuscarContratoAsesor,
-                            "Error: ${response.message()}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@BuscarContratoAsesor, "Error al cargar contratos", Toast.LENGTH_SHORT).show()
                     }
-                    cargando = false
                 }
 
                 override fun onFailure(call: Call<List<Membresia>>, t: Throwable) {
-                    Toast.makeText(
-                        this@BuscarContratoAsesor,
-                        "Error al cargar datos: ${t.localizedMessage}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    Log.e("BuscarContratoAsesor", "Error al cargar membresías", t)
-                    cargando = false
+                    Toast.makeText(this@BuscarContratoAsesor, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+    private fun filtrarLista(filtro: String) {
+        val f = filtro.lowercase().trim()
+
+        val filtrada = listaOriginal.filter { membresia ->
+
+            val nombres = membresia.membresiaPaciente?.joinToString(" ") { mp ->
+                val u = mp.paciente?.usuario
+                listOfNotNull(
+                    u?.nombre,
+                    u?.segundoNombre,
+                    u?.apellido,
+                    u?.segundoApellido
+                ).joinToString(" ")
+            }?.lowercase().orEmpty()
+
+            val documentos = membresia.membresiaPaciente?.joinToString(" ") { mp ->
+                mp.paciente?.usuario?.numeroDocumento ?: ""
+            }?.lowercase().orEmpty()
+
+            val numContrato = membresia.numeroContrato?.lowercase().orEmpty()
+            val formaPago = membresia.formaPago?.lowercase().orEmpty()
+
+            f in nombres || f in documentos || f in numContrato || f in formaPago
+        }
+
+        adapter.actualizarLista(filtrada)
     }
 }

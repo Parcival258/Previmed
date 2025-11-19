@@ -2,47 +2,45 @@ package com.andres_lasso.previmed.model
 
 import com.google.gson.annotations.SerializedName
 
-// -----------------------------
-// ✅ USUARIO (implementa lo de UsuarioSimple.kt + campos extendidos)
-// -----------------------------
 data class Usuario(
+
     @SerializedName("idUsuario")
-    val idUsuario: String?, // UUID (varchar)
+    val idUsuario: String? = null,
 
     @SerializedName("nombre")
-    val nombre: String?,
+    val nombre: String? = null,
 
-    @SerializedName("segundo_nombre")
+    @SerializedName("segundoNombre")
     val segundoNombre: String? = null,
 
     @SerializedName("apellido")
-    val apellido: String?,
+    val apellido: String? = null,
 
-    @SerializedName("segundo_apellido")
+    @SerializedName("segundoApellido")
     val segundoApellido: String? = null,
 
     @SerializedName("email")
-    val email: String?,
+    val email: String? = null,
 
-    @SerializedName("numero_documento")
+    @SerializedName("numeroDocumento")
     val numeroDocumento: String? = null,
 
-    @SerializedName("fecha_nacimiento")
+    @SerializedName("fechaNacimiento")
     val fechaNacimiento: String? = null,
 
-    @SerializedName("numero_hijos")
+    @SerializedName("numeroHijos")
     val numeroHijos: String? = null,
 
     @SerializedName("estrato")
     val estrato: String? = null,
 
-    @SerializedName("autorizacion_datos")
+    @SerializedName("autorizacionDatos")
     val autorizacionDatos: Boolean? = null,
 
-    @SerializedName("eps_id")
+    @SerializedName("epsId")
     val epsId: Int? = null,
 
-    @SerializedName("rol_id")
+    @SerializedName("rolId")
     val rolId: Int? = null,
 
     @SerializedName("habilitar")
@@ -51,9 +49,9 @@ data class Usuario(
     @SerializedName("genero")
     val genero: String? = null,
 
-    @SerializedName("estado_civil")
+    @SerializedName("estadoCivil")
     val estadoCivil: String? = null,
 
-    @SerializedName("tipo_documento")
+    @SerializedName("tipoDocumento")
     val tipoDocumento: String? = null
 )

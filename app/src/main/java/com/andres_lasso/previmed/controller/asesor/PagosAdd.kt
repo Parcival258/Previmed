@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.databinding.ActivityPagosAddBinding
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.*
@@ -27,35 +30,35 @@ class PagosAdd : AppCompatActivity() {
     private var membresiaIdSeleccionada: Int = -1
     private var formaPagoIdSeleccionada: Int = -1
 
-    // 🔒 Variables para biometría
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
     private var isBiometricInProgress = false
 
-    // 🔥 Tomamos el ID del asesor logueado desde PreferenceHelper
     private val asesorId: String by lazy {
         PreferenceHelper.getIdAsesor(this) ?: ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, true)
         binding = ActivityPagosAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 🔒 Configurar biometría
-        setupBiometric()
+        // ⭐ Hacer visible el status bar con iconos negros
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        window.statusBarColor = ContextCompat.getColor(this, R.color.statusBarLiteGray)
 
+        setupBiometric()
         cargarTitulares()
         cargarFormasPago()
         setupDatePickers()
 
         binding.btnGuardar.setOnClickListener {
             if (validarCampos()) {
-                // 🔒 Primero verificar si la biometría está disponible
                 if (isBiometricAvailable()) {
                     mostrarBiometricPrompt()
                 } else {
-                    // Si no hay biometría disponible, registrar directamente
                     Toast.makeText(
                         this,
                         "Biometría no disponible, registrando pago...",
@@ -67,7 +70,6 @@ class PagosAdd : AppCompatActivity() {
         }
     }
 
-    // 🔒 Configuración de la biometría
     private fun setupBiometric() {
         val executor = ContextCompat.getMainExecutor(this)
 
@@ -85,7 +87,6 @@ class PagosAdd : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    // ✅ Autenticación exitosa → Registrar pago
                     registrarPago()
                 }
 
@@ -93,26 +94,18 @@ class PagosAdd : AppCompatActivity() {
                     super.onAuthenticationError(errorCode, errString)
                     isBiometricInProgress = false
 
-                    if (errorCode != BiometricPrompt.ERROR_USER_CANCELED) {
-                        Toast.makeText(
-                            this@PagosAdd,
-                            "Error de autenticación: $errString",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            this@PagosAdd,
-                            "Registro cancelado",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    Toast.makeText(
+                        this@PagosAdd,
+                        "Error de autenticación: $errString",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
                     Toast.makeText(
                         this@PagosAdd,
-                        "Autenticación fallida. Intenta de nuevo",
+                        "Autenticación fallida",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -127,7 +120,6 @@ class PagosAdd : AppCompatActivity() {
             .build()
     }
 
-    // 🔒 Verificar si la biometría está disponible
     private fun isBiometricAvailable(): Boolean {
         val biometricManager = BiometricManager.from(this)
         return biometricManager.canAuthenticate(
@@ -136,7 +128,6 @@ class PagosAdd : AppCompatActivity() {
         ) == BiometricManager.BIOMETRIC_SUCCESS
     }
 
-    // 🔒 Mostrar el prompt biométrico
     private fun mostrarBiometricPrompt() {
         if (!isBiometricInProgress) {
             isBiometricInProgress = true
@@ -157,6 +148,7 @@ class PagosAdd : AppCompatActivity() {
                 c.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
+
         binding.etFechaInicio.setOnClickListener { listener(binding.etFechaInicio) }
         binding.etFechaFin.setOnClickListener { listener(binding.etFechaFin) }
         binding.etFechaPago.setOnClickListener { listener(binding.etFechaPago) }
@@ -186,8 +178,7 @@ class PagosAdd : AppCompatActivity() {
                 Toast.makeText(this, "Ingresa el número de recibo", Toast.LENGTH_SHORT).show(); false
             }
             asesorId.isEmpty() -> {
-                Toast.makeText(this, "Error: No se encontró el ID del asesor", Toast.LENGTH_LONG).show()
-                false
+                Toast.makeText(this, "Error: No se encontró el ID del asesor", Toast.LENGTH_LONG).show(); false
             }
             else -> true
         }
@@ -202,21 +193,33 @@ class PagosAdd : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     listaTitulares = response.body()?.data ?: emptyList()
-                    val nombres = listaTitulares.map { it.usuario?.nombre + " " + it.usuario?.apellido }
-                    val adapter = ArrayAdapter(this@PagosAdd, android.R.layout.simple_spinner_item, nombres)
+                    val nombres = listaTitulares.map {
+                        it.usuario?.nombre + " " + it.usuario?.apellido
+                    }
+
+                    val adapter = ArrayAdapter(
+                        this@PagosAdd,
+                        android.R.layout.simple_spinner_item,
+                        nombres
+                    )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     binding.spinnerTitular.adapter = adapter
 
-                    binding.spinnerTitular.onItemSelectedListener = object :
-                        AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long
-                        ) {
-                            membresiaIdSeleccionada =
-                                listaTitulares[position].membresiaPaciente?.firstOrNull()?.membresiaId ?: -1
+                    binding.spinnerTitular.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: android.view.View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                membresiaIdSeleccionada =
+                                    listaTitulares[position].membresiaPaciente?.firstOrNull()?.membresiaId
+                                        ?: -1
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
                         }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {}
-                    }
                 } else {
                     Toast.makeText(this@PagosAdd, "Error al cargar titulares", Toast.LENGTH_SHORT).show()
                 }
@@ -229,23 +232,35 @@ class PagosAdd : AppCompatActivity() {
     }
 
     private fun cargarFormasPago() {
-        RetrofitClient.formaPagoApi.getFormasPago().enqueue(object : Callback<List<FormaPago>> {
+        RetrofitClient.formaPagoApi.getFormasPago().enqueue(object :
+            Callback<List<FormaPago>> {
             override fun onResponse(call: Call<List<FormaPago>>, response: Response<List<FormaPago>>) {
                 if (response.isSuccessful) {
                     listaFormasPago = response.body() ?: emptyList()
                     val nombres = listaFormasPago.map { it.tipoPago ?: "Sin nombre" }
-                    val adapter = ArrayAdapter(this@PagosAdd, android.R.layout.simple_spinner_item, nombres)
+
+                    val adapter = ArrayAdapter(
+                        this@PagosAdd,
+                        android.R.layout.simple_spinner_item,
+                        nombres
+                    )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     binding.spinnerFormaPago.adapter = adapter
 
-                    binding.spinnerFormaPago.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long
-                        ) {
-                            formaPagoIdSeleccionada = listaFormasPago[position].idFormaPago ?: -1
+                    binding.spinnerFormaPago.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: android.view.View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                formaPagoIdSeleccionada =
+                                    listaFormasPago[position].idFormaPago ?: -1
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
                         }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {}
-                    }
                 } else {
                     Toast.makeText(this@PagosAdd, "Error al cargar formas de pago", Toast.LENGTH_SHORT).show()
                 }
@@ -258,7 +273,6 @@ class PagosAdd : AppCompatActivity() {
     }
 
     private fun registrarPago() {
-
         val monto = binding.etMonto.text.toString().toDouble()
         val fechaInicio = binding.etFechaInicio.text.toString()
         val fechaFin = binding.etFechaFin.text.toString()
@@ -278,7 +292,6 @@ class PagosAdd : AppCompatActivity() {
             foto = null
         )
 
-        // Deshabilitar el botón mientras se procesa
         binding.btnGuardar.isEnabled = false
         binding.btnGuardar.text = "Registrando..."
 
@@ -287,20 +300,32 @@ class PagosAdd : AppCompatActivity() {
                 val response = RetrofitClient.pagoApi.createPago(pagoRequest)
                 runOnUiThread {
                     binding.btnGuardar.isEnabled = true
-                    binding.btnGuardar.text = "Guardar"
+                    binding.btnGuardar.text = "Registrar Pago"
 
                     if (response.isSuccessful) {
-                        Toast.makeText(this@PagosAdd, "✅ Pago registrado correctamente", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@PagosAdd,
+                            "Pago registrado correctamente",
+                            Toast.LENGTH_LONG
+                        ).show()
                         limpiarCampos()
                     } else {
-                        Toast.makeText(this@PagosAdd, "Error al registrar pago: ${response.code()}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@PagosAdd,
+                            "Error al registrar pago: ${response.code()}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             } catch (e: Exception) {
                 runOnUiThread {
                     binding.btnGuardar.isEnabled = true
-                    binding.btnGuardar.text = "Guardar"
-                    Toast.makeText(this@PagosAdd, "Excepción: ${e.message}", Toast.LENGTH_LONG).show()
+                    binding.btnGuardar.text = "Registrar Pago"
+                    Toast.makeText(
+                        this@PagosAdd,
+                        "Excepción: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

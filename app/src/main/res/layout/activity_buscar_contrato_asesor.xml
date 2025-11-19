@@ -2,17 +2,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayoutBuscarContrato"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context=".controller.asesor.fragmentAsesor.BuscarContratoAsesor">
+
+    <!-- 📌 IMPORTANTE:
+         El padding superior LO AGREGA el Activity usando WindowInsets.
+         No colocar paddingTop aquí. -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="16dp"
         android:paddingHorizontal="16dp">
 
         <!-- 🏷️ Título principal -->
@@ -50,7 +54,7 @@
                 android:id="@+id/etBuscarContrato"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Buscar por cédula o nombre del paciente..."
+                android:hint="Buscar por cédula o nombre..."
                 android:background="@android:color/transparent"
                 android:textColor="@color/black"
                 android:textColorHint="#9E9E9E"
