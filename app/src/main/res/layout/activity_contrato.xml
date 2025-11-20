@@ -5,30 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.asesor.ContratoActivity"
-    android:background="#F5F5F5">
+    android:background="@color/white"
+    tools:context=".controller.asesor.ContratoActivity">
 
-    <!-- Título -->
+    <!-- 🔵 TÍTULO igual al de registro paciente -->
     <TextView
         android:id="@+id/tvTituloContrato"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#2196F3"
         android:text="Registro de Contrato"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="26sp"
         android:textStyle="bold"
+        android:paddingVertical="18dp"
         android:gravity="center"
-        android:padding="32dp"
+        android:textColor="@color/black"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Contenido con scroll -->
+    <!-- 📜 SCROLL PRINCIPAL -->
     <ScrollView
         android:id="@+id/scrollContrato"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:padding="16dp"
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/tvTituloContrato"
         app:layout_constraintBottom_toTopOf="@id/layoutBotones"
@@ -39,104 +40,115 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="20dp">
 
-            <!-- Campo Firma -->
-            <EditText
-                android:id="@+id/etFirma"
+            <!-- 🧾 TARJETA REDONDEADA -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Firma (ej: firma1, firma2...)"
-                android:inputType="textPersonName"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp" />
+                android:orientation="vertical"
+                android:background="@drawable/bg_formulario"
+                android:padding="20dp"
+                android:elevation="10dp"
+                android:clipToPadding="false"
+                android:layout_marginHorizontal="6dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp">
 
-            <!-- Número Contrato -->
-            <EditText
-                android:id="@+id/etNumeroContrato"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Número de Contrato"
-                android:inputType="text"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="12dp" />
+                <!-- Firma -->
+                <EditText
+                    android:id="@+id/etFirma"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Firma (ej: firma1, firma2...)"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"/>
 
-            <!-- Fecha Inicio -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fecha Inicio del Contrato"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp" />
+                <!-- Número de contrato -->
+                <EditText
+                    android:id="@+id/etNumeroContrato"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Número de Contrato"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <EditText
-                android:id="@+id/etFechaInicioContrato"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Selecciona la fecha de inicio"
-                android:focusable="false"
-                android:clickable="true"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp" />
+                <!-- Fecha inicio -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha Inicio del Contrato"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"/>
 
-            <!-- Fecha Fin -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fecha Fin del Contrato"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp" />
+                <EditText
+                    android:id="@+id/etFechaInicioContrato"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Selecciona la fecha"
+                    android:focusable="false"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <EditText
-                android:id="@+id/etFechaFinContrato"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Selecciona la fecha de fin"
-                android:focusable="false"
-                android:clickable="true"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp" />
+                <!-- Fecha fin -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha Fin del Contrato"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"/>
 
-            <!-- ✅ NUEVO: Mostrar el ID del contrato creado -->
-            <TextView
-                android:id="@+id/tvIdMembresia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ID Contrato: --"
-                android:textColor="#757575"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:paddingTop="16dp"
-                android:visibility="gone"
-                android:textSize="16sp" />
+                <EditText
+                    android:id="@+id/etFechaFinContrato"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Selecciona la fecha"
+                    android:focusable="false"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <!-- Progress (oculto) -->
-            <ProgressBar
-                android:id="@+id/pbLoading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_marginTop="20dp" />
+                <!-- ID Membresia -->
+                <TextView
+                    android:id="@+id/tvIdMembresia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ID Contrato: --"
+                    android:textColor="#757575"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:paddingTop="16dp"
+                    android:visibility="gone"
+                    android:textSize="16sp"/>
+
+                <!-- Loading -->
+                <ProgressBar
+                    android:id="@+id/pbLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    style="?android:attr/progressBarStyleLarge"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Contenedor de botones fijos -->
+    <!-- 🔘 BOTONES INFERIORES -->
     <LinearLayout
         android:id="@+id/layoutBotones"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#F5F5F5"
         android:padding="16dp"
-        android:elevation="6dp"
+        android:background="@color/white"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -146,23 +158,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Registrar Contrato"
-            android:backgroundTint="#2196F3"
-            android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:padding="14dp"
-            android:elevation="3dp" />
+            android:backgroundTint="@color/AZUL_GENERAL"
+            android:textColor="@android:color/white"
+            android:padding="14dp"/>
 
         <Button
             android:id="@+id/btnSiguiente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Siguiente"
+            android:textStyle="bold"
             android:backgroundTint="#4CAF50"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
             android:padding="14dp"
-            android:elevation="3dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="12dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

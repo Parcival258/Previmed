@@ -5,307 +5,322 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="@color/white"
     tools:context=".RegistroUsuario">
 
-    <!-- 🔵 Barra superior -->
+    <!-- 🔵 Título centrado -->
     <TextView
         android:id="@+id/tvTitulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#2196F3"
         android:text="Registro de Paciente"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:padding="32dp"
+        android:paddingVertical="18dp"
+        android:textColor="@color/black"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- 🧾 Contenido con scroll -->
+    <!-- 📜 Scroll principal -->
     <ScrollView
         android:id="@+id/scrollPaciente"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:padding="16dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/tvTitulo"
         app:layout_constraintBottom_toTopOf="@id/layoutBotones"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:fillViewport="true">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="20dp">
 
-            <!-- Campos de texto -->
-            <EditText
-                android:id="@+id/etNombre"
+            <!-- 🧾 TARJETA REDONDEADA -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"
-                android:inputType="textPersonName"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                android:orientation="vertical"
+                android:background="@drawable/bg_formulario"
+                android:padding="20dp"
+                android:elevation="10dp"
+                android:clipToPadding="false"
+                android:layout_marginHorizontal="6dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp">
 
-            <EditText
-                android:id="@+id/etSegundoNombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Segundo Nombre"
-                android:inputType="textPersonName"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <!-- TODOS TUS CAMPOS SIN CAMBIAR -->
+                <EditText
+                    android:id="@+id/etNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Nombre"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"/>
 
-            <EditText
-                android:id="@+id/etApellido"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Apellido"
-                android:inputType="textPersonName"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <EditText
+                    android:id="@+id/etSegundoNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Segundo Nombre"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <EditText
-                android:id="@+id/etSegundoApellido"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Segundo Apellido"
-                android:inputType="textPersonName"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <EditText
+                    android:id="@+id/etApellido"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Apellido"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <EditText
-                android:id="@+id/etOcupacion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ocupación"
-                android:inputType="textPersonName"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <EditText
+                    android:id="@+id/etSegundoApellido"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Segundo Apellido"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <!-- EPS -->
-            <TextView
-                android:text="EPS"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spEps"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/etOcupacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Ocupación"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <EditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <TextView
+                    android:text="EPS"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Contraseña"
-                android:inputType="textPassword"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <Spinner
+                    android:id="@+id/spEps"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/input_style"/>
 
-            <!-- Tipo documento -->
-            <TextView
-                android:text="Tipo de Documento"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spTipoDocumento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Email"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <EditText
-                android:id="@+id/etNumeroDocumento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Número de Documento"
-                android:inputType="number"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <!-- Fecha de nacimiento -->
-            <TextView
-                android:text="Fecha de Nacimiento"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/etFechaNacimiento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Selecciona la fecha"
-                android:focusable="false"
-                android:clickable="true"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <TextView
+                    android:text="Tipo de Documento"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <EditText
-                android:id="@+id/etNumeroHijos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Número de Hijos"
-                android:inputType="number"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <Spinner
+                    android:id="@+id/spTipoDocumento"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/input_style"/>
 
-            <EditText
-                android:id="@+id/etEstrato"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Estrato"
-                android:inputType="number"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <EditText
+                    android:id="@+id/etNumeroDocumento"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Número de Documento"
+                    android:inputType="number"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <!-- Autorización de datos -->
-            <TextView
-                android:text="¿Autoriza el uso de sus datos?"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spAutorizacionDatos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="Fecha de Nacimiento"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <!-- Género -->
-            <TextView
-                android:text="Género"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spGenero"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/etFechaNacimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Selecciona la fecha"
+                    android:focusable="false"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <!-- Rol -->
-            <TextView
-                android:text="Rol"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spRol"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/etNumeroHijos"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Número de Hijos"
+                    android:inputType="number"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <!-- Plan -->
-            <TextView
-                android:text="Tipo de Plan"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spPlan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/etEstrato"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Estrato"
+                    android:inputType="number"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
 
-            <!-- Forma de pago -->
-            <TextView
-                android:text="Forma de Pago"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spformapago"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="¿Autoriza el uso de sus datos?"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <EditText
-                android:id="@+id/etDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Dirección Principal"
-                android:inputType="textPostalAddress"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <Spinner
+                    android:id="@+id/spAutorizacionDatos"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/input_style"/>
 
-            <EditText
-                android:id="@+id/etDireccionCobro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Dirección de Cobro"
-                android:inputType="textPostalAddress"
-                android:background="@color/white"
-                android:padding="10dp"
-                android:layout_marginTop="8dp"/>
+                <TextView
+                    android:text="Género"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <!-- Estado civil -->
-            <TextView
-                android:text="Estado Civil"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:paddingTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <Spinner
-                android:id="@+id/spEstadoCivil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Spinner
+                    android:id="@+id/spGenero"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/input_style"/>
 
-            <!-- Progress oculto -->
-            <ProgressBar
-                android:id="@+id/pbLoading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_marginTop="20dp"/>
+                <TextView
+                    android:text="Rol"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Spinner
+                    android:id="@+id/spRol"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/input_style"/>
+
+                <TextView
+                    android:text="Tipo de Plan"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Spinner
+                    android:id="@+id/spPlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/input_style"/>
+
+                <TextView
+                    android:text="Forma de Pago"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Spinner
+                    android:id="@+id/spformapago"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/input_style"/>
+
+                <EditText
+                    android:id="@+id/etDireccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Dirección Principal"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
+
+                <EditText
+                    android:id="@+id/etDireccionCobro"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Dirección de Cobro"
+                    android:background="@drawable/input_style"
+                    android:padding="14dp"
+                    android:layout_marginTop="12dp"/>
+
+                <TextView
+                    android:text="Estado Civil"
+                    android:textColor="@color/AZUL_GENERAL"
+                    android:textStyle="bold"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Spinner
+                    android:id="@+id/spEstadoCivil"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/input_style"/>
+
+                <ProgressBar
+                    android:id="@+id/pbLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_marginTop="20dp"/>
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <!-- 🟢 Zona inferior fija con botones -->
+    <!-- 🔘 Botones -->
     <LinearLayout
         android:id="@+id/layoutBotones"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/white"
         android:padding="16dp"
-        android:background="#F5F5F5"
-        android:elevation="6dp"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -315,23 +330,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Registrar"
-            android:backgroundTint="#2196F3"
-            android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:padding="14dp"
-            android:elevation="3dp"/>
+            android:backgroundTint="@color/AZUL_GENERAL"
+            android:textColor="@android:color/white"
+            android:padding="14dp"/>
 
         <Button
             android:id="@+id/btnSiguienteRegistro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Siguiente"
+            android:textStyle="bold"
             android:backgroundTint="#4CAF50"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
             android:padding="14dp"
-            android:elevation="3dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="12dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
