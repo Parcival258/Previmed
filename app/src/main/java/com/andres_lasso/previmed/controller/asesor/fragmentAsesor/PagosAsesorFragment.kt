@@ -6,41 +6,53 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.recycler.PagosProvider
 import com.andres_lasso.previmed.controller.asesor.recycler.adapter.PagosAdapter
 import com.andres_lasso.previmed.databinding.FragmentPagosAsesorBinding
 import com.andres_lasso.previmed.view.pagos.PagosAdd
+import androidx.core.widget.addTextChangedListener
 
 class PagosAsesorFragment : Fragment() {
-    private var _binding:FragmentPagosAsesorBinding? = null
+
+    private var _binding: FragmentPagosAsesorBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var adapter: PagosAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         _binding = FragmentPagosAsesorBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    private fun initRecyclerView(){
-        val recyclerView: RecyclerView = binding.recyclerPagosAsesor
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = PagosAdapter(PagosProvider.pagosList)
+    private fun initRecyclerView() {
+        binding.recyclerPagosAsesor.layoutManager = LinearLayoutManager(context)
+        adapter = PagosAdapter(PagosProvider.pagosList)
+        binding.recyclerPagosAsesor.adapter = adapter
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initRecyclerView()
-        super.onViewCreated(view, savedInstanceState)
-        binding.btnIrPagosAdd.setOnClickListener {
-            val ir_pagos_add = Intent(requireContext(), PagosAdd::class.java)
-            startActivity(ir_pagos_add)
+    private fun initSearch() {
+        binding.etBuscarPago.addTextChangedListener { text ->
+            adapter.filter(text.toString())
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
+        initSearch()
+
+        binding.btnIrPagosAdd.setOnClickListener {
+            val irPagosAdd = Intent(requireContext(), PagosAdd::class.java)
+            startActivity(irPagosAdd)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
