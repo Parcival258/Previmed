@@ -10,5 +10,6 @@ data class PagosClass(
     val fechaInicio: String,
     val fechaFin: String,
     val formaPago: String,
-    val monto: String
+    val monto: String,
+    val estado: String
 )

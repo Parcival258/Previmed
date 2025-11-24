@@ -8,24 +8,30 @@
     tools:context=".controller.asesor.ViewAsesor">
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/asesor_nav"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_asesor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bottom_navigation_asesor"
+        android:background="#D9E4E4"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+
         app:menu="@menu/botton_asesor_menu"
-        android:background="#D9E4E4"
+
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
-        app:itemIconSize="30dp"
-        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"/>
 
+        app:itemIconSize="26dp"
+
+        app:itemHorizontalTranslationEnabled="false"
+        app:labelVisibilityMode="labeled"
+
+        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
