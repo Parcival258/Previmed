@@ -15,7 +15,7 @@
         android:paddingTop="16dp"
         android:paddingHorizontal="16dp">
 
-        <!-- 🏷️ Título -->
+        <!-- 🏷️ TÍTULO -->
         <TextView
             android:id="@+id/tvTituloPagos"
             android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:gravity="center"
             android:paddingVertical="10dp" />
 
-        <!-- 🔍 Barra de búsqueda moderna -->
+        <!-- 🔍 BARRA DE BÚSQUEDA -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -43,8 +43,8 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:src="@android:drawable/ic_menu_search"
-                android:contentDescription="Buscar"
-                app:tint="@color/AZUL_GENERAL" />
+                app:tint="@color/AZUL_GENERAL"
+                android:contentDescription="Buscar" />
 
             <EditText
                 android:id="@+id/etBuscarPago"
@@ -60,7 +60,7 @@
                 android:singleLine="true" />
         </LinearLayout>
 
-        <!-- 📋 Lista de pagos -->
+        <!-- 📋 LISTA DE PAGOS -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_pagos_asesor"
             android:layout_width="match_parent"
@@ -71,7 +71,7 @@
 
     </LinearLayout>
 
-    <!-- ➕ Botón flotante (idéntico al de PacientesView) -->
+    <!-- ➕ BOTÓN FLOTANTE -->
     <Button
         android:id="@+id/btn_ir_pagos_add"
         android:layout_width="60dp"
@@ -84,7 +84,6 @@
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="80dp"
         android:elevation="8dp"
-        android:shape="oval"
         android:stateListAnimator="@null" />
 
 </FrameLayout>

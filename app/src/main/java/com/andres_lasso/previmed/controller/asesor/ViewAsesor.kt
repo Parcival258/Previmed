@@ -8,6 +8,7 @@ import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.HomeAsesorFragment
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PacientesAsesorFragment
 import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PagosAsesorFragment
+import com.andres_lasso.previmed.controller.asesor.fragmentAsesor.PerfilAsesorFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ViewAsesor : AppCompatActivity() {
@@ -24,18 +25,27 @@ class ViewAsesor : AppCompatActivity() {
         // Listener de navegación
         bottomNavigationAsesor.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+
                 R.id.btn_home_asesor -> {
                     replaceFragment(HomeAsesorFragment())
                     true
                 }
+
                 R.id.btn_pacientes_asesor -> {
                     replaceFragment(PacientesAsesorFragment())
                     true
                 }
+
                 R.id.btn_pagos_asesor -> {
                     replaceFragment(PagosAsesorFragment())
                     true
                 }
+
+                R.id.btn_perfil_asesor -> {
+                    replaceFragment(PerfilAsesorFragment())
+                    true
+                }
+
                 else -> false
             }
         }

@@ -60,6 +60,11 @@ data class FormaPagoPago(
     val idFormaPago: Int?
 )
 
+data class PagosResponse(
+    @SerializedName("data")
+    val data: List<PagoModel>
+)
+
 // -----------------------------
 // ✅ COBRADOR (NUEVO - parte de la respuesta del back)
 // -----------------------------

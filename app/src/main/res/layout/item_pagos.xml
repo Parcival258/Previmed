@@ -16,22 +16,12 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- 📸 Imagen de evidencia -->
-        <ImageButton
-            android:id="@+id/img_pago_eviencia"
-            android:layout_width="120dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_img"
-            android:scaleType="centerCrop"
-            android:contentDescription="Evidencia del pago" />
-
-        <!-- 🧾 Info visible -->
+        <!-- 🧾 PRIMERA FILA: N° RECIBO + FLECHA -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
@@ -43,15 +33,22 @@
 
             <TextView
                 android:id="@+id/tvNumRecibo"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="22"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_paciente"
+                card_view:tint="@color/black" />
+
         </LinearLayout>
 
+        <!-- 📄 N° CONTRATO -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,15 +65,39 @@
 
             <TextView
                 android:id="@+id/tvNumContrato"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <!-- 💰 MONTO (EN LA CABECERA) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="end"
-                android:text="45"
+                android:text="Monto"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvMontoCabecera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="15sp" />
+
         </LinearLayout>
 
+        <!-- 👤 TITULAR -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,71 +114,80 @@
 
             <TextView
                 android:id="@+id/tvTitular"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="jsjd"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
+
         </LinearLayout>
 
-        <!-- 🔽 Sección expandible -->
+        <!-- 🔽 SECCIÓN EXPANDIBLE -->
         <LinearLayout
             android:id="@+id/expandableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/tvCobrador"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cobrador"
+                android:textColor="#555555"
                 android:textSize="14sp"
-                android:textColor="#555555" />
+                android:layout_marginTop="2dp" />
 
             <TextView
                 android:id="@+id/tvFechaCobro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fecha de Cobro"
+                android:textColor="#555555"
                 android:textSize="14sp"
-                android:textColor="#555555" />
+                android:layout_marginTop="2dp" />
 
             <TextView
                 android:id="@+id/tvFechaInicio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fecha Inicio"
+                android:textColor="#555555"
                 android:textSize="14sp"
-                android:textColor="#555555" />
+                android:layout_marginTop="2dp" />
 
             <TextView
                 android:id="@+id/tvFechaFin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fecha Fin"
+                android:textColor="#555555"
                 android:textSize="14sp"
-                android:textColor="#555555" />
+                android:layout_marginTop="2dp" />
 
             <TextView
                 android:id="@+id/tvFormaPago"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Forma de Pago"
+                android:textColor="#555555"
                 android:textSize="14sp"
-                android:textColor="#555555" />
+                android:layout_marginTop="2dp" />
 
             <TextView
                 android:id="@+id/tvMonto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Monto"
+                android:textColor="#555555"
                 android:textSize="14sp"
-                android:textColor="#555555" />
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/tvEstado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#555555"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp" />
+
         </LinearLayout>
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>
