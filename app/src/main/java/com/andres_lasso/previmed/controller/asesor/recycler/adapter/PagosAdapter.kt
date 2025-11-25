@@ -14,6 +14,7 @@ import com.andres_lasso.previmed.model.PagoModel
 class PagosAdapter :
     RecyclerView.Adapter<PagosAdapter.PagosViewHolder>() {
 
+
     private var listaPagos: List<PagoModel> = emptyList()
     private val itemsExpandidos = mutableSetOf<Int>()
 
