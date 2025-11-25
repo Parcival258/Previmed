@@ -1,5 +1,6 @@
 package com.andres_lasso.previmed.controller.asesor.recycler
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.andres_lasso.previmed.model.PagoModel
 
 class PagosAdapter :
     RecyclerView.Adapter<PagosAdapter.PagosViewHolder>() {
+
 
     private var listaPagos: List<PagoModel> = emptyList()
     private val itemsExpandidos = mutableSetOf<Int>()
@@ -29,28 +31,21 @@ class PagosAdapter :
         val pago = listaPagos[position]
         val b = holder.binding
 
-        // LOGS
-        Log.d("PagosAdapter", "---- Pago en posición $position ----")
+        // LOGS DEBUG
+        Log.d("PagosAdapter", "==== Pago posición $position =====")
         Log.d("PagosAdapter", "numeroRecibo: ${pago.numeroRecibo}")
-        Log.d("PagosAdapter", "membresia: ${pago.membresia}")
         Log.d("PagosAdapter", "numeroContrato: ${pago.membresia?.numeroContrato}")
-        Log.d("PagosAdapter", "fechaPago: ${pago.fechaPago}")
-        Log.d("PagosAdapter", "fechaInicio: ${pago.fechaInicio}")
-        Log.d("PagosAdapter", "fechaFin: ${pago.fechaFin}")
-        Log.d("PagosAdapter", "monto: ${pago.monto}")
         Log.d("PagosAdapter", "estado: ${pago.estado}")
-        Log.d("PagosAdapter", "formaPago: ${pago.formaPago}")
-        Log.d("PagosAdapter", "cobrador: ${pago.cobrador}")
+        Log.d("PagosAdapter", "monto: ${pago.monto}")
 
+        // TITULAR
         val titular = pago.membresia
             ?.membresiaPaciente
             ?.firstOrNull()
             ?.paciente
             ?.usuario
 
-        Log.d("PagosAdapter", "Titular: ${titular?.nombre} ${titular?.apellido}")
-
-        // DATOS PARA LA VISTA
+        // CABECERA PRINCIPAL
         b.tvNumRecibo.text = pago.numeroRecibo ?: "N/A"
         b.tvNumContrato.text = pago.membresia?.numeroContrato ?: "N/A"
 
@@ -59,6 +54,22 @@ class PagosAdapter :
             titular?.apellido
         ).joinToString(" ").ifEmpty { "Sin titular" }
 
+        // MONTO
+        b.tvMontoCabecera.text = "Precio: $${pago.monto ?: 0}"
+
+        // === ESTADO EN CABECERA (colores) ===
+        val estado = pago.estado?.trim()?.uppercase() ?: "N/A"
+        b.tvEstadoCabecera.text = estado
+
+        when (estado) {
+            "ASIGNADO" -> b.tvEstadoCabecera.setTextColor(Color.parseColor("#1976D2"))   // Azul
+            "PENDIENTE" -> b.tvEstadoCabecera.setTextColor(Color.RED)                    // Rojo
+            "REALIZADO" -> b.tvEstadoCabecera.setTextColor(Color.parseColor("#FF9800"))  // Naranja
+            "APROBADO" -> b.tvEstadoCabecera.setTextColor(Color.GREEN)                   // Verde
+            else -> b.tvEstadoCabecera.setTextColor(Color.BLACK)                         // Valor inesperado
+        }
+
+        // === SECCIÓN EXPANDIBLE ===
         b.tvCobrador.text = "Cobrador: ${listOfNotNull(
             pago.cobrador?.nombre,
             pago.cobrador?.apellido
@@ -70,10 +81,7 @@ class PagosAdapter :
 
         b.tvFormaPago.text = "Forma de pago: ${pago.formaPago?.tipoPago ?: "N/A"}"
         b.tvMonto.text = "Monto total: ${pago.monto ?: "N/A"}"
-        b.tvEstado.text = "Estado: ${pago.estado ?: "N/A"}"
-
-        // 🔥 NUEVO → PRECIO DEL PAGO
-        b.tvMontoCabecera.text = "Precio: $${pago.monto ?: 0}"
+        b.tvEstado.text = "Estado: $estado"
 
         // EXPANDIR / COLAPSAR
         val expanded = itemsExpandidos.contains(position)
