@@ -51,19 +51,7 @@ class ContratoDetalleDialog(
         // - Crea un Intent para abrir la actividad del contrato
         // - Envía los datos necesarios para mostrar el contrato personalizado
         // - Cierra el diálogo
-        view.findViewById<Button>(R.id.btnDescargarPdf).setOnClickListener {
-            val intent = Intent(requireContext(), ContratoAsesorActivity::class.java).apply {
-                putExtra("numeroContrato", membresia.numeroContrato)
-                putExtra("formaPago", membresia.formaPago)
-                putExtra("fechaInicio", membresia.fechaInicio)
-                putExtra("fechaFin", membresia.fechaFin)
-                putExtra("firma", membresia.firma)
-                putExtra("estado", membresia.estado)
-                putExtra("pacientesAsociados", pacientes)
-            }
-            startActivity(intent) // Abre la actividad para mostrar y descargar el PDF
-            dismiss() // Cierra el diálogo actual
-        }
+
 
         // Asocia el layout al diálogo y agrega un botón "Cerrar" para cerrar el diálogo sin acción
         builder.setView(view)

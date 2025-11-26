@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Sombra suave -->
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="70dp"
+                android:startColor="#33000000"
+                android:endColor="#00000000" />
+
+            <size android:width="120dp" android:height="120dp"/>
+
+            <padding
+                android:left="8dp"
+                android:top="8dp"
+                android:right="8dp"
+                android:bottom="8dp" />
+        </shape>
+    </item>
+
+    <!-- Borde degradado -->
+    <item
+        android:left="8dp"
+        android:top="8dp"
+        android:right="8dp"
+        android:bottom="8dp">
+
+        <shape android:shape="oval">
+            <stroke
+                android:width="3dp"
+                android:color="@android:color/transparent" />
+
+            <gradient
+                android:type="sweep"
+                android:startColor="#007bff"
+                android:centerColor="#40b4ff"
+                android:endColor="#007bff" />
+
+            <solid android:color="#FFFFFF"/>
+        </shape>
+    </item>
+
+</layer-list>

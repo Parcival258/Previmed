@@ -2,6 +2,8 @@ package com.andres_lasso.previmed.view.pagos
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
@@ -32,7 +34,6 @@ class PagosAdd : AppCompatActivity() {
 
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
-    private var isBiometricInProgress = false
 
     private val asesorId: String by lazy {
         PreferenceHelper.getIdAsesor(this) ?: ""
@@ -52,6 +53,21 @@ class PagosAdd : AppCompatActivity() {
         cargarTitulares()
         cargarFormasPago()
         setupDatePickers()
+
+        // Para que abra la lista como spinner
+        binding.autoTitular.setOnClickListener {
+            binding.autoTitular.showDropDown()
+        }
+
+        // Búsqueda mientras escribe
+        binding.autoTitular.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.autoTitular.showDropDown()
+            }
+        })
 
         binding.btnGuardar.setOnClickListener {
             if (validarCampos()) {
@@ -116,22 +132,14 @@ class PagosAdd : AppCompatActivity() {
 
     private fun validarCampos(): Boolean {
         return when {
-            membresiaIdSeleccionada == -1 ->
-                show("Selecciona un titular")
-            formaPagoIdSeleccionada == -1 ->
-                show("Selecciona una forma de pago")
-            binding.etMonto.text.isNullOrBlank() ->
-                show("Ingresa el monto")
-            binding.etFechaInicio.text.isNullOrBlank() ->
-                show("Selecciona fecha de inicio")
-            binding.etFechaFin.text.isNullOrBlank() ->
-                show("Selecciona fecha fin")
-            binding.etFechaPago.text.isNullOrBlank() ->
-                show("Selecciona fecha pago")
-            binding.etNumeroRecibo.text.isNullOrBlank() ->
-                show("Ingresa número de recibo")
-            asesorId.isEmpty() ->
-                show("No se encontró el asesor")
+            membresiaIdSeleccionada == -1 -> show("Selecciona un titular")
+            formaPagoIdSeleccionada == -1 -> show("Selecciona una forma de pago")
+            binding.etMonto.text.isNullOrBlank() -> show("Ingresa el monto")
+            binding.etFechaInicio.text.isNullOrBlank() -> show("Selecciona fecha de inicio")
+            binding.etFechaFin.text.isNullOrBlank() -> show("Selecciona fecha fin")
+            binding.etFechaPago.text.isNullOrBlank() -> show("Selecciona fecha pago")
+            binding.etNumeroRecibo.text.isNullOrBlank() -> show("Ingresa número de recibo")
+            asesorId.isEmpty() -> show("No se encontró el asesor")
             else -> true
         }
     }
@@ -144,6 +152,7 @@ class PagosAdd : AppCompatActivity() {
     private fun cargarTitulares() {
         RetrofitClient.pacienteApi.getTitulares().enqueue(object :
             Callback<ApiResponse<List<PacienteData>>> {
+
             override fun onResponse(
                 call: Call<ApiResponse<List<PacienteData>>>,
                 res: Response<ApiResponse<List<PacienteData>>>
@@ -151,32 +160,21 @@ class PagosAdd : AppCompatActivity() {
                 listaTitulares = res.body()?.data ?: emptyList()
 
                 val nombres = listaTitulares.map {
-                    it.usuario?.nombre + " " + it.usuario?.apellido
+                    "${it.usuario?.nombre} ${it.usuario?.apellido}"
                 }
 
                 val adapter = ArrayAdapter(
                     this@PagosAdd,
-                    android.R.layout.simple_spinner_item,
+                    android.R.layout.simple_dropdown_item_1line,
                     nombres
                 )
 
-                binding.spinnerTitular.adapter = adapter
+                binding.autoTitular.setAdapter(adapter)
 
-                binding.spinnerTitular.setOnItemSelectedListener(object :
-                    AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: android.view.View?,
-                        pos: Int,
-                        id: Long
-                    ) {
-                        membresiaIdSeleccionada =
-                            listaTitulares[pos].membresiaPaciente?.firstOrNull()?.membresiaId
-                                ?: -1
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                })
+                binding.autoTitular.setOnItemClickListener { _, _, pos, _ ->
+                    membresiaIdSeleccionada =
+                        listaTitulares[pos].membresiaPaciente?.firstOrNull()?.membresiaId ?: -1
+                }
             }
 
             override fun onFailure(call: Call<ApiResponse<List<PacienteData>>>, t: Throwable) {
@@ -188,6 +186,7 @@ class PagosAdd : AppCompatActivity() {
     private fun cargarFormasPago() {
         RetrofitClient.formaPagoApi.getFormasPago().enqueue(object :
             Callback<List<FormaPago>> {
+
             override fun onResponse(call: Call<List<FormaPago>>, res: Response<List<FormaPago>>) {
                 listaFormasPago = res.body() ?: emptyList()
 
@@ -264,7 +263,7 @@ class PagosAdd : AppCompatActivity() {
         binding.etFechaFin.text.clear()
         binding.etFechaPago.text.clear()
         binding.etNumeroRecibo.text.clear()
-        binding.spinnerTitular.setSelection(0)
+        binding.autoTitular.text.clear()
         binding.spinnerFormaPago.setSelection(0)
     }
 }
