@@ -14,8 +14,10 @@ import com.andres_lasso.previmed.model.PagoModel
 class PagosAdapter :
     RecyclerView.Adapter<PagosAdapter.PagosViewHolder>() {
 
+    // 🔍 LISTAS PARA FILTRO
+    private var listaOriginal: List<PagoModel> = emptyList()
+    private var listaFiltrada: List<PagoModel> = emptyList()
 
-    private var listaPagos: List<PagoModel> = emptyList()
     private val itemsExpandidos = mutableSetOf<Int>()
 
     inner class PagosViewHolder(val binding: ItemPagosBinding) :
@@ -28,15 +30,13 @@ class PagosAdapter :
     }
 
     override fun onBindViewHolder(holder: PagosViewHolder, position: Int) {
-        val pago = listaPagos[position]
+
+        val pago = listaFiltrada[position]   // ← USAMOS LISTA FILTRADA
         val b = holder.binding
 
-        // LOGS DEBUG
         Log.d("PagosAdapter", "==== Pago posición $position =====")
         Log.d("PagosAdapter", "numeroRecibo: ${pago.numeroRecibo}")
         Log.d("PagosAdapter", "numeroContrato: ${pago.membresia?.numeroContrato}")
-        Log.d("PagosAdapter", "estado: ${pago.estado}")
-        Log.d("PagosAdapter", "monto: ${pago.monto}")
 
         // TITULAR
         val titular = pago.membresia
@@ -45,7 +45,7 @@ class PagosAdapter :
             ?.paciente
             ?.usuario
 
-        // CABECERA PRINCIPAL
+        // CABECERA
         b.tvNumRecibo.text = pago.numeroRecibo ?: "N/A"
         b.tvNumContrato.text = pago.membresia?.numeroContrato ?: "N/A"
 
@@ -54,22 +54,21 @@ class PagosAdapter :
             titular?.apellido
         ).joinToString(" ").ifEmpty { "Sin titular" }
 
-        // MONTO
         b.tvMontoCabecera.text = "Precio: $${pago.monto ?: 0}"
 
-        // === ESTADO EN CABECERA (colores) ===
+        // ESTADO
         val estado = pago.estado?.trim()?.uppercase() ?: "N/A"
         b.tvEstadoCabecera.text = estado
 
         when (estado) {
-            "ASIGNADO" -> b.tvEstadoCabecera.setTextColor(Color.parseColor("#1976D2"))   // Azul
-            "PENDIENTE" -> b.tvEstadoCabecera.setTextColor(Color.RED)                    // Rojo
-            "REALIZADO" -> b.tvEstadoCabecera.setTextColor(Color.parseColor("#FF9800"))  // Naranja
-            "APROBADO" -> b.tvEstadoCabecera.setTextColor(Color.GREEN)                   // Verde
-            else -> b.tvEstadoCabecera.setTextColor(Color.BLACK)                         // Valor inesperado
+            "ASIGNADO" -> b.tvEstadoCabecera.setTextColor(Color.parseColor("#1976D2"))
+            "PENDIENTE" -> b.tvEstadoCabecera.setTextColor(Color.RED)
+            "REALIZADO" -> b.tvEstadoCabecera.setTextColor(Color.parseColor("#FF9800"))
+            "APROBADO" -> b.tvEstadoCabecera.setTextColor(Color.GREEN)
+            else -> b.tvEstadoCabecera.setTextColor(Color.BLACK)
         }
 
-        // === SECCIÓN EXPANDIBLE ===
+        // SECCIÓN EXPANDIBLE
         b.tvCobrador.text = "Cobrador: ${listOfNotNull(
             pago.cobrador?.nombre,
             pago.cobrador?.apellido
@@ -78,7 +77,6 @@ class PagosAdapter :
         b.tvFechaCobro.text = "Fecha cobro: ${pago.fechaPago ?: "N/A"}"
         b.tvFechaInicio.text = "Inicio: ${pago.fechaInicio ?: "N/A"}"
         b.tvFechaFin.text = "Fin: ${pago.fechaFin ?: "N/A"}"
-
         b.tvFormaPago.text = "Forma de pago: ${pago.formaPago?.tipoPago ?: "N/A"}"
         b.tvMonto.text = "Monto total: ${pago.monto ?: "N/A"}"
         b.tvEstado.text = "Estado: $estado"
@@ -96,7 +94,6 @@ class PagosAdapter :
                 )
                 b.expandableLayout.visibility = View.GONE
                 b.arrow.animate().rotation(0f).start()
-
             } else {
                 itemsExpandidos.add(position)
                 b.expandableLayout.startAnimation(
@@ -108,11 +105,38 @@ class PagosAdapter :
         }
     }
 
-    override fun getItemCount(): Int = listaPagos.size
+    override fun getItemCount(): Int = listaFiltrada.size  // ← LISTA FILTRADA
 
     fun setData(nuevaLista: List<PagoModel>) {
-        Log.d("PagosAdapter", "setData() lista recibida: $nuevaLista")
-        listaPagos = nuevaLista
+        listaOriginal = nuevaLista
+        listaFiltrada = nuevaLista
+        notifyDataSetChanged()
+    }
+
+    // 🔍 FILTRO POR NOMBRE O NÚMERO DE RECIBO
+    fun filtrar(texto: String) {
+        val query = texto.lowercase()
+
+        listaFiltrada = if (query.isEmpty()) {
+            listaOriginal
+        } else {
+            listaOriginal.filter { pago ->
+
+                val nombreCompleto = listOfNotNull(
+                    pago.membresia?.membresiaPaciente?.firstOrNull()
+                        ?.paciente?.usuario?.nombre,
+                    pago.membresia?.membresiaPaciente?.firstOrNull()
+                        ?.paciente?.usuario?.apellido
+                ).joinToString(" ").lowercase()
+
+                val numeroRecibo = pago.numeroRecibo?.lowercase() ?: ""
+
+                // 🎯 BUSCAR SOLO POR NOMBRE O NÚMERO RECIBO
+                nombreCompleto.contains(query) ||
+                        numeroRecibo.contains(query)
+            }
+        }
+
         notifyDataSetChanged()
     }
 }

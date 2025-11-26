@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Sombra difuminada -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@android:color/transparent"/>
+
+            <padding
+                android:left="6dp"
+                android:top="6dp"
+                android:right="6dp"
+                android:bottom="6dp"/>
+
+            <size android:width="110dp" android:height="110dp"/>
+
+            <gradient
+                android:type="radial"
+                android:gradientRadius="60dp"
+                android:startColor="#33000000"
+                android:endColor="#00000000"/>
+        </shape>
+    </item>
+
+    <!-- Fondo blanco circular para la imagen -->
+    <item
+        android:left="6dp"
+        android:top="6dp"
+        android:right="6dp"
+        android:bottom="6dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF"/>
+        </shape>
+    </item>
+
+</layer-list>

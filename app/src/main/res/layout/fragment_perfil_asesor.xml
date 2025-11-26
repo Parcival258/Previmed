@@ -10,13 +10,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- ENCABEZADO PROFESIONAL -->
+        <!-- ENCABEZADO PROFESIONAL / DISEÑO NUEVO -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="@drawable/bg_header_gradiente"
+            android:layout_height="200dp"
             android:orientation="vertical"
-            android:padding="33dp">
+            android:padding="28dp"
+            android:background="@color/Azul_Prevemed">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,29 +24,30 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <!-- Foto del Asesor con borde premium -->
+                <!-- FOTO PROFESIONAL CON GLOW -->
                 <FrameLayout
-                    android:layout_width="85dp"
-                    android:layout_height="85dp"
-                    android:background="@drawable/borde_degradado"
-                    android:padding="4dp"
-                    android:layout_marginEnd="18dp">
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/bg_card_rounded"
+                    android:padding="10dp"
+                    android:layout_marginEnd="20dp">
 
                     <ImageView
-                        android:id="@+id/img_asesor_perfil"
+                        android:id="@+id/iv_perfil_asesor"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/image_rounded"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/asesor_img" />
+                        android:background="@drawable/asesor_img"
+                        android:clipToOutline="true" />
                 </FrameLayout>
 
-                <!-- Información del Asesor -->
+
+                <!-- INFORMACIÓN DEL ASESOR -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_weight="1">
 
                     <TextView
                         android:id="@+id/tv_nombre_asesor"
@@ -54,23 +55,19 @@
                         android:layout_height="wrap_content"
                         android:text="Alberto Lasso"
                         android:textColor="@android:color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.02" />
 
                     <TextView
                         android:id="@+id/tv_cargo_asesor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
                         android:text="Asesor Financiero Senior"
-                        android:textColor="#E4E6EB"
-                        android:textSize="16sp" />
+                        android:textColor="#DDE3FF"
+                        android:textSize="15sp"
+                        android:layout_marginTop="3dp" />
 
-                    <View
-                        android:layout_width="40dp"
-                        android:layout_height="3dp"
-                        android:layout_marginTop="10dp"
-                        android:background="#FFFFFF" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -78,13 +75,13 @@
                 android:id="@+id/tv_subtitulo_asesor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
                 android:text="Tu seguridad financiera es mi prioridad."
-                android:textColor="#F0F0F0"
-                android:textSize="20sp"
-                android:gravity="start"
-                android:alpha="0.9" />
+                android:textColor="#F7F9FF"
+                android:textSize="18sp"
+                android:alpha="0.92"
+                android:layout_marginTop="10dp"/>
         </LinearLayout>
+
 
         <!-- CONTENEDOR GENERAL -->
         <LinearLayout

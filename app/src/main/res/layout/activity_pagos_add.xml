@@ -46,14 +46,23 @@
                     android:textColor="#555"
                     android:layout_marginBottom="6dp" />
 
-                <Spinner
-                    android:id="@+id/spinnerTitular"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_spinner"
-                    android:paddingVertical="10dp"
-                    android:paddingHorizontal="12dp"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoTitular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Buscar titular..."
+                        android:padding="10dp"
+                        android:background="@drawable/bg_spinner"
+                        android:inputType="text"
+                        android:completionThreshold="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <!-- FECHAS -->
                 <LinearLayout
@@ -196,7 +205,6 @@
 
             </LinearLayout>
 
-            <!-- BOTÓN GUARDAR -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGuardar"
                 android:layout_width="match_parent"

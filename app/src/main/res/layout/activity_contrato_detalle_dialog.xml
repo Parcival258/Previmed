@@ -65,11 +65,6 @@
             android:paddingTop="4dp"
             android:text="Aquí se listan los pacientes" />
 
-        <Button
-            android:id="@+id/btnDescargarPdf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ver contrato"
-            android:layout_marginTop="16dp" />
+
     </LinearLayout>
 </ScrollView>
