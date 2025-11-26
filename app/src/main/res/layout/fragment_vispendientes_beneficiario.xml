@@ -1,29 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="80dp"
-    >
+    android:background="#F5F7FB"
+    tools:context=".controller.pacientes.fragmentBeneficiario.VispendientesBeneficiarioFragment">
 
+    <!-- HEADER -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="114dp"
-        android:background="@drawable/esquinas_redondeadas"
-        android:gravity="bottom|center_horizontal">
+        android:layout_height="93dp"
+        android:background="@drawable/bg_header_contrato"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="20dp">
 
         <TextView
-            android:id="@+id/mis_visitas"
+            android:id="@+id/misvisitas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:text="¡Mis visitas!"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Revisa tus próximas citas."
+            android:textColor="#E5F3FF"
+            android:textSize="13sp" />
     </LinearLayout>
 
+    <!-- RECYCLER VIEW -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvVisitas"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:padding="16dp" />
+
 </LinearLayout>
