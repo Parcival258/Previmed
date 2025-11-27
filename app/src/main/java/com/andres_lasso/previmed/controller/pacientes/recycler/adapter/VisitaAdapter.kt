@@ -104,7 +104,7 @@ class VisitaAdapter(
     override fun getItemCount(): Int = visitas.size
 
     fun submitList(nuevaLista: List<Visita>) {
-        visitas = nuevaLista
+        visitas = nuevaLista.sortedByDescending { it.fechaVisita ?: "" }
         notifyDataSetChanged()
     }
 
