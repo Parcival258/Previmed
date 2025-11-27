@@ -8,7 +8,6 @@
     android:orientation="vertical"
     android:background="#F5F7FB">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="93dp"
@@ -30,7 +29,6 @@
             android:elevation="2dp"/>
     </LinearLayout>
 
-    <!-- CARD PROGRESO DE PAGOS -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardProgresoPagos"
         android:layout_width="match_parent"
@@ -59,7 +57,6 @@
                 android:textColor="#111827"
                 android:layout_gravity="center_horizontal" />
 
-            <!-- Fechas Inicio / Fin -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,7 +82,6 @@
                     android:textColor="#6B7280" />
             </LinearLayout>
 
-            <!-- Barra de progreso (solo visual) -->
             <ProgressBar
                 android:id="@+id/progressPagos"
                 style="?android:attr/progressBarStyleHorizontal"
@@ -96,18 +92,10 @@
                 android:progress="0"
                 android:progressDrawable="@android:drawable/progress_horizontal" />
 
-            <Button
-                android:id="@+id/btnVerPagos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_gravity="center_horizontal"
-                app:backgroundTint="#1E40AF"
-                android:text="Ver historial de pagos" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- CARD DETALLES CONTRATO -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -123,7 +111,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- FECHA INICIO CONTRATO -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,7 +131,6 @@
                     android:text="02-02-2025" />
             </LinearLayout>
 
-            <!-- FECHA FIN CONTRATO -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,7 +151,6 @@
                     android:text="02-02-2026" />
             </LinearLayout>
 
-            <!-- PROX PAGO -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -186,7 +171,6 @@
                     android:text="02-05-2025" />
             </LinearLayout>
 
-            <!-- TITULAR -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -207,7 +191,6 @@
                     android:text="Juan Pérez" />
             </LinearLayout>
 
-            <!-- PLAN -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -228,7 +211,6 @@
                     android:text="Premium" />
             </LinearLayout>
 
-            <!-- BENEFICIOS -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

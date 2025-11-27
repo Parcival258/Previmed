@@ -124,4 +124,9 @@ object RetrofitClient {
         Log.d("RetrofitClient", "Creando BeneficiarioService")
         retrofit.create(BeneficiarioService::class.java)
     }
+    val usuarioApi: UsuarioApi by lazy {
+        Log.d("RetrofitClient", "Creando UsuarioApi")
+        retrofit.create(UsuarioApi::class.java)
+    }
+
 }

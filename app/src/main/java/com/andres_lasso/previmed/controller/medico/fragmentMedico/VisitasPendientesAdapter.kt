@@ -1,45 +1,32 @@
 package com.andres_lasso.previmed.controller.medico.fragmentMedico
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.andres_lasso.previmed.R
-import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.Visita
-import com.andres_lasso.previmed.utils.PreferenceHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.google.android.material.button.MaterialButton
 import java.util.Locale
-import com.andres_lasso.previmed.model.VisitaUpdateRequest
-import com.andres_lasso.previmed.model.MedicoUpdateRequest
 
 class VisitasPendientesAdapter(
     private val visitas: MutableList<Visita>,
-    private val onVerClick: (Visita) -> Unit,
-    private val onCancelarClick: (Visita) -> Unit,
-    private val onActualizarLista: () -> Unit
+    private val onVerClick: (Visita) -> Unit
 ) : RecyclerView.Adapter<VisitasPendientesAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtNombre: TextView = view.findViewById(R.id.txtPacienteNombre)
         val txtDireccion: TextView = view.findViewById(R.id.txtDireccion)
-        val txtFecha: TextView = view.findViewById(R.id.txtFecha)
+        val txtFecha: TextView = view.findViewById(R.id.txtFecha)          // texto pequeño
+        val txtDiaGrande: TextView = view.findViewById(R.id.txtDiaGrande)  // número en el cuadro azul
         val txtBarrio: TextView = view.findViewById(R.id.txtBarrio)
         val txtTelefono: TextView = view.findViewById(R.id.txtTelefono)
         val txtDescripcion: TextView = view.findViewById(R.id.txtDescripcion)
         val txtEstado: TextView = view.findViewById(R.id.txtEstado)
-        val btnVer: ImageView = view.findViewById(R.id.btnVer)
-        val btnCancelar: ImageView = view.findViewById(R.id.btnCancelar)
-        val btnIniciarFinalizar: ImageView = view.findViewById(R.id.btnIniciarFinalizar)
+        val btnVerDetalles: MaterialButton = view.findViewById(R.id.btnVerDetalles)
         val cardDetalles: LinearLayout = view.findViewById(R.id.cardDetalles)
     }
 
@@ -55,102 +42,49 @@ class VisitasPendientesAdapter(
         val nombreCompleto = toTitleCase(getNombreSeguro(visita))
         holder.txtNombre.text = nombreCompleto
         holder.txtDireccion.text = "📍 ${visita.direccion ?: "Sin dirección"}"
-        holder.txtFecha.text = "🗓 ${visita.fechaVisita?.take(10) ?: "Sin fecha"}"
+
+        // ---- FECHA: día grande + fecha completa ----
+        val fechaCruda = visita.fechaVisita ?: ""           // ej: 2025-11-26T17:55:33.03932
+        val soloFecha = if (fechaCruda.length >= 10) {
+            fechaCruda.substring(0, 10)                     // 2025-11-26
+        } else {
+            "Sin fecha"
+        }
+        val diaNumero = if (fechaCruda.length >= 10) {
+            fechaCruda.substring(8, 10)                     // 26
+        } else {
+            "--"
+        }
+
+        holder.txtFecha.text = "📅 $soloFecha"              // texto debajo del nombre
+        holder.txtDiaGrande.text = diaNumero               // cuadro azul
+
         holder.txtBarrio.text = "🏘 ${visita.barrio?.nombreBarrio ?: "Sin barrio"}"
         holder.txtTelefono.text = "☎️ ${visita.telefono ?: "No disponible"}"
         holder.txtDescripcion.text = "🧾 ${visita.descripcion ?: "Sin descripción"}"
         holder.txtEstado.text = "📋 ${if (visita.estado == true) "Activa" else "Inactiva"}"
 
-        holder.btnVer.setOnClickListener {
+        // Botón "Ver detalles": expande/colapsa y notifica al fragment
+        holder.btnVerDetalles.setOnClickListener {
             toggleDetalles(holder.cardDetalles)
             onVerClick(visita)
         }
 
-        holder.btnCancelar.setOnClickListener { onCancelarClick(visita) }
-
-        val prefs = holder.itemView.context.getSharedPreferences("visitas", Context.MODE_PRIVATE)
-        val visitaActiva = prefs.getString("visita_activa", null)
-        val esActiva = visitaActiva == visita.idVisita.toString()
-
-        holder.btnIniciarFinalizar.setImageResource(
-            if (esActiva) R.drawable.ic_stop else R.drawable.ic_play_arrow
-        )
-
-        holder.btnIniciarFinalizar.setOnClickListener {
-            if (esActiva) {
-                finalizarVisita(holder.itemView.context, visita, prefs)
-            } else {
-                iniciarVisita(holder.itemView.context, visita, prefs)
-            }
+        // También al tocar la card
+        holder.itemView.setOnClickListener {
+            toggleDetalles(holder.cardDetalles)
         }
     }
 
     override fun getItemCount(): Int = visitas.size
 
-    private fun iniciarVisita(context: Context, visita: Visita, prefs: android.content.SharedPreferences) {
-        prefs.edit().putString("visita_activa", visita.idVisita.toString()).apply()
-        PreferenceHelper.setVisitaActiva(context, true)
-
-        // Enviar broadcast global
-        val intent = Intent("ACTUALIZAR_ESTADO_MEDICO")
-        context.sendBroadcast(intent)
-
-        Toast.makeText(context, "Visita iniciada", Toast.LENGTH_SHORT).show()
-        actualizarEstadoEnServidor(context, visita.idVisita ?: return, true)
-        visita.medicoId?.let {
-            actualizarEstadoMedico(context, it, disponibilidad = true, estado = false)
-        }
-    }
-
-    private fun finalizarVisita(context: Context, visita: Visita, prefs: android.content.SharedPreferences) {
-        prefs.edit().remove("visita_activa").apply()
-        PreferenceHelper.setVisitaActiva(context, false)
-
-        val intent = Intent("ACTUALIZAR_ESTADO_MEDICO")
-        context.sendBroadcast(intent)
-
-        Toast.makeText(context, "Visita finalizada", Toast.LENGTH_SHORT).show()
-        actualizarEstadoEnServidor(context, visita.idVisita ?: return, false)
-        visita.medicoId?.let {
-            actualizarEstadoMedico(context, it, disponibilidad = true, estado = true)
-        }
-
-        visitas.remove(visita)
+    fun actualizarDatos(nuevasVisitas: List<Visita>) {
+        visitas.clear()
+        visitas.addAll(nuevasVisitas)
         notifyDataSetChanged()
-        onActualizarLista()
     }
 
-    private fun actualizarEstadoEnServidor(context: Context, idVisita: Int, estado: Boolean) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val body = VisitaUpdateRequest(estado)
-                val response = RetrofitClient.visitasApi.actualizarVisita(idVisita, body)
-                if (response.isSuccessful) {
-                    println("Estado visita actualizado correctamente.")
-                } else {
-                    println("Error al actualizar visita: ${response.code()}")
-                }
-            } catch (e: Exception) {
-                println("Error Retrofit: ${e.message}")
-            }
-        }
-    }
-
-    private fun actualizarEstadoMedico(context: Context, idMedico: Int, disponibilidad: Boolean, estado: Boolean) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val body = MedicoUpdateRequest(disponibilidad, estado)
-                val response = RetrofitClient.medicoApi.actualizarMedico(idMedico, body)
-                if (response.isSuccessful) {
-                    println("Médico actualizado correctamente.")
-                } else {
-                    println("Error al actualizar médico: ${response.code()}")
-                }
-            } catch (e: Exception) {
-                println("Error actualizando médico: ${e.message}")
-            }
-        }
-    }
+    // --- Helpers ---
 
     private fun getNombreSeguro(visita: Visita): String {
         val paciente = visita.paciente

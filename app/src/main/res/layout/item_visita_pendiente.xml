@@ -3,135 +3,190 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    android:background="@drawable/bg_formulario">
+    android:layout_margin="10dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="6dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:background="@android:color/white">
 
-        <!-- 🔹 ENCABEZADO PRINCIPAL -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="4dp">
+            android:paddingBottom="4dp">
 
-            <!-- 🧍 Datos principales -->
+
+            <LinearLayout
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@color/AZUL_GENERAL"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp"
+                android:layout_marginEnd="12dp"
+                android:clipToOutline="true">
+
+                <TextView
+                    android:id="@+id/txtDiaGrande"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/txtMes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Octubre"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:orientation="vertical">
 
-                <!-- Nombre completo del paciente -->
                 <TextView
                     android:id="@+id/txtPacienteNombre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombre Paciente"
-                    android:textStyle="bold"
+                    android:text="Paciente"
                     android:textSize="16sp"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
 
-                <!-- Dirección -->
                 <TextView
                     android:id="@+id/txtDireccion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:text="📍 Dirección"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textColor="#555555" />
 
-                <!-- Fecha -->
+
                 <TextView
                     android:id="@+id/txtFecha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🗓 Fecha"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="2dp"
+                    android:text="🗓 Fecha visita"
+                    android:textSize="14sp"
+                    android:textColor="#555555" />
             </LinearLayout>
 
-            <!-- 👁️ Botón ver detalles -->
-            <ImageView
-                android:id="@+id/btnVer"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_visibility"
-                android:contentDescription="Ver detalles"
-                android:padding="4dp"
-                android:layout_marginEnd="8dp"
-                app:tint="@color/AZUL_GENERAL" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVerDetalles"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:text="Ver detalles"
+                android:textSize="12sp"
+                android:textAllCaps="false"
+                android:paddingHorizontal="12dp"
+                app:cornerRadius="18dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/AZUL_GENERAL"
+                app:iconPadding="4dp"
+                app:icon="@drawable/ic_visibility"
+                app:iconTint="@color/AZUL_GENERAL"
+                app:backgroundTint="@android:color/white"
+                android:textColor="@color/AZUL_GENERAL" />
 
-            <!-- ▶️ / ⏹️ Botón iniciar o finalizar -->
-            <ImageView
-                android:id="@+id/btnIniciarFinalizar"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_play_arrow"
-                android:contentDescription="Iniciar o finalizar visita"
-                android:padding="4dp"
-                android:layout_marginEnd="8dp"
-                app:tint="@color/green" />
 
-            <!-- ❌ Botón cancelar -->
-            <ImageView
-                android:id="@+id/btnCancelar"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_cancel"
-                android:contentDescription="Cancelar visita"
-                android:padding="4dp"
-                app:tint="@color/red" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/btnVer"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp" />
+
+                <ImageView
+                    android:id="@+id/btnIniciarFinalizar"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp" />
+
+                <ImageView
+                    android:id="@+id/btnCancelar"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <!-- 🔽 DETALLES DE LA VISITA -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EEEEEE"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp" />
+
         <LinearLayout
             android:id="@+id/cardDetalles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:padding="10dp"
             android:visibility="gone"
-            android:paddingTop="8dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:background="#F9FAFB">
 
-            <!-- Barrio -->
             <TextView
                 android:id="@+id/txtBarrio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:text="🏘 Barrio:"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="#333333" />
 
-            <!-- Teléfono -->
             <TextView
                 android:id="@+id/txtTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:text="☎️ Teléfono:"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="#333333" />
 
-            <!-- Descripción -->
             <TextView
                 android:id="@+id/txtDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:text="🧾 Descripción:"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="#333333" />
 
-            <!-- Estado -->
             <TextView
                 android:id="@+id/txtEstado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="📋 Estado:"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="#333333" />
         </LinearLayout>
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

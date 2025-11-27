@@ -1,10 +1,13 @@
 package com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
@@ -14,8 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import com.andres_lasso.previmed.databinding.FragmentVisitaBeneficiarioBinding
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.model.*
-import com.andres_lasso.previmed.utils.MedicoCache
 import com.andres_lasso.previmed.utils.PreferenceHelper
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -42,6 +45,10 @@ class VisitaBeneficiarioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Estado inicial del mensaje
+        binding.txtMensajeCita.visibility = View.GONE
+        binding.txtMensajeCita.text = ""
+
         cargarMedicos()
         cargarBarrios()
 
@@ -57,14 +64,11 @@ class VisitaBeneficiarioFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun solicitarVisita() {
-        // Si el botón está deshabilitado, no hacer nada
-        if (!binding.btnSolicitar.isEnabled) {
-            Toast.makeText(requireContext(), "Por favor espera a que se procese la solicitud", Toast.LENGTH_SHORT).show()
-            return
-        }
+        Log.d("VISITA_DEBUG", "Iniciando solicitud de visita")
 
-        // Deshabilitar botón mientras se procesa
-        binding.btnSolicitar.isEnabled = false
+        // Ocultar mensaje previo
+        binding.txtMensajeCita.visibility = View.GONE
+        binding.txtMensajeCita.text = ""
 
         val direccion = binding.edDireccion.text.toString().trim()
         val descripcion = binding.edDescripcion.text.toString().trim()
@@ -100,9 +104,7 @@ class VisitaBeneficiarioFragment : Fragment() {
         }
 
         // ---------- LÓGICA DEL MÉDICO ----------
-        val medicoId: Int
-        if (deseaMedico) {
-            // Manual: selecciona uno disponible
+        val medicoId: Int = if (deseaMedico) {
             if (medicoPos == 0) {
                 Toast.makeText(requireContext(), "Selecciona un médico", Toast.LENGTH_SHORT).show()
                 return
@@ -112,26 +114,23 @@ class VisitaBeneficiarioFragment : Fragment() {
                 Toast.makeText(requireContext(), "El médico seleccionado no está disponible", Toast.LENGTH_SHORT).show()
                 return
             }
-            medicoId = medicoSeleccionado.id_medico
+            medicoSeleccionado.id_medico
         } else {
-            // Automático: primer médico disponible
             val medicoDisponible = medicos.firstOrNull { it.disponibilidad == true }
             if (medicoDisponible == null) {
                 Toast.makeText(requireContext(), "No hay médicos disponibles en este momento", Toast.LENGTH_SHORT).show()
                 return
             }
-            medicoId = medicoDisponible.id_medico
+            medicoDisponible.id_medico
         }
 
-        // Obtener barrio ID (asegúrate que no sea 0)
+        // BARRIO
         if (barrioPos - 1 < 0 || barrioPos - 1 >= barrios.size) {
             Toast.makeText(requireContext(), "Error al obtener el barrio", Toast.LENGTH_SHORT).show()
             return
         }
         val barrioId = barrios[barrioPos - 1].idBarrio
-
-        // Validar que barrioId no sea 0 o null
-        if (barrioId == 0 || barrioId == null) {
+        if (barrioId == null || barrioId == 0) {
             Toast.makeText(requireContext(), "Barrio inválido", Toast.LENGTH_SHORT).show()
             return
         }
@@ -149,8 +148,8 @@ class VisitaBeneficiarioFragment : Fragment() {
             barrioId = barrioId
         )
 
-        // DEBUG: Verificar datos antes de enviar
-        android.util.Log.d("VISITA_DEBUG", """
+        Log.d(
+            "VISITA_DEBUG", """
             Enviando visita:
             - fechaVisita: $fechaVisita
             - descripcion: ${visita.descripcion}
@@ -159,34 +158,78 @@ class VisitaBeneficiarioFragment : Fragment() {
             - pacienteId: $idPaciente
             - medicoId: $medicoId
             - barrioId: $barrioId
-        """.trimIndent())
+        """.trimIndent()
+        )
 
-        lifecycleScope.launch {
+        // Deshabilitar botón mientras se envía
+        binding.btnSolicitar.isEnabled = false
+
+        // Usar SIEMPRE viewLifecycleOwner.lifecycleScope
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = apiService.crearVisita(visita)
 
-                // Verificar que el fragment aún está activo
-                if (!isAdded) return@launch
+                if (!isAdded || _binding == null) {
+                    Log.w("VISITA_DEBUG", "Fragment ya no está adjunto al recibir respuesta")
+                    return@launch
+                }
+
+                Log.d("VISITA_DEBUG", "Respuesta Retrofit: code=${response.code()}")
 
                 if (response.isSuccessful) {
+                    // Ocultar teclado para que se vea el mensaje
+                    try {
+                        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+                    } catch (_: Exception) { }
+
                     Toast.makeText(requireContext(), "Solicitud enviada correctamente", Toast.LENGTH_SHORT).show()
-                    limpiarFormulario()
+
+                    // 🔴 MOSTRAR MENSAJE ABAJO Y FORZAR QUE SE VEA
+                    binding.txtMensajeCita.apply {
+                        text = "✅ Tu visita se guardó correctamente."
+                        visibility = View.VISIBLE
+                        bringToFront()
+                        requestLayout()
+                        invalidate()
+                    }
+                    // También forzamos redibujo del root por si acaso
+                    binding.root.requestLayout()
+
+                    // Si quieres limpiar el formulario, descomenta:
+                    // limpiarFormulario()
                 } else {
                     val errorBody = response.errorBody()?.string() ?: "Error desconocido"
-                    Toast.makeText(requireContext(), "Error: ${response.code()} - $errorBody", Toast.LENGTH_LONG).show()
-                    android.util.Log.e("VISITA_ERROR", "Error $errorBody")
+                    Log.e("VISITA_ERROR", "Error: ${response.code()} - $errorBody")
+
+                    binding.txtMensajeCita.apply {
+                        text = "⚠️ Ocurrió un error al guardar la visita."
+                        visibility = View.VISIBLE
+                        bringToFront()
+                        requestLayout()
+                        invalidate()
+                    }
+
+                    Toast.makeText(requireContext(), "Error: ${response.code()}", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
-                // Verificar que el fragment aún está activo
-                if (!isAdded) return@launch
+                if (!isAdded || _binding == null) return@launch
 
-                if (e !is kotlinx.coroutines.CancellationException) {
+                if (e !is CancellationException) {
+                    Log.e("VISITA_EXCEPTION", "Exception: ${e.message}", e)
+
+                    binding.txtMensajeCita.apply {
+                        text = "❌ Error de conexión al guardar la visita."
+                        visibility = View.VISIBLE
+                        bringToFront()
+                        requestLayout()
+                        invalidate()
+                    }
+
                     Toast.makeText(requireContext(), "Error de conexión: ${e.message}", Toast.LENGTH_SHORT).show()
-                    android.util.Log.e("VISITA_EXCEPTION", "Exception: ${e.message}", e)
                 }
             } finally {
-                // Verificar que el fragment aún está activo antes de modificar UI
-                if (isAdded) {
+                if (isAdded && _binding != null) {
                     binding.btnSolicitar.isEnabled = true
                 }
             }
@@ -194,26 +237,14 @@ class VisitaBeneficiarioFragment : Fragment() {
     }
 
     private fun limpiarFormulario() {
-        // Verificar que el fragment aún está activo
-        if (!isAdded) return
+        if (!isAdded || _binding == null) return
 
         binding.edDireccion.text.clear()
         binding.edDescripcion.text.clear()
+        binding.edTelefono.text.clear()
         binding.checkMedico.isChecked = false
         binding.spinnerMedicos.setSelection(0)
         binding.spinnerBarrios.setSelection(0)
-        edTelefono.text.clear()
-        binding.btnSolicitar.isEnabled = true
-
-        lifecycleScope.launch {
-            try {
-                val resp = RetrofitClient.visitasApi.getMedicos()
-                if (resp.isSuccessful && isAdded) {
-                    resp.body()?.data?.let { MedicoCache.set(it) }
-                }
-            } catch (_: Exception) {
-            }
-        }
     }
 
     private fun mapToOldMedico(list: List<MedicoIndividualResponse>): List<Medico> =
@@ -238,21 +269,24 @@ class VisitaBeneficiarioFragment : Fragment() {
             try {
                 val response = apiService.getMedicos()
 
-                // Verificar que el fragment aún está activo
-                if (!isAdded) return@launch
+                if (!isAdded || _binding == null) return@launch
 
                 if (response.isSuccessful) {
                     medicos.clear()
                     val nuevos = response.body()?.data ?: emptyList()
                     medicos.addAll(mapToOldMedico(nuevos))
 
-                    val disponibles = medicos.filter { (it.estado ?: false) && (it.disponibilidad ?: false) }
+                    val disponibles = medicos.filter {
+                        (it.estado ?: false) && (it.disponibilidad ?: false)
+                    }
 
                     val listaNombres = mutableListOf("Seleccione un médico")
-                    listaNombres.addAll(disponibles.map { med ->
-                        val user = med.usuario
-                        if (user != null) "${user.nombre} ${user.apellido}" else "Médico asignado"
-                    })
+                    listaNombres.addAll(
+                        disponibles.map { med ->
+                            val u = med.usuario
+                            if (u != null) "${u.nombre} ${u.apellido}" else "Médico asignado"
+                        }
+                    )
 
                     val adaptador = ArrayAdapter(
                         requireContext(),
@@ -262,13 +296,19 @@ class VisitaBeneficiarioFragment : Fragment() {
                     adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     binding.spinnerMedicos.adapter = adaptador
                 } else {
-                    if (isAdded) {
-                        Toast.makeText(requireContext(), "Error cargando médicos: ${response.code()}", Toast.LENGTH_LONG).show()
-                    }
+                    Toast.makeText(
+                        requireContext(),
+                        "Error cargando médicos: ${response.code()}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } catch (e: Exception) {
-                if (isAdded && e !is kotlinx.coroutines.CancellationException) {
-                    Toast.makeText(requireContext(), "Error cargando médicos: ${e.message}", Toast.LENGTH_LONG).show()
+                if (isAdded && _binding != null && e !is CancellationException) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error cargando médicos: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -279,25 +319,36 @@ class VisitaBeneficiarioFragment : Fragment() {
             try {
                 val response = apiService.getBarrios()
 
-                // Verificar que el fragment aún está activo
-                if (!isAdded) return@launch
+                if (!isAdded || _binding == null) return@launch
 
                 if (response.isSuccessful) {
                     barrios.clear()
                     barrios.addAll(response.body()?.msj ?: emptyList())
+
                     val listaNombres = mutableListOf("Seleccione un barrio")
                     listaNombres.addAll(barrios.map { it.nombreBarrio })
-                    val adaptador = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listaNombres)
+
+                    val adaptador = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item,
+                        listaNombres
+                    )
                     adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     binding.spinnerBarrios.adapter = adaptador
                 } else {
-                    if (isAdded) {
-                        Toast.makeText(requireContext(), "Error cargando barrios: ${response.code()}", Toast.LENGTH_LONG).show()
-                    }
+                    Toast.makeText(
+                        requireContext(),
+                        "Error cargando barrios: ${response.code()}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } catch (e: Exception) {
-                if (isAdded && e !is kotlinx.coroutines.CancellationException) {
-                    Toast.makeText(requireContext(), "Error cargando barrios: ${e.message}", Toast.LENGTH_LONG).show()
+                if (isAdded && _binding != null && e !is CancellationException) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error cargando barrios: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

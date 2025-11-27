@@ -29,7 +29,6 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Cabecera: iniciales + nombre -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,18 +62,9 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tvCorreoPerfil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="correo@ejemplo.com"
-                        android:textColor="#6B7280"
-                        android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Línea divisoria -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -82,7 +72,6 @@
                 android:layout_marginBottom="12dp"
                 android:background="#E5E7EB" />
 
-            <!-- Otros datos -->
             <TextView
                 android:id="@+id/tvPlanPerfil"
                 android:layout_width="wrap_content"
@@ -100,7 +89,6 @@
                 android:textColor="#10B981"
                 android:textSize="14sp" />
 
-            <!-- Botón Cerrar sesión -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnCerrarSesion"
                 android:layout_width="match_parent"
@@ -112,7 +100,6 @@
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
 
-            <!-- Botón cerrar solo el diálogo -->
             <TextView
                 android:id="@+id/btnCerrarDialogo"
                 android:layout_width="wrap_content"

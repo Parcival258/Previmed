@@ -22,6 +22,12 @@ data class Usuario(
     @SerializedName("email")
     val email: String? = null,
 
+    @SerializedName("password")
+    val password: String? = null,
+
+    @SerializedName("direccion")
+    val direccion: String? = null,
+
     @SerializedName("numeroDocumento")
     val numeroDocumento: String? = null,
 
