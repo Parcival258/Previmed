@@ -22,7 +22,8 @@ class VisitsMedico : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentVisitsMedicoBinding.inflate(inflater, container, false)
@@ -31,51 +32,82 @@ class VisitsMedico : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.recyclerVisitas.layoutManager = LinearLayoutManager(requireContext())
 
         val idMedico = PreferenceHelper.getIdMedico(requireContext())
         if (idMedico != null && idMedico != -1) {
             obtenerVisitasPendientes(idMedico)
         } else {
-            Toast.makeText(requireContext(), "⚠️ No se encontró ID del médico en preferencias", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "⚠️ No se encontró ID del médico en preferencias",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     private fun obtenerVisitasPendientes(idMedico: Int) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = RetrofitClient.visitasApi.getVisitasPorMedico(idMedico)
-                if (response.isSuccessful) {
-                    val visitas = response.body()?.msj?.filter { it.estado == true } ?: emptyList()
 
-                    if (visitas.isEmpty()) {
-                        Toast.makeText(requireContext(), "No hay visitas pendientes", Toast.LENGTH_SHORT).show()
+                if (!isAdded) return@launch
+
+                if (response.isSuccessful) {
+                    val visitasPendientes = response.body()
+                        ?.msj
+                        ?.filter { it.estado == true }
+                        ?: emptyList()
+
+                    if (visitasPendientes.isEmpty()) {
+                        Toast.makeText(
+                            requireContext(),
+                            "No hay visitas pendientes",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.recyclerVisitas.adapter = null
                         return@launch
                     }
 
                     val visitasCompletas = mutableListOf<Visita>()
 
-                    for (visita in visitas) {
+                    for (visita in visitasPendientes) {
+                        // Si no trae info de usuario del paciente, la completamos
                         if (visita.paciente?.usuario == null && visita.pacienteId != null) {
                             val paciente = obtenerPacientePorId(visita.pacienteId)
-                            if (paciente != null) visitasCompletas.add(visita.copy(paciente = paciente))
-                            else visitasCompletas.add(visita)
-                        } else visitasCompletas.add(visita)
+                            if (paciente != null) {
+                                visitasCompletas.add(visita.copy(paciente = paciente))
+                            } else {
+                                visitasCompletas.add(visita)
+                            }
+                        } else {
+                            visitasCompletas.add(visita)
+                        }
                     }
 
                     binding.recyclerVisitas.adapter = VisitasPendientesAdapter(
-                        visitasCompletas.toMutableList(),
-                        onVerClick = { verVisita(it) },
-                        onCancelarClick = { cancelarVisita(it) },
-                        onActualizarLista = { obtenerVisitasPendientes(idMedico) }
+                        visitas = visitasCompletas.toMutableList(),
+                        onVerClick = { visita -> verVisita(visita) }
                     )
 
                 } else {
-                    Toast.makeText(requireContext(), "❌ Error al obtener visitas", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "❌ Error al obtener visitas",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e("VisitsMedico", "Error código HTTP: ${response.code()}")
                 }
 
             } catch (e: Exception) {
-                Log.e("VisitsMedico", "🚨 Error al obtener visitas: ${e.message}")
+                if (!isAdded) return@launch
+                Log.e("VisitsMedico", "🚨 Error al obtener visitas: ${e.message}", e)
+                Toast.makeText(
+                    requireContext(),
+                    "Error de conexión al obtener visitas",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -83,20 +115,30 @@ class VisitsMedico : Fragment() {
     private suspend fun obtenerPacientePorId(id: Int): Paciente? {
         return try {
             val response = RetrofitClient.pacienteApi.getPacienteById(id)
-            if (response.isSuccessful) response.body()?.data else null
+            if (response.isSuccessful) {
+                response.body()?.data
+            } else {
+                Log.e("VisitsMedico", "Error HTTP al obtener paciente: ${response.code()}")
+                null
+            }
         } catch (e: Exception) {
-            Log.e("VisitsMedico", "🚨 Error al obtener paciente: ${e.message}")
+            Log.e("VisitsMedico", "🚨 Error al obtener paciente: ${e.message}", e)
             null
         }
     }
 
     private fun verVisita(visita: Visita) {
         val nombre = visita.paciente?.usuario?.let {
-            "${it.nombre ?: ""} ${it.apellido ?: ""}".trim()
+            "${it.nombre.orEmpty()} ${it.apellido.orEmpty()}".trim()
         } ?: "Paciente #${visita.pacienteId ?: "N/A"}"
 
         val barrio = visita.barrio?.nombreBarrio ?: "Sin barrio"
-        val fecha = visita.fechaVisita?.take(10)?.split("-")?.reversed()?.joinToString("/") ?: "Sin fecha"
+        val fecha = visita.fechaVisita
+            ?.take(10)
+            ?.split("-")
+            ?.reversed()
+            ?.joinToString("/")
+            ?: "Sin fecha"
 
         val msg = """
             👤 Paciente: $nombre
@@ -108,20 +150,6 @@ class VisitsMedico : Fragment() {
         """.trimIndent()
 
         Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
-    }
-
-    private fun cancelarVisita(visita: Visita) {
-        lifecycleScope.launch {
-            try {
-                RetrofitClient.visitasApi.cancelarVisita(visita.idVisita.toString())
-                Toast.makeText(requireContext(), "❌ Visita cancelada correctamente", Toast.LENGTH_SHORT).show()
-
-                val idMedico = visita.medicoId ?: PreferenceHelper.getIdMedico(requireContext()) ?: return@launch
-                obtenerVisitasPendientes(idMedico)
-            } catch (e: Exception) {
-                Log.e("VisitsMedico", "🚨 Error cancelando visita: ${e.message}")
-            }
-        }
     }
 
     override fun onDestroyView() {

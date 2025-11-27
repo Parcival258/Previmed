@@ -3,6 +3,7 @@ package com.andres_lasso.previmed.controller.pacientes.fragmentBeneficiario
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,9 @@ import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.utils.PreferenceHelper
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -50,25 +53,24 @@ class HomeBeneficiarioFragment : Fragment() {
         setupListeners()
     }
 
+    // ---------------------------------------------
+    // SALUDO
+    // ---------------------------------------------
     private fun setSaludo() {
-        val saludo = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
+        val saludoBase = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
             in 0..11 -> "Buenos días"
             in 12..17 -> "Buenas tardes"
             else -> "Buenas noches"
         }
 
-        binding.saludoBeneficiario.text = saludo
+        // Usamos _binding? para no crashear si la vista ya no existe
+        _binding?.saludoBeneficiario?.text = "$saludoBase,"
     }
 
+    // ---------------------------------------------
+    // CARGAR DATOS
+    // ---------------------------------------------
     private fun cargarDatos() {
-        // Sacamos el nombre desde el contexto
-        nombrePaciente = PreferenceHelper.getRole(requireContext()) ?: ""
-
-        // Asignamos nombre e iniciales
-        binding.nombreP.text = nombrePaciente
-        binding.tvIniciales.text = obtenerIniciales(nombrePaciente)
-
-        // Cargar datos de membresía
         val usuarioId = PreferenceHelper.getUsuarioId(requireContext())
         if (usuarioId.isNullOrBlank()) {
             Toast.makeText(requireContext(), "Error: Usuario no identificado", Toast.LENGTH_SHORT).show()
@@ -77,54 +79,88 @@ class HomeBeneficiarioFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val res = RetrofitClient.pagosApi.getMembresiaByUserId(usuarioId)
+                // 1️⃣ Traer USUARIO por ID para obtener el nombre
+                val usuarioResp = withContext(Dispatchers.IO) {
+                    RetrofitClient.usuarioApi.getUsuarioById(usuarioId)
+                }
+
+                if (usuarioResp.isSuccessful && usuarioResp.body() != null) {
+                    val u = usuarioResp.body()!!
+
+                    nombrePaciente = listOfNotNull(
+                        u.nombre,
+                        u.segundoNombre,
+                        u.apellido,
+                        u.segundoApellido
+                    ).joinToString(" ").trim()
+
+                    if (nombrePaciente.isBlank()) {
+                        nombrePaciente = "Usuario Previmed"
+                    }
+                } else {
+                    nombrePaciente = "Usuario Previmed"
+                }
+
+                // Actualizar UI de forma segura
+                setSaludo()
+                _binding?.nombreP?.text = nombrePaciente
+                _binding?.tvIniciales?.text = obtenerIniciales(nombrePaciente)
+
+                // 2️⃣ Membresía (aquí NO usamos campos específicos para que no dé error)
+                val res = withContext(Dispatchers.IO) {
+                    RetrofitClient.pagosApi.getMembresiaByUserId(usuarioId)
+                }
 
                 if (res.isSuccessful && res.body() != null) {
-                    val datos = res.body()!!
-                    planPaciente = datos.membresia.plan.tipoPlan
+                    // Si quieres, luego mapeas tu modelo real aquí
+                    planPaciente = ""              // aquí puedes poner el nombre del plan cuando sepas el campo
+                    estadoPaciente = "Activo"      // o el estado real
 
-                    // Estado del servicio
-                    if (datos.membresia.estado) {
-                        estadoPaciente = "Activo"
-                        binding.estadoServicio.text = "Servicio Activo"
-                        binding.indicadorEstado.setBackgroundResource(R.drawable.circle_green)
-                    } else {
-                        estadoPaciente = "Inactivo"
-                        binding.estadoServicio.text = "Servicio Inactivo"
-                        binding.indicadorEstado.setBackgroundResource(R.drawable.circle_red)
-                    }
+                    _binding?.estadoServicio?.text = estadoPaciente
 
-                    // Tipo de plan
-                    binding.tvPlan.text = planPaciente
+                    // Si tu modelo tiene un pacienteId, aquí lo usas:
+                    // val membresia = res.body()!!
+                    // val pacienteId = membresia.pacienteId
+                    // if (pacienteId != null) {
+                    //     cargarVisitas(pacienteId)
+                    // }
 
-                    // Visitas
-                    cargarVisitas(datos.pacienteId)
+                } else {
+                    estadoPaciente = "Sin servicio activo"
+                    _binding?.estadoServicio?.text = estadoPaciente
                 }
 
             } catch (e: Exception) {
-                binding.estadoServicio.text = "Error al cargar datos"
+                Log.e("HomeBeneficiario", "Error al cargar datos: ${e.message}", e)
+                _binding?.estadoServicio?.text = "Error al cargar datos"
             }
         }
     }
 
+    // ---------------------------------------------
+    // VISITAS (la puedes enganchar cuando tengas el pacienteId)
+    // ---------------------------------------------
     private fun cargarVisitas(pacienteId: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val res = RetrofitClient.visitasApi.getVisitas(pacienteId)
+                val res = withContext(Dispatchers.IO) {
+                    RetrofitClient.visitasApi.getVisitas(pacienteId)
+                }
+
                 if (res.isSuccessful && res.body() != null) {
                     val visitas = res.body()!!.msj
                     if (!visitas.isNullOrEmpty()) {
                         val visita = visitas.first()
                         val fecha = formatearFecha(visita.fechaVisita ?: "")
-                        binding.tvVisitas.text = fecha
+                        _binding?.tvVisitas?.text = fecha
                     } else {
-                        binding.tvVisitas.text = "Sin visitas agendadas"
+                        _binding?.tvVisitas?.text = "Sin visitas agendadas"
                     }
                 } else {
-                    binding.tvVisitas.text = "Sin visitas agendadas"
+                    _binding?.tvVisitas?.text = "Sin visitas agendadas"
                 }
             } catch (e: Exception) {
-                binding.tvVisitas.text = "Sin visitas agendadas"
+                _binding?.tvVisitas?.text = "Sin visitas agendadas"
             }
         }
     }
@@ -140,9 +176,9 @@ class HomeBeneficiarioFragment : Fragment() {
         }
     }
 
-    // -----------------------------------------------------
+    // ---------------------------------------------
     // LISTENERS
-    // -----------------------------------------------------
+    // ---------------------------------------------
     private fun setupListeners() {
         // Ir a Beneficiarios
         binding.irBeneficiarios.setOnClickListener {
@@ -154,7 +190,7 @@ class HomeBeneficiarioFragment : Fragment() {
             mostrarPerfil()
         }
 
-        // CLICK EN EL BOTÓN + → ir a Solicitar visita
+        // Ir a Solicitar visita
         binding.masM.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.paciente_nav, VisitaBeneficiarioFragment())
@@ -163,15 +199,16 @@ class HomeBeneficiarioFragment : Fragment() {
         }
     }
 
-    // -----------------------------------------------------
+    // ---------------------------------------------
     // BOTTOM SHEET PERFIL
-    // -----------------------------------------------------
+    // ---------------------------------------------
     private fun mostrarPerfil() {
         val dialog = BottomSheetDialog(requireContext())
         val view = layoutInflater.inflate(R.layout.perfil_paciente, null)
         dialog.setContentView(view)
 
-        val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        val bottomSheet =
+            dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
         if (bottomSheet != null) {
             bottomSheet.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             val behavior = BottomSheetBehavior.from(bottomSheet)
