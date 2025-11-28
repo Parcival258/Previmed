@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="8dp"
     android:layout_marginHorizontal="16dp"
-    card_view:cardCornerRadius="16dp"
-    card_view:cardElevation="6dp"
-    android:background="@android:color/transparent">
+    android:layout_marginVertical="10dp"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="6dp"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="18dp"
         android:gravity="center_vertical">
 
-        <!-- 🧍 Imagen del paciente -->
-        <ImageView
-            android:id="@+id/icon_user"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/logo"
-            android:scaleType="centerCrop"
-            android:background="@drawable/circle_background"
-            android:padding="4dp" />
+        <!-- FOTO / ICONO DEL PACIENTE -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            app:cardCornerRadius="29dp"
+            app:cardElevation="3dp">
 
-        <!-- 📋 Datos del paciente y la visita -->
+            <ImageView
+                android:id="@+id/icon_user"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo"
+                android:contentDescription="Foto paciente"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- INFORMACIÓN -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -35,67 +41,67 @@
             android:orientation="vertical"
             android:paddingStart="16dp">
 
-            <!-- Nombre del paciente -->
+            <!-- Nombre Paciente -->
             <TextView
                 android:id="@+id/txtPacienteHistorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="👤 Nombre Paciente"
-                android:textSize="16sp"
+                android:text="Nombre del Paciente"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                android:textColor="#333333"
-                android:paddingVertical="2dp"/>
+                android:textColor="@color/negro_texto"
+                android:paddingBottom="4dp"/>
 
             <!-- Descripción -->
             <TextView
                 android:id="@+id/txtDescripcionHistorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🧾 Descripción"
+                android:text="Descripción de la visita"
                 android:textSize="15sp"
-                android:textColor="#555555"
-                android:paddingVertical="2dp"/>
+                android:textColor="@color/negro_texto"
+                android:paddingBottom="4dp"/>
 
             <!-- Fecha -->
             <TextView
                 android:id="@+id/txtFechaHistorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📅 Fecha"
+                android:text="Fecha de atención"
                 android:textSize="14sp"
-                android:textColor="#666666"
-                android:paddingVertical="2dp"/>
+                android:textColor="@color/negro_texto"
+                android:paddingBottom="2dp"/>
 
             <!-- Dirección -->
             <TextView
                 android:id="@+id/txtDireccionHistorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📍 Dirección"
+                android:text="Dirección del paciente"
                 android:textSize="14sp"
-                android:textColor="#666666"
-                android:paddingVertical="2dp"/>
+                android:textColor="@color/negro_texto"
+                android:paddingBottom="2dp"/>
 
             <!-- Barrio -->
             <TextView
                 android:id="@+id/txtBarrioHistorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🏘 Barrio"
+                android:text="Barrio"
                 android:textSize="14sp"
-                android:textColor="#666666"
-                android:paddingVertical="2dp"/>
+                android:textColor="@color/negro_texto"
+                android:paddingBottom="2dp"/>
 
             <!-- Teléfono -->
             <TextView
                 android:id="@+id/txtTelefonoHistorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="☎️ Teléfono"
+                android:text="Teléfono"
                 android:textSize="14sp"
-                android:textColor="#666666"
-                android:paddingVertical="2dp"/>
-
+                android:textColor="@color/negro_texto"/>
         </LinearLayout>
+
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+</com.google.android.material.card.MaterialCardView>

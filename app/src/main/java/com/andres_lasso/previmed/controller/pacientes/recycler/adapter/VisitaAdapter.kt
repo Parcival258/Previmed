@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,33 +11,34 @@ import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.model.Visita
 import com.andres_lasso.previmed.utils.MedicoCache
 import com.google.android.material.button.MaterialButton
+import java.util.Locale
 
 class VisitaAdapter(
-    private var visitas: List<Visita>,
-    private val onCancelarClick: (Visita) -> Unit
+    private var visitas: List<Visita>
 ) : RecyclerView.Adapter<VisitaAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        // Encabezado
+        // 🔹 Encabezado
         val txtPacienteNombre: TextView = view.findViewById(R.id.txtPacienteNombre)
         val txtDireccion: TextView = view.findViewById(R.id.txtDireccion)
         val txtFecha: TextView = view.findViewById(R.id.txtFecha)
 
-        // Cuadro azul de la fecha
+        // 🔹 Cuadro azul de la fecha
         val txtDiaGrande: TextView = view.findViewById(R.id.txtDiaGrande)
         val txtMes: TextView = view.findViewById(R.id.txtMes)
 
-        // Detalles expandibles
+        // 🔹 Detalles expandibles
         val cardDetalles: LinearLayout = view.findViewById(R.id.cardDetalles)
         val txtBarrio: TextView = view.findViewById(R.id.txtBarrio)
         val txtTelefono: TextView = view.findViewById(R.id.txtTelefono)
         val txtDescripcion: TextView = view.findViewById(R.id.txtDescripcion)
         val txtEstado: TextView = view.findViewById(R.id.txtEstado)
 
-        // Botones
+        // 🔹 Botón
         val btnVerDetalles: MaterialButton = view.findViewById(R.id.btnVerDetalles)
-        val btnCancelar: ImageView = view.findViewById(R.id.btnCancelar)
+        val btnIniciarFinalizar: MaterialButton = view.findViewById(R.id.btnIniciarFinalizar)
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -65,7 +65,7 @@ class VisitaAdapter(
             val diaStr = fechaCruda.substring(8, 10)
 
             val mesNum = mesNumStr.toIntOrNull() ?: 0
-            val nombreMes = getNombreMes(mesNum)      // Ej: "Nov" o "Noviembre"
+            val nombreMes = getNombreMes(mesNum)
 
             // Línea con fecha completa
             holder.txtFecha.text = "🗓 $diaStr/$mesNumStr/$anio"
@@ -79,7 +79,7 @@ class VisitaAdapter(
             holder.txtMes.text = ""
         }
 
-        // 🔹 Detalles (igual que en el lado del médico)
+        // 🔹 Detalles
         holder.txtBarrio.text = "🏘 ${visita.barrio?.nombreBarrio ?: "Sin barrio"}"
         holder.txtTelefono.text = "☎️ ${visita.telefono ?: "No disponible"}"
         holder.txtDescripcion.text = "🧾 ${visita.descripcion ?: "Sin descripción"}"
@@ -89,16 +89,7 @@ class VisitaAdapter(
         holder.btnVerDetalles.setOnClickListener {
             toggleDetalles(holder.cardDetalles)
         }
-
-        // También al tocar la card completa
-        holder.itemView.setOnClickListener {
-            toggleDetalles(holder.cardDetalles)
-        }
-
-        // 🔹 Botón cancelar
-        holder.btnCancelar.setOnClickListener {
-            onCancelarClick(visita)
-        }
+        holder.btnIniciarFinalizar.visibility = View.GONE
     }
 
     override fun getItemCount(): Int = visitas.size

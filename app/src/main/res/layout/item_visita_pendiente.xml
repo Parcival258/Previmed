@@ -15,18 +15,18 @@
         android:padding="12dp"
         android:background="@android:color/white">
 
-
+        <!-- 🔹 Encabezado: Fecha y Nombre -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingBottom="4dp">
+            android:paddingBottom="8dp">
 
-
+            <!-- 🔹 Box de Fecha -->
             <LinearLayout
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@color/AZUL_GENERAL"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -40,9 +40,8 @@
                     android:layout_height="wrap_content"
                     android:text="10"
                     android:textColor="@android:color/white"
-                    android:textSize="26sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
-
 
                 <TextView
                     android:id="@+id/txtMes"
@@ -50,26 +49,28 @@
                     android:layout_height="wrap_content"
                     android:text="Octubre"
                     android:textColor="@android:color/white"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
-
+            <!-- 🔹 Información Paciente/Médico -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingStart="4dp"
-                android:paddingEnd="4dp"
+                android:paddingEnd="8dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtPacienteNombre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Paciente"
-                    android:textSize="16sp"
+                    android:text="Paciente/Médico"
+                    android:textSize="15sp"
                     android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
 
                 <TextView
                     android:id="@+id/txtDireccion"
@@ -77,9 +78,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="📍 Dirección"
-                    android:textSize="14sp"
-                    android:textColor="#555555" />
-
+                    android:textSize="12sp"
+                    android:textColor="#555555"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
 
                 <TextView
                     android:id="@+id/txtFecha"
@@ -87,22 +89,40 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="🗓 Fecha visita"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="#555555" />
             </LinearLayout>
+        </LinearLayout>
 
+        <!-- 🔹 Divisor -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EEEEEE"
+            android:layout_marginVertical="8dp" />
+
+        <!-- 🔹 Fila de Botones Horizontal -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:spacing="8dp"
+            android:paddingHorizontal="5dp">
+
+            <!-- 🔹 Botón Ver detalles -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnVerDetalles"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
                 android:text="Ver detalles"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textAllCaps="false"
-                android:paddingHorizontal="12dp"
+                android:paddingHorizontal="8dp"
                 app:cornerRadius="18dp"
-                app:strokeWidth="1dp"
+                app:strokeWidth="1.5dp"
                 app:strokeColor="@color/AZUL_GENERAL"
                 app:iconPadding="4dp"
                 app:icon="@drawable/ic_visibility"
@@ -110,38 +130,33 @@
                 app:backgroundTint="@android:color/white"
                 android:textColor="@color/AZUL_GENERAL" />
 
-
-            <LinearLayout
+            <!-- 🔹 Botón Iniciar/Finalizar o Cancelar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnIniciarFinalizar"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/btnVer"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp" />
-
-                <ImageView
-                    android:id="@+id/btnIniciarFinalizar"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp" />
-
-                <ImageView
-                    android:id="@+id/btnCancelar"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp" />
-            </LinearLayout>
-
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Iniciar"
+                android:textSize="11sp"
+                android:textAllCaps="false"
+                android:paddingHorizontal="8dp"
+                app:cornerRadius="18dp"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="@color/AZUL_GENERAL"
+                app:iconPadding="4dp"
+                app:backgroundTint="@android:color/white"
+                android:textColor="@color/AZUL_GENERAL" />
         </LinearLayout>
 
-
+        <!-- 🔹 Divisor -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#EEEEEE"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp" />
+            android:layout_marginVertical="8dp" />
 
+        <!-- 🔹 Sección Detalles (Oculta por defecto) -->
         <LinearLayout
             android:id="@+id/cardDetalles"
             android:layout_width="match_parent"
@@ -155,35 +170,39 @@
                 android:id="@+id/txtBarrio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="6dp"
                 android:text="🏘 Barrio:"
-                android:textSize="14sp"
-                android:textColor="#333333" />
+                android:textSize="13sp"
+                android:textColor="#333333"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/txtTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="6dp"
                 android:text="☎️ Teléfono:"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textColor="#333333" />
 
             <TextView
                 android:id="@+id/txtDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="6dp"
                 android:text="🧾 Descripción:"
-                android:textSize="14sp"
-                android:textColor="#333333" />
+                android:textSize="13sp"
+                android:textColor="#333333"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/txtEstado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="📋 Estado:"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textColor="#333333" />
         </LinearLayout>
 

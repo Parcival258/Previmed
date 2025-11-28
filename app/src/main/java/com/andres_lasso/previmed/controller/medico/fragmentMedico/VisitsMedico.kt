@@ -1,5 +1,6 @@
 package com.andres_lasso.previmed.controller.medico.fragmentMedico
 
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,8 +34,10 @@ class VisitsMedico : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 🔹 Configurar RecyclerView
         binding.recyclerVisitas.layoutManager = LinearLayoutManager(requireContext())
 
+        // 🔹 Obtener ID del médico
         val idMedico = PreferenceHelper.getIdMedico(requireContext())
         if (idMedico != null && idMedico != -1) {
             obtenerVisitasPendientes(idMedico)
@@ -47,14 +50,17 @@ class VisitsMedico : Fragment() {
         }
     }
 
+    // 🔹 Obtener visitas pendientes del servidor
     private fun obtenerVisitasPendientes(idMedico: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = RetrofitClient.visitasApi.getVisitasPorMedico(idMedico)
 
+                // Verificar si el fragment aún está adjunto
                 if (!isAdded) return@launch
 
                 if (response.isSuccessful) {
+                    // 🔹 Filtrar solo visitas pendientes (estado = true)
                     val visitasPendientes = response.body()
                         ?.msj
                         ?.filter { it.estado == true }
@@ -63,17 +69,17 @@ class VisitsMedico : Fragment() {
                     if (visitasPendientes.isEmpty()) {
                         Toast.makeText(
                             requireContext(),
-                            "No hay visitas pendientes",
+                            "✅ No hay visitas pendientes",
                             Toast.LENGTH_SHORT
                         ).show()
                         binding.recyclerVisitas.adapter = null
                         return@launch
                     }
 
+                    // 🔹 Completar datos de pacientes si faltan
                     val visitasCompletas = mutableListOf<Visita>()
 
                     for (visita in visitasPendientes) {
-                        // Si no trae info de usuario del paciente, la completamos
                         if (visita.paciente?.usuario == null && visita.pacienteId != null) {
                             val paciente = obtenerPacientePorId(visita.pacienteId)
                             if (paciente != null) {
@@ -86,32 +92,35 @@ class VisitsMedico : Fragment() {
                         }
                     }
 
-                    binding.recyclerVisitas.adapter = VisitasPendientesAdapter(
+                    // 🔹 Configurar Adapter
+                    binding.recyclerVisitas.adapter = VisitasMedicoAdapter(
                         visitas = visitasCompletas.toMutableList(),
-                        onVerClick = { visita -> verVisita(visita) }
+                        onVerClick = { visita -> verVisita(visita) },
+                        onActualizarLista = { obtenerVisitasPendientes(idMedico) }
                     )
 
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "❌ Error al obtener visitas",
+                        "❌ Error al obtener visitas: ${response.code()}",
                         Toast.LENGTH_SHORT
                     ).show()
-                    Log.e("VisitsMedico", "Error código HTTP: ${response.code()}")
+                    Log.e("VisitsMedico", "Error HTTP: ${response.code()}")
                 }
 
             } catch (e: Exception) {
                 if (!isAdded) return@launch
-                Log.e("VisitsMedico", "🚨 Error al obtener visitas: ${e.message}", e)
+                Log.e("VisitsMedico", "🚨 Error al obtener visitas", e)
                 Toast.makeText(
                     requireContext(),
-                    "Error de conexión al obtener visitas",
+                    "❌ Error de conexión",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
 
+    // 🔹 Obtener datos del paciente por ID
     private suspend fun obtenerPacientePorId(id: Int): Paciente? {
         return try {
             val response = RetrofitClient.pacienteApi.getPacienteById(id)
@@ -122,11 +131,12 @@ class VisitsMedico : Fragment() {
                 null
             }
         } catch (e: Exception) {
-            Log.e("VisitsMedico", "🚨 Error al obtener paciente: ${e.message}", e)
+            Log.e("VisitsMedico", "🚨 Error al obtener paciente", e)
             null
         }
     }
 
+    // 🔹 Mostrar detalles de la visita
     private fun verVisita(visita: Visita) {
         val nombre = visita.paciente?.usuario?.let {
             "${it.nombre.orEmpty()} ${it.apellido.orEmpty()}".trim()

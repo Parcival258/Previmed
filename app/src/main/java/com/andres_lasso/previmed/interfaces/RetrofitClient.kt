@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
 
     // 🌐 URL base del backend Previmed
-    private const val BASE_URL = "https://previmedbackend-q73n.onrender.com/"
+    private const val BASE_URL = "http://72.61.8.11:3333/"
 
     init {
         Log.d("RetrofitClient", "Inicializando Retrofit con URL: $BASE_URL")

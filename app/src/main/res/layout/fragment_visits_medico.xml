@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,12 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="🩺 Visitas Pendientes"
-        android:textAlignment="center"
+        android:background="@drawable/bg_header_contrato"
+        android:gravity="center"
         android:textStyle="bold"
         android:textSize="22sp"
-        android:padding="16dp"
-        android:layout_marginTop="28dp"
-    android:textColor="@android:color/black" />
+        android:paddingTop="55dp"
+        android:paddingBottom="40dp"
+        android:paddingHorizontal="22dp"
+        android:textColor="@android:color/black" />
 
     <!-- 🔹 Lista de visitas -->
     <androidx.recyclerview.widget.RecyclerView
