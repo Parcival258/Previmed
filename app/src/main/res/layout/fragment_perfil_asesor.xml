@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="#F5F7FB">
 
     <LinearLayout
@@ -11,79 +12,83 @@
         android:orientation="vertical">
 
         <!-- ENCABEZADO PROFESIONAL / DISEÑO NUEVO -->
+
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="184dp"
+            android:background="@drawable/bg_header_contrato"
             android:orientation="vertical"
-            android:padding="28dp"
-            android:background="@color/Azul_Prevemed">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            android:paddingTop="40dp">
 
+            <!-- FOTO + NOMBRE + CARGO (alineado igual al estilo contrato) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <!-- FOTO PROFESIONAL CON GLOW -->
+                <!-- FOTO PROFESIONAL -->
                 <FrameLayout
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@drawable/bg_card_rounded"
-                    android:padding="10dp"
-                    android:layout_marginEnd="20dp">
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/circle_white"
+                    android:padding="10dp">
 
                     <ImageView
                         android:id="@+id/iv_perfil_asesor"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
                         android:background="@drawable/asesor_img"
-                        android:clipToOutline="true" />
+                        android:clipToOutline="true"
+                        android:scaleType="centerCrop" />
                 </FrameLayout>
-
 
                 <!-- INFORMACIÓN DEL ASESOR -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_nombre_asesor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:letterSpacing="0.02"
                         android:text="Alberto Lasso"
                         android:textColor="@android:color/white"
-                        android:textSize="26sp"
-                        android:textStyle="bold"
-                        android:letterSpacing="0.02" />
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_cargo_asesor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:text="Asesor Financiero Senior"
                         android:textColor="#DDE3FF"
-                        android:textSize="15sp"
-                        android:layout_marginTop="3dp" />
-
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- SUBTÍTULO (alineado como el texto del encabezado contrato) -->
             <TextView
                 android:id="@+id/tv_subtitulo_asesor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:alpha="0.92"
                 android:text="Tu seguridad financiera es mi prioridad."
                 android:textColor="#F7F9FF"
-                android:textSize="18sp"
-                android:alpha="0.92"
-                android:layout_marginTop="10dp"/>
+                android:textSize="16sp" />
         </LinearLayout>
 
 
-        <!-- CONTENEDOR GENERAL -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,9 +98,9 @@
             <!-- TARJETA PLANES -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_planes_perfil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:layout_width="380dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="2dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardCornerRadius="18dp"
@@ -121,6 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Planes"
+                        android:textStyle="bold"
                         android:textColor="#1A1A1A"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -129,9 +135,9 @@
             <!-- TARJETA BARRIOS -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_barrios_perfil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:layout_width="380dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="2dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardCornerRadius="18dp"
@@ -157,6 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Barrios"
+                        android:textStyle="bold"
                         android:textColor="#1A1A1A"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -165,9 +172,9 @@
             <!-- TARJETA CONTRATOS -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_contratos_perfil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:layout_width="380dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="2dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardCornerRadius="18dp"
@@ -193,6 +200,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Contratos"
+                        android:textStyle="bold"
                         android:textColor="#1A1A1A"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -201,9 +209,9 @@
             <!-- TARJETA CERRAR SESIÓN -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/btn_logout_perfil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_width="380dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="2dp"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardCornerRadius="18dp"
@@ -229,6 +237,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Cerrar sesión"
+                        android:textStyle="bold"
                         android:textColor="@android:color/holo_red_dark"
                         android:textSize="18sp" />
                 </LinearLayout>

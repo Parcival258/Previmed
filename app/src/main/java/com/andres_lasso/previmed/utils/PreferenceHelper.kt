@@ -16,6 +16,9 @@ object PreferenceHelper {
     private const val VISITA_ACTIVA_KEY = "visita_activa"
     private const val ID_ASESOR_KEY = "id_asesor"
 
+    // NEW: Nombre del usuario / asesor
+    private const val NOMBRE_USUARIO_KEY = "nombre_usuario"
+
     // BIOMETRIC
     private const val DOCUMENTO_KEY = "documento"
     private const val PASSWORD_KEY = "password"
@@ -127,6 +130,19 @@ object PreferenceHelper {
         prefs(context).edit().remove(ID_ASESOR_KEY).apply()
     }
 
+    // ==================== NOMBRE USUARIO / ASESOR ====================
+    fun saveNombreUsuario(context: Context, nombre: String) {
+        prefs(context).edit().putString(NOMBRE_USUARIO_KEY, nombre).apply()
+    }
+
+    fun getNombreUsuario(context: Context): String? {
+        return prefs(context).getString(NOMBRE_USUARIO_KEY, null)
+    }
+
+    fun clearNombreUsuario(context: Context) {
+        prefs(context).edit().remove(NOMBRE_USUARIO_KEY).apply()
+    }
+
     // ==================== BIOMETRIC ====================
     fun saveDocumento(context: Context, documento: String) {
         prefs(context).edit().putString(DOCUMENTO_KEY, documento).apply()
@@ -157,22 +173,18 @@ object PreferenceHelper {
     }
 
     // ==================== SESSION ====================
-
-    // Cierra sesión pero MANTIENE las credenciales biométricas
     fun clearSessionButKeepBiometric(context: Context) {
         val documento = getDocumento(context)
         val password = getPassword(context)
 
         prefs(context).edit().clear().apply()
 
-        // Restaurar SOLO credenciales biométricas
         if (!documento.isNullOrBlank() && !password.isNullOrBlank()) {
             saveDocumento(context, documento)
             savePassword(context, password)
         }
     }
 
-    // Borra TODO incluyendo biometría - Usar solo si usuario elige "cerrar sesión en todos lados"
     fun clearSession(context: Context) {
         prefs(context).edit().clear().apply()
     }

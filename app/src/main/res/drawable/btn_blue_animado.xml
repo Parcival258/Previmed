@@ -3,16 +3,24 @@
     <!-- Estado presionado -->
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <corners android:radius="30dp"/>
-            <solid android:color="#004ACC"/>
+            <corners
+                android:bottomLeftRadius="30dp"
+                android:bottomRightRadius="30dp"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp" />
+            <solid android:color="#004ACC" />
         </shape>
     </item>
 
     <!-- Estado normal -->
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="30dp"/>
-            <solid android:color="#0066FF"/>
+            <corners
+                android:bottomLeftRadius="20dp"
+                android:bottomRightRadius="20dp"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp" />
+            <solid android:color="#0066FF" />
         </shape>
     </item>
 

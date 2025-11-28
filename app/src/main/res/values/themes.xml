@@ -35,7 +35,7 @@
 
     <!-- Indicador activo del BottomNavigation (sin el lila de M3) -->
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/AZUL_BORDES</item>
+        <item name="android:color">@color/gris_suave</item>
         <item name="colorPrimaryContainer">@color/AZUL_GENERAL</item>
         <item name="colorSecondaryContainer">@color/AzulCielo_Prevemed</item>
     </style>
