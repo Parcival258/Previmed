@@ -33,8 +33,8 @@ class HomeBeneficiarioFragment : Fragment() {
 
     // Datos del perfil
     private var nombrePaciente = ""
-    private var planPaciente = ""
-    private var estadoPaciente = ""
+    private var planPaciente = "Plan VIP"
+    private var estadoPaciente = ""   // se usa para texto y puntico
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,8 +63,31 @@ class HomeBeneficiarioFragment : Fragment() {
             else -> "Buenas noches"
         }
 
-        // Usamos _binding? para no crashear si la vista ya no existe
         _binding?.saludoBeneficiario?.text = "$saludoBase,"
+    }
+
+    // ---------------------------------------------
+    // ACTUALIZAR UI ESTADO SERVICIO (texto + puntico)
+    // ---------------------------------------------
+    private fun actualizarEstadoServicioUI() {
+        val b = _binding ?: return
+
+        // Texto
+        val textoEstado = if (estadoPaciente.isBlank()) {
+            "Sin servicio activo"
+        } else {
+            estadoPaciente
+        }
+        b.estadoServicio.text = textoEstado
+
+        // Puntico (usa circle_green y circle_red)
+        val esActivo = estadoPaciente.lowercase().contains("activo")
+        val drawableId = if (esActivo) {
+            R.drawable.circle_green
+        } else {
+            R.drawable.circle_red
+        }
+        b.indicadorEstado.setBackgroundResource(drawableId)
     }
 
     // ---------------------------------------------
@@ -79,7 +102,7 @@ class HomeBeneficiarioFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                // 1️⃣ Traer USUARIO por ID para obtener el nombre
+                // 1️⃣ Traer USUARIO por ID
                 val usuarioResp = withContext(Dispatchers.IO) {
                     RetrofitClient.usuarioApi.getUsuarioById(usuarioId)
                 }
@@ -101,44 +124,57 @@ class HomeBeneficiarioFragment : Fragment() {
                     nombrePaciente = "Usuario Previmed"
                 }
 
-                // Actualizar UI de forma segura
+                // Actualizar nombre e iniciales
                 setSaludo()
                 _binding?.nombreP?.text = nombrePaciente
                 _binding?.tvIniciales?.text = obtenerIniciales(nombrePaciente)
 
-                // 2️⃣ Membresía (aquí NO usamos campos específicos para que no dé error)
+                // 2️⃣ Membresía
                 val res = withContext(Dispatchers.IO) {
                     RetrofitClient.pagosApi.getMembresiaByUserId(usuarioId)
                 }
 
                 if (res.isSuccessful && res.body() != null) {
-                    // Si quieres, luego mapeas tu modelo real aquí
-                    planPaciente = ""              // aquí puedes poner el nombre del plan cuando sepas el campo
-                    estadoPaciente = "Activo"      // o el estado real
+                    val membresia = res.body()!!
 
-                    _binding?.estadoServicio?.text = estadoPaciente
+                    // TODO: si tu modelo tiene campos para plan/estado, los usas aquí:
+                    // planPaciente = membresia.planNombre ?: "Plan VIP"
+                    // estadoPaciente = membresia.estado ?: "Activo"
 
-                    // Si tu modelo tiene un pacienteId, aquí lo usas:
-                    // val membresia = res.body()!!
-                    // val pacienteId = membresia.pacienteId
-                    // if (pacienteId != null) {
-                    //     cargarVisitas(pacienteId)
-                    // }
+                    planPaciente = "Plan VIP"    // por defecto
+                    estadoPaciente = "Activo"    // por defecto
+
+                    _binding?.tvPlan?.text = planPaciente
+
+                    // 🔹 Enganchar visitas usando pacienteId de la membresía
+                    val pacienteId = membresia.pacienteId   // este campo ya lo tenías en tus comments
+                    if (pacienteId != null) {
+                        Log.d("HomeBeneficiario", "pacienteId = $pacienteId, cargando visitas…")
+                        cargarVisitas(pacienteId)
+                    } else {
+                        Log.d("HomeBeneficiario", "pacienteId es null, no se pueden cargar visitas")
+                        _binding?.tvVisitas?.text = "Sin visitas"
+                    }
 
                 } else {
                     estadoPaciente = "Sin servicio activo"
-                    _binding?.estadoServicio?.text = estadoPaciente
+                    _binding?.tvVisitas?.text = "Sin visitas"
                 }
+
+                // Actualizar texto + puntico según estadoPaciente
+                actualizarEstadoServicioUI()
 
             } catch (e: Exception) {
                 Log.e("HomeBeneficiario", "Error al cargar datos: ${e.message}", e)
-                _binding?.estadoServicio?.text = "Error al cargar datos"
+                estadoPaciente = "Error al cargar datos"
+                actualizarEstadoServicioUI()
+                _binding?.tvVisitas?.text = "Sin visitas"
             }
         }
     }
 
     // ---------------------------------------------
-    // VISITAS (la puedes enganchar cuando tengas el pacienteId)
+    // VISITAS (usa pacienteId)
     // ---------------------------------------------
     private fun cargarVisitas(pacienteId: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -149,18 +185,33 @@ class HomeBeneficiarioFragment : Fragment() {
 
                 if (res.isSuccessful && res.body() != null) {
                     val visitas = res.body()!!.msj
+                    Log.d("HomeBeneficiario", "Visitas recibidas: ${visitas?.size}")
+
                     if (!visitas.isNullOrEmpty()) {
-                        val visita = visitas.first()
-                        val fecha = formatearFecha(visita.fechaVisita ?: "")
+                        // Ordenar por fecha y tomar la última
+                        val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val visitasOrdenadas = visitas.sortedBy {
+                            try {
+                                formato.parse(it.fechaVisita ?: "1900-01-01")
+                            } catch (e: Exception) {
+                                null
+                            }
+                        }
+
+                        val ultimaVisita = visitasOrdenadas.last()
+                        val fecha = formatearFecha(ultimaVisita.fechaVisita ?: "")
+
                         _binding?.tvVisitas?.text = fecha
                     } else {
-                        _binding?.tvVisitas?.text = "Sin visitas agendadas"
+                        _binding?.tvVisitas?.text = "Sin visitas"
                     }
                 } else {
-                    _binding?.tvVisitas?.text = "Sin visitas agendadas"
+                    Log.d("HomeBeneficiario", "Respuesta visitas no exitosa")
+                    _binding?.tvVisitas?.text = "Sin visitas"
                 }
             } catch (e: Exception) {
-                _binding?.tvVisitas?.text = "Sin visitas agendadas"
+                Log.e("HomeBeneficiario", "Error cargando visitas: ${e.message}", e)
+                _binding?.tvVisitas?.text = "Sin visitas"
             }
         }
     }
@@ -217,15 +268,15 @@ class HomeBeneficiarioFragment : Fragment() {
 
         val tvInicial = view.findViewById<TextView>(R.id.tvInicialesPerfil)
         val tvNombre = view.findViewById<TextView>(R.id.tvNombrePerfil)
-        val tvPlan = view.findViewById<TextView>(R.id.tvPlanPerfil)
-        val tvEstado = view.findViewById<TextView>(R.id.tvEstadoPerfil)
+        val tvPlanPerfil = view.findViewById<TextView>(R.id.tvPlanPerfil)
+        val tvEstadoPerfil = view.findViewById<TextView>(R.id.tvEstadoPerfil)
         val btnCerrar = view.findViewById<TextView>(R.id.btnCerrarSesion)
         val btnSalir = view.findViewById<TextView>(R.id.btnCerrarDialogo)
 
         tvInicial.text = obtenerIniciales(nombrePaciente)
         tvNombre.text = nombrePaciente
-        tvPlan.text = "Plan: $planPaciente"
-        tvEstado.text = "Estado: $estadoPaciente"
+        tvPlanPerfil.text = "Plan: $planPaciente"
+        tvEstadoPerfil.text = "Estado: $estadoPaciente"
 
         btnSalir.setOnClickListener { dialog.dismiss() }
 

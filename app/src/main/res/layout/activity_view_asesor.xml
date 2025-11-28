@@ -16,7 +16,7 @@
         android:id="@+id/bottom_navigation_asesor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D9E4E4"
+        android:background="@color/gris_suave"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
