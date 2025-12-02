@@ -1,43 +1,49 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- ===============================
-         BASE THEME PREVIMED (Material 3)
-         =============================== -->
+    <!-- ======================================
+         BASE THEME PREVIMED (Material 3 limpio)
+         ====================================== -->
     <style name="Base.Theme.Previmed" parent="Theme.Material3.DayNight.NoActionBar">
 
-        <!-- Color de la barra de estado -->
-        <item name="android:statusBarColor">@color/AZUL_GENERAL</item>
+        <!-- 📱 Barra de estado -->
+        <item name="android:statusBarColor">@color/AZUL_BORDES</item>
+        <item name="android:windowLightStatusBar">false</item>
 
-        <!-- Fuerza a Material 3 a usar tus colores (evita el lila default) -->
-        <item name="colorPrimary">@color/AZUL_GENERAL</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <!-- 🎨 Paleta principal -->
+        <item name="colorPrimary">@color/AZUL_BORDES</item>
+        <item name="colorOnPrimary">@android:color/white</item>
 
         <item name="colorPrimaryContainer">@color/AzulCielo_Prevemed</item>
-        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorOnPrimaryContainer">@android:color/white</item>
 
         <item name="colorSecondary">@color/AzulCielo_Prevemed</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@android:color/white</item>
 
         <item name="colorSecondaryContainer">@color/AzulCielo_Prevemed</item>
-        <item name="colorOnSecondaryContainer">@color/white</item>
+        <item name="colorOnSecondaryContainer">@android:color/white</item>
 
-        <!-- Colores de superficies -->
+        <!-- 🧱 Superficie / fondos -->
         <item name="colorSurface">@color/FONDO_PREVIMED</item>
         <item name="colorOnSurface">@color/negro_texto</item>
 
-        <!-- Fondo general de toda la app -->
+        <!-- 🏠 Fondo de toda la app -->
         <item name="android:windowBackground">@color/fondo_app</item>
+
+        <!-- ✨ Evitar colores automáticos lilas de M3 -->
+        <item name="materialThemeOverlay">@null</item>
 
     </style>
 
-    <!-- Tu tema público -->
+    <!-- 🎨 Tema público usado por toda la app -->
     <style name="Theme.Previmed" parent="Base.Theme.Previmed" />
 
-    <!-- Indicador activo del BottomNavigation (sin el lila de M3) -->
+    <!-- ========================================
+         INDICADOR DEL BOTTOM NAVIGATION (AZUL)
+         ======================================== -->
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/gris_suave</item>
-        <item name="colorPrimaryContainer">@color/AZUL_GENERAL</item>
+        <item name="colorPrimaryContainer">@color/AZUL_BORDES</item>
         <item name="colorSecondaryContainer">@color/AzulCielo_Prevemed</item>
+        <item name="android:color">@color/AZUL_BORDES</item>
     </style>
 
 </resources>

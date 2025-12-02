@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +18,6 @@ import com.andres_lasso.previmed.databinding.FragmentVispendientesBeneficiarioBi
 import com.andres_lasso.previmed.interfaces.RetrofitClient
 import com.andres_lasso.previmed.utils.MedicoCache
 import com.andres_lasso.previmed.utils.PreferenceHelper
-import com.andres_lasso.previmed.model.Visita
 import kotlinx.coroutines.launch
 
 class VispendientesBeneficiarioFragment : Fragment() {
@@ -41,58 +39,51 @@ class VispendientesBeneficiarioFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("VISITA_FRAG", "Fragmento iniciado correctamente")
 
-        // Obtener ID del paciente logueado
+        // 🔹 Obtener ID del paciente logueado
         val idPaciente = PreferenceHelper.getIdPaciente(requireContext())?.toIntOrNull() ?: 0
         if (idPaciente == 0) {
-            Toast.makeText(requireContext(), "No hay paciente autenticado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "❌ No hay paciente autenticado", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Configurar el ViewModel
+        // 🔹 Configurar el ViewModel
         val visitaRepo = VisitaRepo(RetrofitClient.visitasApi)
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T =
                 VisitaViewModel(visitaRepo) as T
         })[VisitaViewModel::class.java]
 
-        // Configurar RecyclerView
-        adapter = VisitaAdapter(emptyList()) { visita ->
-            showConfirmDialog(visita, idPaciente)
-        }
+        // 🔹 Configurar RecyclerView
+        adapter = VisitaAdapter(emptyList())
 
         binding.rvVisitas.layoutManager = LinearLayoutManager(requireContext())
         binding.rvVisitas.adapter = adapter
 
-        // Cargar médicos primero, luego visitas
+        // 🔹 Cargar médicos primero, luego visitas
         lifecycleScope.launch {
             try {
                 val respuesta = RetrofitClient.visitasApi.getMedicos()
                 if (respuesta.isSuccessful) {
                     MedicoCache.set(respuesta.body()?.data ?: emptyList())
+                    Log.d("VISITA_FRAG", "✅ Médicos cargados en cache")
                     viewModel.obtenerVisitas(idPaciente)
                 } else {
-                    Toast.makeText(requireContext(), "Error al obtener médicos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "❌ Error al obtener médicos", Toast.LENGTH_SHORT).show()
+                    Log.e("VISITA_FRAG", "Error HTTP: ${respuesta.code()}")
                 }
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "❌ Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("VISITA_FRAG", "🚨 Error al cargar médicos", e)
             }
         }
 
-        // Observar cambios
+        // 🔹 Observar cambios en las visitas
         viewModel.visitas.observe(viewLifecycleOwner) { visitas ->
+            if (visitas.isEmpty()) {
+                Toast.makeText(requireContext(), "✅ No hay visitas pendientes", Toast.LENGTH_SHORT).show()
+            }
             adapter.submitList(visitas)
         }
-    }
-
-    private fun showConfirmDialog(visita: Visita, idPaciente: Int) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Cancelar visita")
-            .setMessage("¿Deseas cancelar esta visita?")
-            .setPositiveButton("Sí") { _, _ ->
-                viewModel.cancelarVisita(visita.idVisita.toString(), idPaciente)
-            }
-            .setNegativeButton("No", null)
-            .show()
     }
 
     override fun onDestroyView() {

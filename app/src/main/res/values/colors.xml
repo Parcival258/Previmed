@@ -28,6 +28,22 @@
     <color name="statusBarLiteGray">#000000</color>
 
 
+    <!-- ===============================
+         PALETA OSCURA PREVIMED
+         =============================== -->
+
+    <!-- Fondo principal de la app -->
+    <color name="fondo_app_dark">#0D1520</color>
+
+    <!-- Superficie de tarjetas y pantallas -->
+    <color name="FONDO_PREVIMED_DARK">#111B29</color>
+
+    <!-- Texto blanco suave -->
+    <color name="white_soft">#F5F7FA</color>
+
+
+    <!-- Negro para textos intensos -->
+    <color name="negro_dark">#E6E6E6</color>
 
 
 </resources>
