@@ -1,3 +1,5 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+# Ignorar archivo de configuración de despliegue de Android Studio
+.idea/deploymentTargetSelector.xml
