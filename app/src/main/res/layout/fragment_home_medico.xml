@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondo_app"
-    tools:context=".controller.medico.fragmentMedico.HomeMedico">
+    android:background="@color/fondo_app">
 
-    <!-- FOTO DEL MÉDICO -->
+    <!-- TITULO -->
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Perfil del Médico"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/negro_texto"
+        android:layout_marginTop="52dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- FOTO -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardDoctorPhoto"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="48dp"
-        app:cardCornerRadius="75dp"
-        app:cardElevation="10dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="60dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="3dp"
+        app:strokeColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/txtTitulo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -24,19 +37,18 @@
             android:id="@+id/imgDoctor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:contentDescription="Foto del médico" />
+            android:scaleType="centerCrop"/>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- TARJETA INFORMACIÓN -->
+    <!-- INFORMACIÓN -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginHorizontal="24dp"
-        app:cardCornerRadius="26dp"
-        app:cardElevation="8dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="42dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp"
         app:cardBackgroundColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@id/cardDoctorPhoto"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,17 +56,17 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:padding="26dp"
-            android:gravity="center_horizontal"
+            android:padding="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="start">
 
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dr(a). Nombre Apellido"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/negro_texto" />
 
@@ -62,100 +74,92 @@
                 android:id="@+id/txtSpecialty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Médico general"
-                android:textSize="15sp"
-                android:textColor="@color/black"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="14dp"
+                android:text="Médico general"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E3E3E3"
-                android:layout_marginBottom="18dp" />
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="14dp"
+                android:background="#DCDCDC" />
 
             <TextView
                 android:id="@+id/txtAbout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Acerca de:\nBrinda atención humana y profesional."
-                android:textSize="16sp"
+                android:text="Acerca de: Brinda atención humana y profesional."
                 android:textColor="@color/negro_texto"
-                android:gravity="center"
-                android:lineSpacingExtra="6dp" />
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <!-- BOTONES -->
     <LinearLayout
-        android:id="@+id/buttonsContainer"
+        android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintTop_toBottomOf="@id/cardInfo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- BOTÓN 1 - PROFESIONAL PREMIUM -->
+        <!-- DISPONIBILIDAD -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEstado"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="48dp"
             android:text="Cambiar disponibilidad"
             android:textAllCaps="false"
             android:textStyle="bold"
             android:textColor="@color/AZUL_BORDES"
-            app:cornerRadius="20dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/AZUL_BORDES"
-            app:backgroundTint="@android:color/white"
+            app:backgroundTint="#EEF5FF"
+            app:cornerRadius="14dp"
             app:icon="@drawable/ic_disponible"
-            app:iconPadding="12dp"
             app:iconTint="@color/AZUL_BORDES"
-            app:iconGravity="textStart" />
+            app:iconPadding="10dp"
+            app:iconGravity="textStart"/>
 
-        <!-- BOTÓN 2 - PROFESIONAL PREMIUM -->
+        <!-- ACTIVO -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnActivo"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="14dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
             android:text="Cambiar estado"
             android:textAllCaps="false"
             android:textStyle="bold"
             android:textColor="@color/AZUL_BORDES"
-            app:cornerRadius="20dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/AZUL_BORDES"
-            app:backgroundTint="@android:color/white"
+            app:backgroundTint="#EEF5FF"
+            app:cornerRadius="14dp"
             app:icon="@drawable/ic_estado"
-            app:iconPadding="12dp"
             app:iconTint="@color/AZUL_BORDES"
-            app:iconGravity="textStart" />
+            app:iconPadding="10dp"
+            app:iconGravity="textStart"/>
 
-        <!-- BOTÓN 3 - PROFESIONAL PREMIUM ROJO -->
+        <!-- LOGOUT -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="14dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="52dp"
             android:text="Cerrar sesión"
             android:textAllCaps="false"
             android:textStyle="bold"
             android:textColor="@color/rojo_estado"
-            app:cornerRadius="20dp"
-            app:strokeWidth="2dp"
+            app:cornerRadius="14dp"
             app:strokeColor="@color/rojo_estado"
+            app:strokeWidth="2dp"
             app:backgroundTint="@android:color/white"
             app:icon="@drawable/ic_logout"
-            app:iconPadding="12dp"
             app:iconTint="@color/rojo_estado"
-            app:iconGravity="textStart" />
-
-
+            app:iconPadding="10dp"
+            app:iconGravity="textStart"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
