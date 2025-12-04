@@ -8,10 +8,33 @@
     android:fitsSystemWindows="true"
     tools:context=".view.pagos.PagosAdd">
 
+    <!-- 🔵 HEADER AZUL -->
+    <LinearLayout
+        android:id="@+id/headerPagos"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@drawable/bg_header_contrato"
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/tvHeaderTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registro de Pago"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="26sp"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- 📜 CONTENIDO PRINCIPAL -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:layout_marginTop="95dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,21 +42,14 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Registro de Pago"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="#222222"
-                android:layout_marginBottom="20dp" />
-
+            <!-- TARJETA -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="20dp"
                 android:elevation="6dp"
+                android:background="@drawable/bg_formulario"
                 android:layout_marginBottom="24dp">
 
                 <!-- TITULAR -->
@@ -45,23 +61,75 @@
                     android:textColor="#555"
                     android:layout_marginBottom="6dp" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <AutoCompleteTextView
+                    android:id="@+id/etBuscarTitular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    android:hint="Buscar por nombre o cédula..."
+                    android:padding="12dp"
+                    android:inputType="text"
+                    android:background="@drawable/bg_spinner"
+                    android:layout_marginBottom="16dp" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/autoTitular"
-                        android:layout_width="match_parent"
+                <!-- 📷 SUBIR FOTO -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comprobante (Foto)"
+                    android:textStyle="bold"
+                    android:textColor="#555"
+                    android:layout_marginBottom="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:weightSum="2"
+                    android:layout_marginBottom="20dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnTomarFoto"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="Buscar titular..."
-                        android:padding="10dp"
-                        android:background="@drawable/bg_spinner"
-                        android:inputType="text"
-                        android:completionThreshold="1" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_weight="1"
+                        android:text="Tomar Foto"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:backgroundTint="#1976D2"
+                        android:paddingVertical="12dp"
+                        app:cornerRadius="14dp"
+                        android:elevation="6dp" />
 
+                    <View
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSubirFoto"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Elegir Imagen"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:backgroundTint="#0288D1"
+                        android:paddingVertical="12dp"
+                        app:cornerRadius="14dp"
+                        android:elevation="6dp" />
+                </LinearLayout>
+
+                <!-- 📸 PREVIEW -->
+                <ImageView
+                    android:id="@+id/ivPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginBottom="20dp"
+                    android:scaleType="centerCrop"
+                    android:background="#E0E0E0"
+                    android:contentDescription="Vista previa del comprobante" />
 
                 <!-- FECHAS -->
                 <LinearLayout
@@ -71,6 +139,7 @@
                     android:weightSum="2"
                     android:layout_marginBottom="12dp">
 
+                    <!-- FECHA INICIO -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -100,6 +169,7 @@
                         android:layout_width="12dp"
                         android:layout_height="match_parent" />
 
+                    <!-- FECHA FIN -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -126,7 +196,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- FECHA DE PAGO -->
+                <!-- FECHA PAGO -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -146,7 +216,7 @@
                     android:background="@drawable/bg_spinner"
                     android:layout_marginBottom="12dp" />
 
-                <!-- FORMA DE PAGO -->
+                <!-- FORMA PAGO -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -164,7 +234,7 @@
                     android:paddingHorizontal="12dp"
                     android:layout_marginBottom="12dp" />
 
-                <!-- NUMERO DE RECIBO -->
+                <!-- RECIBO -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -204,6 +274,7 @@
 
             </LinearLayout>
 
+            <!-- BOTÓN GUARDAR -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGuardar"
                 android:layout_width="match_parent"
@@ -217,7 +288,6 @@
                 android:paddingVertical="14dp"
                 android:elevation="8dp"
                 android:layout_marginBottom="40dp" />
-
         </LinearLayout>
 
     </ScrollView>

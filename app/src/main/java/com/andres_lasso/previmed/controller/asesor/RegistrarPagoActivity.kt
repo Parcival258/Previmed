@@ -1,5 +1,6 @@
 package com.andres_lasso.previmed.controller.asesor
 
+
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
@@ -151,11 +152,12 @@ class RegistrarPagoActivity : AppCompatActivity() {
             fecha_pago = fechaPago,
             membresia_id = membresiaId,
             forma_pago_id = formaPagoId,
-            cobrador_id = idAsesor,      // ⭐ SE ENVÍA EL ID DEL ASESOR CORRECTO
+            cobrador_id = idAsesor,   // ← FIX
             numero_recibo = null,
             estado = "Pendiente",
             foto = null
         )
+
 
         progressBar.visibility = View.VISIBLE
         btnRegistrarPago.isEnabled = false

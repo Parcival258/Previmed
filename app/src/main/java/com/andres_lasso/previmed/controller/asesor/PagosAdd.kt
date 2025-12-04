@@ -1,269 +1,455 @@
 package com.andres_lasso.previmed.view.pagos
 
+import android.Manifest
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.provider.MediaStore
+import android.util.Log
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.andres_lasso.previmed.R
-import com.andres_lasso.previmed.databinding.ActivityPagosAddBinding
 import com.andres_lasso.previmed.interfaces.RetrofitClient
-import com.andres_lasso.previmed.model.*
+import com.andres_lasso.previmed.model.ApiResponse
+import com.andres_lasso.previmed.model.FormaPago
+import com.andres_lasso.previmed.model.PacienteData
+import com.andres_lasso.previmed.model.PagoRequest
 import com.andres_lasso.previmed.utils.PreferenceHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 
 class PagosAdd : AppCompatActivity() {
 
-    private lateinit var binding: ActivityPagosAddBinding
-    private var listaTitulares = listOf<PacienteData>()
-    private var listaFormasPago = listOf<FormaPago>()
-    private var membresiaIdSeleccionada: Int = -1
-    private var formaPagoIdSeleccionada: Int = -1
+    private val tag = "PagosAdd"
 
-    private lateinit var biometricPrompt: BiometricPrompt
-    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private lateinit var etBuscarTitular: AutoCompleteTextView
+    private lateinit var btnSubirFoto: Button
+    private lateinit var btnTomarFoto: Button
+    private lateinit var ivPreview: ImageView
+    private lateinit var etFechaInicio: EditText
+    private lateinit var etFechaFin: EditText
+    private lateinit var etFechaPago: EditText
+    private lateinit var spinnerFormaPago: Spinner
+    private lateinit var etNumeroRecibo: EditText
+    private lateinit var etMonto: EditText
+    private lateinit var btnGuardar: Button
 
-    private val asesorId: String by lazy {
-        PreferenceHelper.getIdAsesor(this) ?: ""
-    }
+    private var fotoUri: Uri? = null
+    private var listaTitulares: List<PacienteData> = emptyList()
+    private var formaPagoList: List<FormaPago> = emptyList()
+    private var selectedTitularId: Int? = null
+    private var selectedMembresiaId: Int? = null
+    private var selectedFormaPagoId: Int? = null
 
+    // ===== Permisos =====
+    private val requestPermissionsLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val cameraGranted = permissions[Manifest.permission.CAMERA] ?: false
+            val storageGranted =
+                permissions[Manifest.permission.READ_MEDIA_IMAGES]
+                    ?: permissions[Manifest.permission.READ_EXTERNAL_STORAGE]
+                    ?: false
+            if (!cameraGranted || !storageGranted) {
+                Toast.makeText(this, "Necesitas conceder permisos.", Toast.LENGTH_LONG).show()
+            }
+        }
+
+    // Galería
+    private val seleccionarImagen =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                fotoUri = it
+                ivPreview.setImageURI(it)
+            }
+        }
+
+    // Cámara
+    private val tomarFoto =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val bitmap = result.data?.extras?.get("data") as? Bitmap ?: return@registerForActivityResult
+                ivPreview.setImageBitmap(bitmap)
+
+                val file = File(cacheDir, "foto_capturada.jpg")
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
+                file.writeBytes(stream.toByteArray())
+                fotoUri = Uri.fromFile(file)
+            }
+        }
+
+    // ===== Ciclo de vida =====
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_pagos_add)
 
-        WindowCompat.setDecorFitsSystemWindows(window, true)
-        binding = ActivityPagosAddBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
-        window.statusBarColor = ContextCompat.getColor(this, R.color.statusBarLiteGray)
-
-        setupBiometric()
-        cargarTitulares()
+        initViews()
+        pedirPermisos()
         cargarFormasPago()
-        setupDatePickers()
+        cargarTitulares()
 
-        // Para que abra la lista como spinner
-        binding.autoTitular.setOnClickListener {
-            binding.autoTitular.showDropDown()
+        etFechaInicio.setOnClickListener { showDatePicker(etFechaInicio) }
+        etFechaFin.setOnClickListener { showDatePicker(etFechaFin) }
+        etFechaPago.setOnClickListener { showDatePicker(etFechaPago) }
+
+        btnSubirFoto.setOnClickListener {
+            if (verificarPermisoLectura()) seleccionarImagen.launch("image/*")
         }
 
-        // Búsqueda mientras escribe
-        binding.autoTitular.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {}
+        btnTomarFoto.setOnClickListener {
+            if (verificarPermisoCamara()) abrirCamara()
+        }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.autoTitular.showDropDown()
+        btnGuardar.setOnClickListener {
+            guardarPago()
+        }
+    }
+
+    // ===== Inicialización =====
+    private fun initViews() {
+        etBuscarTitular = findViewById(R.id.etBuscarTitular)
+        btnSubirFoto = findViewById(R.id.btnSubirFoto)
+        btnTomarFoto = findViewById(R.id.btnTomarFoto)
+        ivPreview = findViewById(R.id.ivPreview)
+        etFechaInicio = findViewById(R.id.etFechaInicio)
+        etFechaFin = findViewById(R.id.etFechaFin)
+        etFechaPago = findViewById(R.id.etFechaPago)
+        spinnerFormaPago = findViewById(R.id.spinnerFormaPago)
+        etNumeroRecibo = findViewById(R.id.etNumeroRecibo)
+        etMonto = findViewById(R.id.etMonto)
+        btnGuardar = findViewById(R.id.btnGuardar)
+
+        // 👇 Muy importante para que autocomplete funcione “rápido”
+        etBuscarTitular.threshold = 1
+
+        // Mostrar dropdown al hacer foco
+        etBuscarTitular.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus && listaTitulares.isNotEmpty()) {
+                (v as AutoCompleteTextView).showDropDown()
             }
-        })
+        }
 
-        binding.btnGuardar.setOnClickListener {
-            if (validarCampos()) {
-                if (isBiometricAvailable()) {
-                    mostrarBiometricPrompt()
-                } else {
-                    registrarPago()
-                }
+        // Y también al hacer click en el campo
+        etBuscarTitular.setOnClickListener {
+            if (listaTitulares.isNotEmpty()) {
+                etBuscarTitular.showDropDown()
             }
         }
     }
 
-    private fun setupBiometric() {
-        val executor = ContextCompat.getMainExecutor(this)
+    private fun pedirPermisos() {
+        val permisos = mutableListOf<String>()
+        permisos.add(Manifest.permission.CAMERA)
+        if (Build.VERSION.SDK_INT >= 33) {
+            permisos.add(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            permisos.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+        requestPermissionsLauncher.launch(permisos.toTypedArray())
+    }
 
-        biometricPrompt = BiometricPrompt(
-            this,
-            executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    registrarPago()
+    private fun verificarPermisoCamara(): Boolean =
+        ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+    private fun verificarPermisoLectura(): Boolean {
+        val permiso =
+            if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES
+            else Manifest.permission.READ_EXTERNAL_STORAGE
+        return ContextCompat.checkSelfPermission(this, permiso) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun abrirCamara() {
+        tomarFoto.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+    }
+
+    // ===== Datos de backend =====
+
+    /** Carga TODOS los pacientes; validamos membresía al guardar. */
+    private fun cargarTitulares() {
+        RetrofitClient.pacienteApi.getTitulares()
+            .enqueue(object : retrofit2.Callback<ApiResponse<List<PacienteData>>> {
+                override fun onResponse(
+                    call: retrofit2.Call<ApiResponse<List<PacienteData>>>,
+                    response: retrofit2.Response<ApiResponse<List<PacienteData>>>
+                ) {
+                    if (response.isSuccessful) {
+                        val titulares = response.body()?.data ?: emptyList()
+
+                        // 🔹 Filtrar solo los que tengan membresías activas
+                        listaTitulares = titulares.filter { titular ->
+                            !titular.membresiaPaciente.isNullOrEmpty()
+                        }
+
+                        Log.d(tag, "Titulares recibidos: ${titulares.size}, con membresía: ${listaTitulares.size}")
+
+                        if (listaTitulares.isEmpty()) {
+                            Toast.makeText(
+                                this@PagosAdd,
+                                "No hay titulares con membresía activa.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                        configurarAutoComplete()
+                    } else {
+                        Log.e(tag, "Error al cargar titulares: ${response.errorBody()?.string()}")
+                    }
                 }
-            }
+
+                override fun onFailure(
+                    call: retrofit2.Call<ApiResponse<List<PacienteData>>>,
+                    t: Throwable
+                ) {
+                    Log.e(tag, "Fallo al cargar titulares: ${t.message}")
+                }
+            })
+    }
+
+
+
+
+
+    private fun configurarAutoComplete() {
+        if (listaTitulares.isEmpty()) return
+
+        // 🔹 Armamos el texto que verá el usuario en el dropdown
+        val listaStrings = listaTitulares.map { titular ->
+            val nombre = titular.usuario?.nombre ?: "Sin nombre"
+            val documento = titular.usuario?.numeroDocumento ?: "Sin doc"
+
+            // Tomamos la primera membresía asociada al titular
+            val membresiaId = titular.membresiaPaciente
+                ?.firstOrNull()
+                ?.membresiaId
+
+            val membresiaTexto = membresiaId?.let { "Membresía $it" } ?: "Sin membresía"
+
+            "$nombre - $documento - $membresiaTexto"
+        }
+
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_dropdown_item_1line,
+            listaStrings
         )
 
-        promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Confirmar Registro de Pago")
-            .setSubtitle("Verifica tu identidad para registrar el pago")
-            .setDescription("Usa tu huella digital o reconocimiento facial")
-            .setNegativeButtonText("Cancelar")
-            .build()
-    }
+        etBuscarTitular.setAdapter(adapter)
+        etBuscarTitular.threshold = 1
 
-    private fun isBiometricAvailable(): Boolean {
-        val biometricManager = BiometricManager.from(this)
-        return biometricManager.canAuthenticate(
-            BiometricManager.Authenticators.BIOMETRIC_WEAK or
-                    BiometricManager.Authenticators.BIOMETRIC_STRONG
-        ) == BiometricManager.BIOMETRIC_SUCCESS
-    }
-
-    private fun mostrarBiometricPrompt() {
-        biometricPrompt.authenticate(promptInfo)
-    }
-
-    private fun setupDatePickers() {
-        val addPicker = { editText: EditText ->
-            val c = Calendar.getInstance()
-            DatePickerDialog(
-                this,
-                { _, y, m, d -> editText.setText(String.format("%04d-%02d-%02d", y, m + 1, d)) },
-                c.get(Calendar.YEAR),
-                c.get(Calendar.MONTH),
-                c.get(Calendar.DAY_OF_MONTH)
-            ).show()
+        etBuscarTitular.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus && listaTitulares.isNotEmpty()) {
+                (v as AutoCompleteTextView).showDropDown()
+            }
         }
 
-        binding.etFechaInicio.setOnClickListener { addPicker(binding.etFechaInicio) }
-        binding.etFechaFin.setOnClickListener { addPicker(binding.etFechaFin) }
-        binding.etFechaPago.setOnClickListener { addPicker(binding.etFechaPago) }
-    }
+        etBuscarTitular.setOnClickListener {
+            if (listaTitulares.isNotEmpty()) {
+                etBuscarTitular.showDropDown()
+            }
+        }
 
-    private fun validarCampos(): Boolean {
-        return when {
-            membresiaIdSeleccionada == -1 -> show("Selecciona un titular")
-            formaPagoIdSeleccionada == -1 -> show("Selecciona una forma de pago")
-            binding.etMonto.text.isNullOrBlank() -> show("Ingresa el monto")
-            binding.etFechaInicio.text.isNullOrBlank() -> show("Selecciona fecha de inicio")
-            binding.etFechaFin.text.isNullOrBlank() -> show("Selecciona fecha fin")
-            binding.etFechaPago.text.isNullOrBlank() -> show("Selecciona fecha pago")
-            binding.etNumeroRecibo.text.isNullOrBlank() -> show("Ingresa número de recibo")
-            asesorId.isEmpty() -> show("No se encontró el asesor")
-            else -> true
+        // 🔹 Cuando seleccionan un item, usamos el "position" para
+        // obtener el mismo titular de la lista
+        etBuscarTitular.setOnItemClickListener { _, _, position, _ ->
+            val titular = listaTitulares[position]
+
+            // Guardamos el id del titular seleccionado
+            selectedTitularId = titular.idPaciente
+
+            // Sacamos la primera relación de membresía y su id
+            val relacionMembresia = titular.membresiaPaciente?.firstOrNull()
+            selectedMembresiaId = relacionMembresia?.membresiaId
+
+            Log.d(
+                tag,
+                "✅ Titular seleccionado -> idPaciente=${titular.idPaciente}, " +
+                        "pacienteId=${titular.pacienteId}, membresiaId=${relacionMembresia?.membresiaId}"
+            )
         }
     }
 
-    private fun show(msg: String): Boolean {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-        return false
-    }
 
-    private fun cargarTitulares() {
-        RetrofitClient.pacienteApi.getTitulares().enqueue(object :
-            Callback<ApiResponse<List<PacienteData>>> {
 
-            override fun onResponse(
-                call: Call<ApiResponse<List<PacienteData>>>,
-                res: Response<ApiResponse<List<PacienteData>>>
-            ) {
-                listaTitulares = res.body()?.data ?: emptyList()
-
-                val nombres = listaTitulares.map {
-                    "${it.usuario?.nombre} ${it.usuario?.apellido}"
-                }
-
-                val adapter = ArrayAdapter(
-                    this@PagosAdd,
-                    android.R.layout.simple_dropdown_item_1line,
-                    nombres
-                )
-
-                binding.autoTitular.setAdapter(adapter)
-
-                binding.autoTitular.setOnItemClickListener { _, _, pos, _ ->
-                    membresiaIdSeleccionada =
-                        listaTitulares[pos].membresiaPaciente?.firstOrNull()?.membresiaId ?: -1
-                }
-            }
-
-            override fun onFailure(call: Call<ApiResponse<List<PacienteData>>>, t: Throwable) {
-                show("Error cargando titulares")
-            }
-        })
-    }
 
     private fun cargarFormasPago() {
-        RetrofitClient.formaPagoApi.getFormasPago().enqueue(object :
-            Callback<List<FormaPago>> {
+        RetrofitClient.formaPagoApi.getFormasPago()
+            .enqueue(object : retrofit2.Callback<List<FormaPago>> {
+                override fun onResponse(
+                    call: retrofit2.Call<List<FormaPago>>,
+                    response: retrofit2.Response<List<FormaPago>>
+                ) {
+                    if (response.isSuccessful) {
+                        formaPagoList = response.body()?.filter { it.estado } ?: emptyList()
+                        spinnerFormaPago.adapter = ArrayAdapter(
+                            this@PagosAdd,
+                            android.R.layout.simple_spinner_item,
+                            formaPagoList.map { it.tipoPago ?: "Sin nombre" }
+                        )
+                        spinnerFormaPago.onItemSelectedListener =
+                            object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    parent: AdapterView<*>?,
+                                    view: android.view.View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    selectedFormaPagoId = formaPagoList[position].idFormaPago
+                                }
 
-            override fun onResponse(call: Call<List<FormaPago>>, res: Response<List<FormaPago>>) {
-                listaFormasPago = res.body() ?: emptyList()
-
-                val nombres = listaFormasPago.map { it.tipoPago ?: "" }
-
-                val adapter = ArrayAdapter(
-                    this@PagosAdd,
-                    android.R.layout.simple_spinner_item,
-                    nombres
-                )
-
-                binding.spinnerFormaPago.adapter = adapter
-
-                binding.spinnerFormaPago.setOnItemSelectedListener(object :
-                    AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: android.view.View?,
-                        pos: Int,
-                        id: Long
-                    ) {
-                        formaPagoIdSeleccionada = listaFormasPago[pos].idFormaPago ?: -1
+                                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                            }
+                    } else {
+                        Log.e(tag, "Error cargando formas de pago: ${response.errorBody()?.string()}")
                     }
+                }
 
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                })
-            }
-
-            override fun onFailure(call: Call<List<FormaPago>>, t: Throwable) {
-                show("Error cargando formas de pago")
-            }
-        })
+                override fun onFailure(call: retrofit2.Call<List<FormaPago>>, t: Throwable) {
+                    Log.e(tag, "Error cargando formas de pago: ${t.message}")
+                }
+            })
     }
 
-    private fun registrarPago() {
+    // ===== UI helpers =====
 
-        val pago = PagoRequest(
-            monto = binding.etMonto.text.toString().toDouble(),
-            fecha_inicio = binding.etFechaInicio.text.toString(),
-            fecha_fin = binding.etFechaFin.text.toString(),
-            fecha_pago = binding.etFechaPago.text.toString(),
-            membresia_id = membresiaIdSeleccionada,
-            forma_pago_id = formaPagoIdSeleccionada,
-            cobrador_id = asesorId,
-            numero_recibo = binding.etNumeroRecibo.text.toString(),
-            estado = "Pendiente",
-            foto = null
+    private fun showDatePicker(edt: EditText) {
+        val c = Calendar.getInstance()
+        DatePickerDialog(
+            this,
+            { _, year, month, day ->
+                edt.setText(String.format(Locale.US, "%04d-%02d-%02d", year, month + 1, day))
+            },
+            c.get(Calendar.YEAR),
+            c.get(Calendar.MONTH),
+            c.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    // ===== Guardar pago =====
+
+    private fun guardarPago() {
+        val monto = etMonto.text.toString()
+        val fechaInicio = etFechaInicio.text.toString()
+        val fechaFin = etFechaFin.text.toString()
+        val fechaPago = etFechaPago.text.toString()
+        val numeroRecibo = etNumeroRecibo.text.toString().ifBlank { "" }
+        val cobradorId = PreferenceHelper.getIdAsesor(this) ?: ""
+
+        if (selectedTitularId == null) {
+            Toast.makeText(this, "Seleccione un titular", Toast.LENGTH_LONG).show()
+            return
+        }
+        if (selectedFormaPagoId == null) {
+            Toast.makeText(this, "Seleccione una forma de pago", Toast.LENGTH_LONG).show()
+            return
+        }
+        if (monto.isBlank()) {
+            Toast.makeText(this, "Ingrese un monto", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // Validamos membresía aquí (no en el filtro)
+        if (selectedMembresiaId == null) {
+            Toast.makeText(
+                this,
+                "El titular seleccionado no tiene una membresía asociada",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
+        Log.d(
+            tag,
+            "🧾 Enviando -> monto=$monto, membresiaId=$selectedMembresiaId, formaPagoId=$selectedFormaPagoId, cobradorId=$cobradorId"
         )
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val res = RetrofitClient.pagoApi.createPago(pago)
-
-                runOnUiThread {
-                    if (res.isSuccessful) {
-                        show("Pago registrado")
-                        limpiar()
-                    } else {
-                        show("Error: ${res.code()}")
-                    }
+                val api = RetrofitClient.pagoApi
+                val response = if (fotoUri != null) {
+                    api.createPagoConFoto(
+                        monto.toRequest(),
+                        fechaInicio.toRequestOrEmpty(),
+                        fechaFin.toRequestOrEmpty(),
+                        fechaPago.toRequest(),
+                        selectedMembresiaId!!.toRequest(),
+                        selectedFormaPagoId!!.toRequest(),
+                        numeroRecibo.toRequest(),
+                        cobradorId.toRequest(),
+                        "Pendiente".toRequest(),
+                        prepareFilePart("foto", fotoUri!!)
+                    )
+                } else {
+                    api.createPago(
+                        PagoRequest(
+                            monto = monto.toDouble(),
+                            fecha_inicio = fechaInicio.ifBlank { null },
+                            fecha_fin = fechaFin.ifBlank { null },
+                            fecha_pago = fechaPago,
+                            membresia_id = selectedMembresiaId!!,
+                            forma_pago_id = selectedFormaPagoId!!,
+                            numero_recibo = numeroRecibo,
+                            cobrador_id = cobradorId,
+                            estado = "Pendiente",
+                            foto = null
+                        )
+                    )
                 }
 
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(
+                            this@PagosAdd,
+                            "Pago registrado correctamente",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this@PagosAdd,
+                            "Error: ${response.errorBody()?.string()}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             } catch (e: Exception) {
-                runOnUiThread {
-                    show("Excepción: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@PagosAdd, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    Log.e(tag, "Error guardando pago", e)
                 }
             }
         }
     }
 
-    private fun limpiar() {
-        binding.etMonto.text.clear()
-        binding.etFechaInicio.text.clear()
-        binding.etFechaFin.text.clear()
-        binding.etFechaPago.text.clear()
-        binding.etNumeroRecibo.text.clear()
-        binding.autoTitular.text.clear()
-        binding.spinnerFormaPago.setSelection(0)
+    // ===== Helpers Multipart =====
+
+    private fun String.toRequest(): RequestBody =
+        this.toRequestBody("text/plain".toMediaTypeOrNull())
+
+    private fun String?.toRequestOrEmpty(): RequestBody =
+        (this ?: "").toRequest()
+
+    private fun Int.toRequest(): RequestBody =
+        this.toString().toRequest()
+
+    private fun prepareFilePart(partName: String, uri: Uri): MultipartBody.Part {
+        val file = File(cacheDir, "upload_image.jpg")
+        contentResolver.openInputStream(uri)?.use { input ->
+            file.outputStream().use { output -> input.copyTo(output) }
+        }
+        val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
+        return MultipartBody.Part.createFormData(partName, file.name, requestBody)
     }
 }

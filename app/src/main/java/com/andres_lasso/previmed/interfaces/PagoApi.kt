@@ -1,5 +1,7 @@
 package com.andres_lasso.previmed.interfaces
 
+
+import com.andres_lasso.previmed.model.ApiResponse
 import com.andres_lasso.previmed.model.PagoModel
 import com.andres_lasso.previmed.model.PagoRequest
 import com.andres_lasso.previmed.model.PagosResponse
@@ -15,10 +17,12 @@ import retrofit2.http.Part
 interface PagoApi {
 
     @GET("registros-pago")
-    suspend fun obtenerPagos(): PagosResponse
+    suspend fun obtenerPagos(): PagosResponse   // esto ya encaja con { data: [...] }
 
     @POST("registro-pago")
-    suspend fun createPago(@Body pago: PagoRequest): Response<PagoModel>
+    suspend fun createPago(
+        @Body pago: PagoRequest
+    ): Response<ApiResponse<PagoModel>>
 
     @Multipart
     @POST("registro-pago")
@@ -28,10 +32,10 @@ interface PagoApi {
         @Part("fecha_fin") fechaFin: RequestBody,
         @Part("fecha_pago") fechaPago: RequestBody,
         @Part("membresia_id") membresiaId: RequestBody,
-        @Part("forma_pago_id") formaPagoId: RequestBody?,
-        @Part("numero_recibo") numeroRecibo: RequestBody?,
-        @Part("cobrador_id") cobradorId: RequestBody?,
-        @Part("estado") estado: RequestBody?,
-        @Part foto: MultipartBody.Part?
-    ): Response<PagoModel>
+        @Part("forma_pago_id") formaPagoId: RequestBody,
+        @Part("numero_recibo") numeroRecibo: RequestBody?,   // opcional
+        @Part("cobrador_id") cobradorId: RequestBody?,       // opcional
+        @Part("estado") estado: RequestBody?,                // opcional
+        @Part foto: MultipartBody.Part?                      // opcional
+    ): Response<ApiResponse<PagoModel>>
 }

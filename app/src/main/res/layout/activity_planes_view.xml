@@ -6,24 +6,35 @@
     tools:context=".controller.asesor.PlanesView"
     android:background="@color/white">
 
-    <!-- El padding superior se agregará desde Kotlin con WindowInsets -->
     <LinearLayout
         android:id="@+id/rootLayoutPlanes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvTituloPlanes"
+        <!-- 🔵 HEADER CON IMAGEN -->
+        <LinearLayout
+            android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Planes Previmed"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
+            android:layout_height="85dp"
+            android:background="@drawable/bg_header_contrato"
+            android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="10dp" />
+            android:padding="20dp">
 
+            <TextView
+                android:id="@+id/tvTituloPlanes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Planes Previmed"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <!-- 📋 LISTA DE PLANES -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_planes_asesor"
             android:layout_width="match_parent"
