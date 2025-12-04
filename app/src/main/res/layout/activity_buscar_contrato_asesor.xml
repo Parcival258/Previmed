@@ -9,70 +9,84 @@
     android:fitsSystemWindows="false"
     tools:context=".controller.asesor.fragmentAsesor.BuscarContratoAsesor">
 
-    <!-- 📌 IMPORTANTE:
-         El padding superior LO AGREGA el Activity usando WindowInsets.
-         No colocar paddingTop aquí. -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp">
+        android:orientation="vertical">
 
-        <!-- 🏷️ Título principal -->
-        <TextView
-            android:id="@+id/tvTituloBuscarContrato"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Buscar Contrato"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:paddingVertical="10dp" />
-
-        <!-- 🔍 Barra de búsqueda moderna -->
+        <!-- 🔵 HEADER CON IMAGEN + TÍTULO -->
         <LinearLayout
+            android:id="@+id/headerBuscarContrato"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:background="@drawable/bg_search_box"
-            android:paddingHorizontal="16dp"
-            android:layout_marginVertical="12dp"
-            android:elevation="6dp"
-            android:clipToOutline="true">
+            android:layout_height="85dp"
+            android:background="@drawable/bg_header_contrato"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp">
 
-            <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:src="@android:drawable/ic_menu_search"
-                android:contentDescription="Buscar"
-                app:tint="@color/AZUL_GENERAL" />
-
-            <EditText
-                android:id="@+id/etBuscarContrato"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvTituloBuscarContrato"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Buscar por cédula o nombre..."
-                android:background="@android:color/transparent"
-                android:textColor="@color/black"
-                android:textColorHint="#9E9E9E"
-                android:paddingStart="10dp"
-                android:textSize="16sp"
-                android:imeOptions="actionSearch"
-                android:singleLine="true" />
+                android:text="Buscar Contrato"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:gravity="center" />
+
         </LinearLayout>
 
-        <!-- 📋 Lista de contratos -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_personas"
+        <!-- CONTENIDO PRINCIPAL -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:paddingBottom="8dp"
-            tools:listitem="@layout/item_contrato" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
+
+            <!-- 🔍 Barra de búsqueda moderna -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_search_box"
+                android:paddingHorizontal="16dp"
+                android:layout_marginVertical="12dp"
+                android:elevation="6dp"
+                android:clipToOutline="true">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    android:contentDescription="Buscar"
+                    app:tint="@color/AZUL_GENERAL" />
+
+                <EditText
+                    android:id="@+id/etBuscarContrato"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Buscar por cédula o nombre..."
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:paddingStart="10dp"
+                    android:textSize="16sp"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <!-- 📋 Lista de contratos -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_personas"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:paddingBottom="8dp"
+                tools:listitem="@layout/item_contrato" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

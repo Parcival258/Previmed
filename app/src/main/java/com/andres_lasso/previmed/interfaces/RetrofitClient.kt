@@ -53,7 +53,7 @@ object RetrofitClient {
         .create()
 
     // 🚀 Instancia principal de Retrofit
-    private val retrofit: Retrofit by lazy {
+    val retrofit: Retrofit by lazy {
         Log.d("RetrofitClient", "Creando instancia Retrofit...")
         Retrofit.Builder()
             .baseUrl(BASE_URL)

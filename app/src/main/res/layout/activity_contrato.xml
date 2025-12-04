@@ -8,21 +8,28 @@
     android:background="@color/white"
     tools:context=".controller.asesor.ContratoActivity">
 
-    <!-- 🔵 TÍTULO igual al de registro paciente -->
-    <TextView
-        android:id="@+id/tvTituloContrato"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Registro de Contrato"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:paddingVertical="18dp"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    <!-- 🔵 HEADER SUPERIOR -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/bg_header_contrato"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- TÍTULO dentro del header -->
+        <TextView
+            android:id="@+id/tvTituloContrato"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registro de Contrato"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:padding="6dp"/>
+    </LinearLayout>
 
     <!-- 📜 SCROLL PRINCIPAL -->
     <ScrollView
@@ -31,7 +38,7 @@
         android:layout_height="0dp"
         android:padding="16dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/tvTituloContrato"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toTopOf="@id/layoutBotones"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -114,7 +121,7 @@
                     android:padding="14dp"
                     android:layout_marginTop="12dp"/>
 
-                <!-- ID Membresia -->
+                <!-- ID Contrato -->
                 <TextView
                     android:id="@+id/tvIdMembresia"
                     android:layout_width="match_parent"

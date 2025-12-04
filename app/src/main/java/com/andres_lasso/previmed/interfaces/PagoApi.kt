@@ -1,7 +1,7 @@
 package com.andres_lasso.previmed.interfaces
 
+import PagoRequest
 import com.andres_lasso.previmed.model.PagoModel
-import com.andres_lasso.previmed.model.PagoRequest
 import com.andres_lasso.previmed.model.PagosResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

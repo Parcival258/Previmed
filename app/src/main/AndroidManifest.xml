@@ -2,18 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 🌐 Permisos -->
+    <!-- 🛑 PERMISOS -->
+    <!-- Biometría -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Cámara -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 📷 La cámara no es obligatoria -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <!-- 🖼️ Permiso moderno para acceder a imágenes (reemplaza READ/WRITE_EXTERNAL_STORAGE) -->
+
+    <!-- Almacenamiento moderno (Android 13+) -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <!-- 🔔 Permiso para notificaciones (Android 13+) -->
+
+    <!-- Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Notificaciones (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+
 
     <application
         android:allowBackup="true"
@@ -27,7 +34,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <!-- 🧩 Actividades del asesor -->
+        <!-- 🧩 ACTIVIDADES DEL ASESOR -->
         <activity android:name=".controller.asesor.ContratoActivity" />
         <activity android:name=".controller.asesor.fragmentAsesor.BuscarContratoAsesor" />
         <activity android:name=".controller.asesor.Barrios" />
@@ -39,24 +46,23 @@
         <activity android:name=".controller.asesor.PagosView" />
         <activity android:name=".controller.asesor.RegistrarPagoActivity" />
 
-        <!-- 🧍 Actividades de pacientes -->
+        <!-- 🧍 ACTIVIDADES DE PACIENTES -->
         <activity android:name=".controller.pacientes.Beneficiarios" />
         <activity android:name=".controller.pacientes.ViewBeneficiario" />
         <activity android:name=".controller.pacientes.SolicitarVisita" />
 
-        <!-- ⚕️ Actividades del médico -->
+        <!-- ⚕️ ACTIVIDADES DEL MÉDICO -->
         <activity android:name=".controller.medico.HistorialVisitas" />
         <activity android:name=".controller.medico.VisitasPendientes" />
-        <activity android:name=".controller.medico.Visitas"/>
-        <activity android:name=".ViewMedico"/>
+        <activity android:name=".controller.medico.Visitas" />
+        <activity android:name=".ViewMedico" />
 
-        <!-- 🔑 Otras actividades -->
+        <!-- 🔑 OTRAS ACTIVIDADES -->
         <activity android:name=".controller.asesor.ViewAsesor" />
-        <!-- ❌ Eliminado el error de .Menu (no existe esa clase) -->
         <activity android:name=".controller.Login" />
         <activity android:name=".RegistroUsuario" />
 
-        <!-- 🚀 Actividad principal -->
+        <!-- 🚀 ACTIVIDAD PRINCIPAL -->
         <activity
             android:name=".controller.MainActivity"
             android:exported="true">
@@ -66,12 +72,14 @@
             </intent-filter>
         </activity>
 
-        <!-- 📁 FileProvider (para guardar fotos y archivos) -->
+
+        <!-- 📁 FILE PROVIDER (OBLIGATORIO PARA FOTOS) -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
+
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
