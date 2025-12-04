@@ -1,6 +1,6 @@
 package com.andres_lasso.previmed.controller.asesor
 
-import PagoRequest
+
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.andres_lasso.previmed.R
 import com.andres_lasso.previmed.interfaces.RetrofitClient
+import com.andres_lasso.previmed.model.PagoRequest
 import com.andres_lasso.previmed.utils.PreferenceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
