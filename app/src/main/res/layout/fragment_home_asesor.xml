@@ -160,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Asesor Previmed"
+                android:text="Asesor MediHome"
                 android:textColor="#4C9AF1"
                 android:textSize="19sp"
                 android:textStyle="bold" />
