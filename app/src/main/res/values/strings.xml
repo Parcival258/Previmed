@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Previmed</string>
+    <string name="app_name">MediHome</string>
     <string name="title_activity_login">Login</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -63,7 +63,7 @@
     <string name="contrato_representantelegal">
         Representante Legal</string>
     <string name="contrato_representanteprevi">
-        PREVIMED TU MEDICO EN CASA S.A.S</string>
+        MediHome</string>
     <string name="download_icon">Icono de descarga</string>
 
     <string name="prompt_paciente">Selecciona el paciente</string>
