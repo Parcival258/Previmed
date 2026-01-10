@@ -132,17 +132,14 @@ class PagosAdd : AppCompatActivity() {
         etMonto = findViewById(R.id.etMonto)
         btnGuardar = findViewById(R.id.btnGuardar)
 
-        // 👇 Muy importante para que autocomplete funcione “rápido”
         etBuscarTitular.threshold = 1
 
-        // Mostrar dropdown al hacer foco
         etBuscarTitular.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus && listaTitulares.isNotEmpty()) {
                 (v as AutoCompleteTextView).showDropDown()
             }
         }
 
-        // Y también al hacer click en el campo
         etBuscarTitular.setOnClickListener {
             if (listaTitulares.isNotEmpty()) {
                 etBuscarTitular.showDropDown()
@@ -177,7 +174,6 @@ class PagosAdd : AppCompatActivity() {
 
     // ===== Datos de backend =====
 
-    /** Carga TODOS los pacientes; validamos membresía al guardar. */
     private fun cargarTitulares() {
         RetrofitClient.pacienteApi.getTitulares()
             .enqueue(object : retrofit2.Callback<ApiResponse<List<PacienteData>>> {
@@ -187,20 +183,12 @@ class PagosAdd : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val titulares = response.body()?.data ?: emptyList()
-
-                        // 🔹 Filtrar solo los que tengan membresías activas
-                        listaTitulares = titulares.filter { titular ->
-                            !titular.membresiaPaciente.isNullOrEmpty()
-                        }
+                        listaTitulares = titulares.filter { !it.membresiaPaciente.isNullOrEmpty() }
 
                         Log.d(tag, "Titulares recibidos: ${titulares.size}, con membresía: ${listaTitulares.size}")
 
                         if (listaTitulares.isEmpty()) {
-                            Toast.makeText(
-                                this@PagosAdd,
-                                "No hay titulares con membresía activa.",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(this@PagosAdd, "No hay titulares con membresía activa.", Toast.LENGTH_LONG).show()
                         }
 
                         configurarAutoComplete()
@@ -209,88 +197,51 @@ class PagosAdd : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(
-                    call: retrofit2.Call<ApiResponse<List<PacienteData>>>,
-                    t: Throwable
-                ) {
+                override fun onFailure(call: retrofit2.Call<ApiResponse<List<PacienteData>>>, t: Throwable) {
                     Log.e(tag, "Fallo al cargar titulares: ${t.message}")
                 }
             })
     }
 
-
-
-
-
     private fun configurarAutoComplete() {
         if (listaTitulares.isEmpty()) return
 
-        // 🔹 Armamos el texto que verá el usuario en el dropdown
         val listaStrings = listaTitulares.map { titular ->
             val nombre = titular.usuario?.nombre ?: "Sin nombre"
             val documento = titular.usuario?.numeroDocumento ?: "Sin doc"
-
-            // Tomamos la primera membresía asociada al titular
-            val membresiaId = titular.membresiaPaciente
-                ?.firstOrNull()
-                ?.membresiaId
-
+            val membresiaId = titular.membresiaPaciente?.firstOrNull()?.membresiaId
             val membresiaTexto = membresiaId?.let { "Membresía $it" } ?: "Sin membresía"
-
             "$nombre - $documento - $membresiaTexto"
         }
 
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_dropdown_item_1line,
-            listaStrings
-        )
-
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, listaStrings)
         etBuscarTitular.setAdapter(adapter)
         etBuscarTitular.threshold = 1
 
-        etBuscarTitular.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus && listaTitulares.isNotEmpty()) {
-                (v as AutoCompleteTextView).showDropDown()
+        etBuscarTitular.setOnItemClickListener { parent, _, position, _ ->
+            val selectedText = parent.getItemAtPosition(position) as String
+            val titular = listaTitulares.find { t ->
+                val nombre = t.usuario?.nombre ?: "Sin nombre"
+                val documento = t.usuario?.numeroDocumento ?: "Sin doc"
+                val membresiaId = t.membresiaPaciente?.firstOrNull()?.membresiaId
+                val membresiaTexto = membresiaId?.let { "Membresía $it" } ?: "Sin membresía"
+                "$nombre - $documento - $membresiaTexto" == selectedText
             }
-        }
 
-        etBuscarTitular.setOnClickListener {
-            if (listaTitulares.isNotEmpty()) {
-                etBuscarTitular.showDropDown()
+            if (titular != null) {
+                selectedTitularId = titular.idPaciente
+                selectedMembresiaId = titular.membresiaPaciente?.firstOrNull()?.membresiaId
+                Log.d(tag, "✅ Titular seleccionado -> idPaciente=${titular.idPaciente}, membresiaId=${selectedMembresiaId}")
+            } else {
+                Log.e(tag, "❌ No se encontró titular para el texto seleccionado: $selectedText")
             }
-        }
-
-        // 🔹 Cuando seleccionan un item, usamos el "position" para
-        // obtener el mismo titular de la lista
-        etBuscarTitular.setOnItemClickListener { _, _, position, _ ->
-            val titular = listaTitulares[position]
-
-            // Guardamos el id del titular seleccionado
-            selectedTitularId = titular.idPaciente
-
-            // Sacamos la primera relación de membresía y su id
-            val relacionMembresia = titular.membresiaPaciente?.firstOrNull()
-            selectedMembresiaId = relacionMembresia?.membresiaId
-
-            Log.d(
-                tag,
-                "✅ Titular seleccionado -> idPaciente=${titular.idPaciente}, " +
-                        "pacienteId=${titular.pacienteId}, membresiaId=${relacionMembresia?.membresiaId}"
-            )
         }
     }
-
-
-
 
     private fun cargarFormasPago() {
         RetrofitClient.formaPagoApi.getFormasPago()
             .enqueue(object : retrofit2.Callback<List<FormaPago>> {
-                override fun onResponse(
-                    call: retrofit2.Call<List<FormaPago>>,
-                    response: retrofit2.Response<List<FormaPago>>
-                ) {
+                override fun onResponse(call: retrofit2.Call<List<FormaPago>>, response: retrofit2.Response<List<FormaPago>>) {
                     if (response.isSuccessful) {
                         formaPagoList = response.body()?.filter { it.estado } ?: emptyList()
                         spinnerFormaPago.adapter = ArrayAdapter(
@@ -298,24 +249,16 @@ class PagosAdd : AppCompatActivity() {
                             android.R.layout.simple_spinner_item,
                             formaPagoList.map { it.tipoPago ?: "Sin nombre" }
                         )
-                        spinnerFormaPago.onItemSelectedListener =
-                            object : AdapterView.OnItemSelectedListener {
-                                override fun onItemSelected(
-                                    parent: AdapterView<*>?,
-                                    view: android.view.View?,
-                                    position: Int,
-                                    id: Long
-                                ) {
-                                    selectedFormaPagoId = formaPagoList[position].idFormaPago
-                                }
-
-                                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                        spinnerFormaPago.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+                                selectedFormaPagoId = formaPagoList[position].idFormaPago
                             }
+                            override fun onNothingSelected(parent: AdapterView<*>?) {}
+                        }
                     } else {
                         Log.e(tag, "Error cargando formas de pago: ${response.errorBody()?.string()}")
                     }
                 }
-
                 override fun onFailure(call: retrofit2.Call<List<FormaPago>>, t: Throwable) {
                     Log.e(tag, "Error cargando formas de pago: ${t.message}")
                 }
@@ -323,22 +266,16 @@ class PagosAdd : AppCompatActivity() {
     }
 
     // ===== UI helpers =====
-
     private fun showDatePicker(edt: EditText) {
         val c = Calendar.getInstance()
         DatePickerDialog(
             this,
-            { _, year, month, day ->
-                edt.setText(String.format(Locale.US, "%04d-%02d-%02d", year, month + 1, day))
-            },
-            c.get(Calendar.YEAR),
-            c.get(Calendar.MONTH),
-            c.get(Calendar.DAY_OF_MONTH)
+            { _, year, month, day -> edt.setText(String.format(Locale.US, "%04d-%02d-%02d", year, month + 1, day)) },
+            c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
 
     // ===== Guardar pago =====
-
     private fun guardarPago() {
         val monto = etMonto.text.toString()
         val fechaInicio = etFechaInicio.text.toString()
@@ -359,21 +296,12 @@ class PagosAdd : AppCompatActivity() {
             Toast.makeText(this, "Ingrese un monto", Toast.LENGTH_LONG).show()
             return
         }
-
-        // Validamos membresía aquí (no en el filtro)
         if (selectedMembresiaId == null) {
-            Toast.makeText(
-                this,
-                "El titular seleccionado no tiene una membresía asociada",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(this, "El titular seleccionado no tiene una membresía asociada", Toast.LENGTH_LONG).show()
             return
         }
 
-        Log.d(
-            tag,
-            "🧾 Enviando -> monto=$monto, membresiaId=$selectedMembresiaId, formaPagoId=$selectedFormaPagoId, cobradorId=$cobradorId"
-        )
+        Log.d(tag, "🧾 Enviando -> monto=$monto, membresiaId=$selectedMembresiaId, formaPagoId=$selectedFormaPagoId, cobradorId=$cobradorId")
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -410,18 +338,10 @@ class PagosAdd : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@PagosAdd,
-                            "Pago registrado correctamente",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@PagosAdd, "Pago registrado correctamente", Toast.LENGTH_LONG).show()
                         finish()
                     } else {
-                        Toast.makeText(
-                            this@PagosAdd,
-                            "Error: ${response.errorBody()?.string()}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@PagosAdd, "Error: ${response.errorBody()?.string()}", Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (e: Exception) {
@@ -434,21 +354,13 @@ class PagosAdd : AppCompatActivity() {
     }
 
     // ===== Helpers Multipart =====
-
-    private fun String.toRequest(): RequestBody =
-        this.toRequestBody("text/plain".toMediaTypeOrNull())
-
-    private fun String?.toRequestOrEmpty(): RequestBody =
-        (this ?: "").toRequest()
-
-    private fun Int.toRequest(): RequestBody =
-        this.toString().toRequest()
+    private fun String.toRequest(): RequestBody = this.toRequestBody("text/plain".toMediaTypeOrNull())
+    private fun String?.toRequestOrEmpty(): RequestBody = (this ?: "").toRequest()
+    private fun Int.toRequest(): RequestBody = this.toString().toRequest()
 
     private fun prepareFilePart(partName: String, uri: Uri): MultipartBody.Part {
         val file = File(cacheDir, "upload_image.jpg")
-        contentResolver.openInputStream(uri)?.use { input ->
-            file.outputStream().use { output -> input.copyTo(output) }
-        }
+        contentResolver.openInputStream(uri)?.use { input -> file.outputStream().use { output -> input.copyTo(output) } }
         val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData(partName, file.name, requestBody)
     }
